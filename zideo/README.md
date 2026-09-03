@@ -10,22 +10,22 @@ Dựng motion graphic tự động cho video talking-head, **đúng phong cách 
 2. **Mã API token** của bạn — lấy trong trang tài khoản Zideo.
 3. Claude Code (bản **desktop** hoặc **terminal** đều được — cùng một plugin).
 
-## Cài trên Claude Code Desktop (đơn giản nhất)
+## Cài (desktop lẫn terminal — chạy trong terminal)
 
-1. Bấm nút **➕** cạnh ô chat → **Plugins**.
-2. Bấm **Add plugin** → thêm marketplace: `vucaocuong69-alt/zideo-plugin` (hoặc dán link repo).
-3. Chọn plugin **zideo** → **Install**.
-4. Khi bật plugin, một **form hiện ra** — dán **Zideo API Token** của bạn vào ô *Token*. (Chỉ một ô duy nhất.)
-5. Xong. Mở một phiên chat, gõ: **"dùng skill zideo dựng video &lt;tên video&gt;"**.
+Desktop app có **terminal tích hợp**. Chạy 2 lệnh (thay `<token>` bằng Zideo API Token của bạn):
 
-## Cài trên Claude Code Terminal
-
-```
-/plugin marketplace add vucaocuong69-alt/zideo-plugin
-/plugin install zideo@zideo
+```bash
+claude plugin marketplace add vucaocuong69-alt/zideo-plugin
+claude plugin install zideo@zideo --config api_token=<token>
 ```
 
-Rồi nhập token khi được hỏi (hoặc bật plugin và nhập ở form cấu hình).
+Rồi **mở một phiên Claude Code MỚI** (plugin nạp lúc khởi động phiên). Kiểm tra kết nối:
+
+```bash
+claude mcp list        # phải thấy: plugin:zideo:zideo … ✔ Connected
+```
+
+> **Lưu ý:** nút ➕ → Plugins trên desktop chỉ *duyệt* các marketplace có sẵn (official/community/đã-thêm) — **không** thêm được marketplace lạ. Phải dùng lệnh `claude plugin marketplace add` như trên. Đặt token phải kèm `--config api_token=…` lúc install; nếu cài rồi mới đặt thì `claude plugin uninstall zideo@zideo` rồi cài lại kèm cờ đó.
 
 ## Dùng
 
