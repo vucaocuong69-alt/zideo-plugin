@@ -1,0 +1,18 @@
+{
+  "name": "zideo",
+  "owner": {
+    "name": "Cường Mê AI",
+    "url": "https://cuongmeai.com"
+  },
+  "metadata": {
+    "description": "Zideo — dựng motion graphic tự động cho video talking-head, chạy trên LLM của chính bạn.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "zideo",
+      "source": "./zideo",
+      "description": "Dựng motion graphic tự động cho video talking-head bằng engine Zideo — đúng phong cách kênh, KHÔNG đè mặt người nói. Bạn nạp video, gõ \"dùng skill zideo dựng video X\", agent tự dựng qua máy chủ Zideo."
+    }
+  ]
+}

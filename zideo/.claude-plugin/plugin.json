@@ -1,0 +1,20 @@
+{
+  "name": "zideo",
+  "version": "0.1.0",
+  "description": "Dựng motion graphic tự động cho video talking-head bằng engine Zideo. Skill điều phối + kết nối máy chủ Zideo (MCP từ xa). Không cài engine trên máy bạn — mọi thứ chạy qua máy chủ, bạn chỉ cần một mã token.",
+  "author": {
+    "name": "Cường Mê AI",
+    "url": "https://cuongmeai.com"
+  },
+  "homepage": "https://cuongmeai.com",
+  "keywords": ["video", "motion-graphic", "talking-head", "remotion", "zideo"],
+  "userConfig": {
+    "api_token": {
+      "type": "string",
+      "title": "Zideo API Token",
+      "description": "Mã truy cập cá nhân của bạn — lấy trong trang tài khoản Zideo. Bắt buộc để kết nối máy chủ. Mã được lưu mã hoá, không hiện dạng chữ.",
+      "sensitive": true,
+      "required": true
+    }
+  }
+}
