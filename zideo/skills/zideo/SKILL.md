@@ -84,7 +84,9 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
          cỡ chữ) rồi gửi lại chính clip đó, chụp lại. **Còn cảnh_báo là CHƯA xong beat.**
       3. **Nhìn ảnh** ở cỡ đọc được: (a) không đè mặt người; (b) không tràn/rớt chữ, không thẻ rỗng
          ruột, ảnh không teo; (c) **graphic LẤP phần lớn dải/khung** — chừa >1/3 dải trống ở phải
-         hoặc đáy, hay teo về một góc = HỎNG, phải giãn khối / thêm tầng nội dung thật / canh giữa.
+         hoặc đáy, hay teo về một góc = HỎNG, phải giãn khối / thêm tầng nội dung thật / canh giữa;
+         (d) **chữ OVER phải đọc được trên nền host SÁNG** — chữ sáng đặt thẳng trên video (over/punch/
+         stamp) rơi trúng tường/mic/ánh đèn là chìm; phải có nền pill/scrim tối hoặc shadow/stroke đậm.
       4. Lặp tới khi **hết cảnh_báo VÀ nhìn không còn lỗi**. Quá **3 lượt** vẫn hỏng → bố cục sai từ
          gốc, **đổi sang hình khác**, đừng chỉnh số mãi.
 
