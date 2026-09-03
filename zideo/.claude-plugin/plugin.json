@@ -12,8 +12,7 @@
     "api_token": {
       "type": "string",
       "title": "Zideo API Token",
-      "description": "Mã truy cập cá nhân của bạn — lấy trong trang tài khoản Zideo. Bắt buộc để kết nối máy chủ. Mã được lưu mã hoá, không hiện dạng chữ.",
-      "sensitive": true,
+      "description": "Mã truy cập cá nhân của bạn — lấy trong trang tài khoản Zideo. Bắt buộc để kết nối máy chủ.",
       "required": true
     }
   }
