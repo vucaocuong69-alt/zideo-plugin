@@ -1,6 +1,6 @@
 {
   "name": "zideo",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Dựng motion graphic tự động cho video talking-head bằng engine Zideo. Skill điều phối + kết nối máy chủ Zideo (MCP từ xa). Không cài engine trên máy bạn — mọi thứ chạy qua máy chủ, bạn chỉ cần một mã token.",
   "author": {
     "name": "Cường Mê AI",

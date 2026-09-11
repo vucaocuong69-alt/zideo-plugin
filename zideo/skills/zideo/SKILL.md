@@ -86,8 +86,10 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       **Mode mascot** (`get_timeline` có `người_nói_là_nhân_vật`): TRỘN vùng, đừng để toàn
       `split`. Chọn trước **25–40% số beat** được trọn khung — sơ đồ quan hệ, so sánh trước/sau,
       số liệu lớn, danh sách ≥4 mục, ảnh nguồn thật — graphic zone `takeover` và **chừa trống góc
-      dưới phải ~40% bề ngang × 30% chiều cao** (nhân vật sẽ ló góc ở đó). Beat bình luận, cảm
-      thán, kể chuyện giữ `split`: ở đó nhân vật chính là nội dung.
+      dưới TRÁI** (nhân vật sẽ ló góc ở đó, cao ~560px). Beat bình luận, cảm thán, kể chuyện giữ
+      `split`: ở đó nhân vật chính là nội dung. Beat `over` (nhân vật đứng lớn) thì chữ chỉ nằm
+      TRÊN ĐẦU nhân vật. Số chính xác của cả hai luôn nằm trong VÙNG AN TOÀN của
+      `get_prompt_contract` — lấy theo đó, đừng tự ước.
 
    d. **Tạo ô (hoặc dùng ô sẵn) rồi mới gắn.** Ba trường hợp theo dòng beat của `get_timeline`:
       - Beat có `clip_để_sửa` **không** kèm `chưa_có_component` → đã dựng rồi, bỏ qua (trừ khi user bảo sửa).
@@ -165,7 +167,7 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
      đoạn; dùng lại một tư thế trung tính chỉ hơi nhàm. Hai cái sai đó không cùng hạng.
    - **Tư thế cuối beat trước ≠ tư thế đầu beat sau** — `set_mascot` chặn, có `force`.
    - Vùng: `split` (graphic dải trên) · `over` (nhân vật lớn, beat không graphic) · `goc`
-     (graphic trọn khung, nhân vật ló góc dưới phải — **ưu tiên hơn `vang`**) · `vang` (nhân vật
+     (graphic trọn khung, nhân vật ló góc dưới trái — **ưu tiên hơn `vang`**) · `vang` (nhân vật
      biến mất, chỉ khi graphic cần đúng từng góc khung). Beat đầu và beat cuối không được `vang`;
      không quá 8s liền vắng nhân vật. Toàn `split` (0 beat trọn khung) bị chặn.
    - Chuyển động **tự theo tư thế** (sốc giật mình, vui nảy, khóc run…) — không phải chọn. Muốn
