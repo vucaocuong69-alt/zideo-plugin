@@ -54,9 +54,40 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       timeline, carousel) mà dữ liệu beat chỉ có **1 mục** → ĐỔI sang **hình đơn** (bignum/stat/
       punch/stamp). Vẽ khung nhiều-mục với đúng 1 mục là ra thưa hoác, chết không gian.
 
-   c. **Zone phải khớp bậc.** Ở khung dọc 9:16: bậc-2 (list/compare/flow/stat…) → zone `split`
-      (người nói co xuống dải dưới, graphic ở dải trên); bậc-3 / thứ-có-hình → `stage`/`takeover`;
-      chỉ chữ/số nhỏ → `over`. **Không nhét bậc 2/3 vào `over`** — sẽ đè mặt người.
+   b'. **BẮT BUỘC gọi `find_examples` TRƯỚC KHI viết `write_motion_graphic`.** LLM tự sáng
+      tác từ scratch có xu hướng bọc mọi archetype trong một khung/thẻ trắng "cho an toàn dễ đọc
+      chữ" — đó là chỗ chất style biến mất. Đo trên kb27 clay-proof qua MCP: 13/17 MG bọc panel
+      viền + boxShadow xung quanh chart/gauge/wf/proof/diagram, trong khi kb30-clay dev cùng
+      style chỉ 6/16 (37%) dùng panel, còn lại vẽ TRỰC TIẾP trên trang giấy kem. Chênh do LLM
+      không xem ví dụ thật của style.
+      Với TỪNG beat sắp `write_motion_graphic`:
+      - Gọi `find_examples(project, clip_id, archetype: '<đã chọn>', role: '<vai của beat>')`.
+      - Đọc mã trả về — chú ý CẤU TRÚC OUTER: có `<AbsoluteFill style={{background: PAPER}}>`
+        rồi vẽ trực tiếp, hay có bọc `<div style={{border, boxShadow, background: SURF}}>` bao
+        nội dung? Style của bạn theo cấu trúc nào thì bám cấu trúc đó. Chép cấu trúc, KHÔNG
+        chép chữ hay số của ví dụ.
+      - Thư viện trống archetype đó → tool báo, cứ tự viết theo hợp đồng nhưng NÊN kiêng bọc
+        panel ngoài nếu style yêu cầu "vẽ trực tiếp trên nền" (đọc kỹ tokens.notes).
+
+   c. **Zone phải khớp bậc — và TÊN VÙNG ĐỔI THEO KHUNG.** Xem `get_timeline` để biết dự án
+      dọc hay ngang trước khi chọn.
+
+      | bậc | khung DỌC 9:16 | khung NGANG 16:9 |
+      |---|---|---|
+      | bậc-2 (list/compare/flow/stat…) | `split` — người nói co xuống dải dưới, graphic dải trên | `glide` — người nói dạt sang một bên, graphic vào nửa còn lại |
+      | bậc-3 / thứ-có-hình | `stage` / `takeover` | `stage` / `takeover` |
+      | chỉ chữ, số nhỏ | `over` | `over` |
+
+      **`split` CHỈ có ở khung dọc.** Đặt nó cho dự án ngang thì server trả lỗi `zone-sai-khung`;
+      và nếu lọt qua thì renderer bỏ luôn vùng vẽ, graphic phủ TOÀN KHUNG đè lên mặt người nói.
+      Ngược lại `glide` ở khung dọc thì không tách được host (chỉ đè có scrim) — dọc dùng `split`.
+      **Không nhét bậc 2/3 vào `over`** — sẽ đè mặt người.
+
+      **Mode mascot** (`get_timeline` có `người_nói_là_nhân_vật`): TRỘN vùng, đừng để toàn
+      `split`. Chọn trước **25–40% số beat** được trọn khung — sơ đồ quan hệ, so sánh trước/sau,
+      số liệu lớn, danh sách ≥4 mục, ảnh nguồn thật — graphic zone `takeover` và **chừa trống góc
+      dưới phải ~40% bề ngang × 30% chiều cao** (nhân vật sẽ ló góc ở đó). Beat bình luận, cảm
+      thán, kể chuyện giữ `split`: ở đó nhân vật chính là nội dung.
 
    d. **Tạo ô (hoặc dùng ô sẵn) rồi mới gắn.** Ba trường hợp theo dòng beat của `get_timeline`:
       - Beat có `clip_để_sửa` **không** kèm `chưa_có_component` → đã dựng rồi, bỏ qua (trừ khi user bảo sửa).
@@ -74,6 +105,27 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
    f. **Icon/logo thật, đừng vẽ tay.** Danh từ cụ thể/khái niệm có biểu tượng → `search_icon`
       (Iconify) → `pull_asset` → dùng `getAssetUrl`. Tên thương hiệu → `add_logo`. Chỉ vẽ `<path>`
       cho sơ đồ/giao diện tự chế mà không kho nào có.
+
+   f2. **Beat nhắc ĐÍCH DANH một thứ có thật trên web → `capture_reference`.** Một repo GitHub,
+      một bài báo, một bài trên X, một video YouTube: `search_image` không bao giờ có, còn
+      `generate_asset` thì **vẽ ra một thứ bịa** — sai đúng chỗ người xem kiểm được. Tool trả về
+      dữ liệu thật (tiêu đề, tác giả, ngày, sao/fork) + ảnh của chính nguồn.
+      · Có `anh` với `anh_tu` là `thẻ-github`/`og`/`thumbnail` → đặt nguyên khối, đừng cắt.
+      · `anh_tu: chụp` → **phóng cho vừa bề ngang vùng vẽ**, thu nhỏ là chữ thành vệt xám; đọc
+        `chụp_cảnh_báo` trước khi dùng.
+      · `anh_tu: thẻ-<nền-tảng>-chính-thức` (X · Instagram · TikTok · Facebook) → thẻ bài do
+        **chính nền tảng render**, đúng giao diện tới từng pixel và đã dịch tiếng Việt. **Đừng
+        bao giờ tự vẽ lại giao diện của họ** — đây là thứ người xem thuộc lòng, sai một chút là
+        thấy ngay. Đặt nguyên khối, phóng ~1,7–3× cho vừa bề ngang. `nen: 'toi'|'sang'` chọn nền.
+      · YouTube → không có thẻ nhúng dùng được, nhưng có **thumbnail 1280×720** + tiêu đề + kênh:
+        đặt thumbnail rồi tự phủ nút play và tiêu đề nếu muốn giống YouTube.
+      · Reddit → **không có ảnh** (Reddit chặn trình duyệt tự động): vẽ thẻ từ tiêu đề +
+        `u/tác-giả` + `r/chuyên-mục`.
+      · **Không có ảnh → VẼ THẺ bằng mã từ các trường trả về.** Không phải thất bại: thẻ vẽ tay
+        đọc rõ hơn ảnh chụp và đúng tông màu video. Giữ nguyên văn tiêu đề/tên tác giả — đây vẫn
+        là luật (e) trung thực dữ liệu.
+      · Chỉ có TÊN mà không có URL (lời thoại nói "repo Remotion") → dựng URL hiển nhiên
+        (`https://github.com/remotion-dev/remotion`) rồi gọi; sai thì tool báo, không im lặng.
 
    g. **VÒNG TỰ SỬA — CỬA ẢI BẮT BUỘC, không được bỏ để chạy nhanh.** `đạt: true` (và field
       `chưa_xong_beat_này` tool trả kèm) chỉ nghĩa MÃ CHẠY — CHƯA phải bố cục dựng được. **Không
@@ -93,8 +145,35 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
 4. **Đa dạng.** KHÔNG dùng cùng một kind quá **2 beat liên tiếp**. Cả video quanh quẩn một khuôn
    là hỏng dù từng beat đều "đúng".
 
+4b. **MODE MASCOT — đặt tư thế nhân vật.** CHỈ khi `get_timeline` trả `người_nói_là_nhân_vật`.
+   Ở mode này người nói không phải video người thật mà là một bộ ảnh tĩnh, nên **tư thế là nửa
+   còn lại của nội dung** — bỏ qua bước này là nhân vật đứng nguyên một dáng suốt video, và ảnh
+   tĩnh không đổi tư thế thì nhìn ra trong hai giây.
+
+   Làm **sau khi graphic đã xong**, không phải trước: lúc đó mới biết beat nào graphic trọn
+   khung (nhân vật `goc` hoặc `vang`), beat nào dải trên (`split`), beat nào không có gì (`over`).
+
+   - `get_mascot_catalog(<project>)` — bộ này có ĐÚNG những tư thế nào (mỗi bộ một khác), kèm
+     **câu nói** và **chữ đánh số** (`chỉ số:chữ@giây`) của từng beat, và vùng graphic đã dựng.
+   - `set_mascot(<project>, beats: [...])` — gửi **cả video trong một lượt**. Mỗi mục là TOÀN BỘ
+     kế hoạch tư thế của beat đó.
+   - **Đổi tư thế GIỮA beat** khi câu đổi thái độ (nêu vấn đề → bất ngờ → chốt): thêm
+     `doi: [{chu, cam_xuc}]`, `chu` là chỉ số chữ trong beat. **Beat không bị tách**, độ dài giữ
+     nguyên. Tối đa 2 điểm đổi · beat < 3s giữ một tư thế · mỗi tư thế giữ ≥ 1s. Nhịp tốt là
+     mỗi tư thế 3–4s: beat 6–10s thường có 1–2 điểm đổi.
+   - **Không chắc thì chọn trung tính.** Nhân vật cười lúc câu đang nói chuyện buồn là hỏng cả
+     đoạn; dùng lại một tư thế trung tính chỉ hơi nhàm. Hai cái sai đó không cùng hạng.
+   - **Tư thế cuối beat trước ≠ tư thế đầu beat sau** — `set_mascot` chặn, có `force`.
+   - Vùng: `split` (graphic dải trên) · `over` (nhân vật lớn, beat không graphic) · `goc`
+     (graphic trọn khung, nhân vật ló góc dưới phải — **ưu tiên hơn `vang`**) · `vang` (nhân vật
+     biến mất, chỉ khi graphic cần đúng từng góc khung). Beat đầu và beat cuối không được `vang`;
+     không quá 8s liền vắng nhân vật. Toàn `split` (0 beat trọn khung) bị chặn.
+   - Chuyển động **tự theo tư thế** (sốc giật mình, vui nảy, khóc run…) — không phải chọn. Muốn
+     nhấn bằng tiếng động ở cú giật mình thì `add_sfx_clip` đúng mốc đổi tư thế, 2–3 lần một video.
+   - Bộ dưới 12 tư thế (`bộ_ít_tư_thế`) → cuối lượt nhắc người dùng vẽ thêm tư thế.
+
 5. **Xong.** Khi mọi beat đã có motion graphic đạt yêu cầu, báo user tóm tắt (bao nhiêu beat, dạng
-   hình đã dùng) và nhắc bước xuất video.
+   hình đã dùng — mode mascot thì kèm cả chuỗi tư thế) và nhắc bước xuất video.
 
 ## Vài lằn ranh
 - Không tự chế phong cách/màu/font — mọi thứ đó nằm trong contract và catalog của MCP.
