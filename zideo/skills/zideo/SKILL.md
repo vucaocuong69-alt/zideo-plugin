@@ -172,6 +172,10 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
      không quá 8s liền vắng nhân vật. Toàn `split` (0 beat trọn khung) bị chặn.
    - Chuyển động **tự theo tư thế** (sốc giật mình, vui nảy, khóc run…) — không phải chọn. Muốn
      nhấn bằng tiếng động ở cú giật mình thì `add_sfx_clip` đúng mốc đổi tư thế, 2–3 lần một video.
+   - **Nhép miệng cũng tự động** khi bộ đã có khẩu hình (`get_mascot_catalog` có mục
+     `nhép_miệng`): im thì ngậm, đọc thì mỗi âm tiết một cử động — không phải đặt gì, đừng đi tìm
+     tool. Tư thế chưa có khẩu hình thì miệng đứng yên: beat nói dài hoặc quan trọng ưu tiên tư thế
+     đã có. Nhịp nhép (nhanh · vừa · chậm) là lựa chọn của người dùng trong editor — agent không đổi.
    - Bộ dưới 12 tư thế (`bộ_ít_tư_thế`) → cuối lượt nhắc người dùng vẽ thêm tư thế.
 
 5. **Xong.** Khi mọi beat đã có motion graphic đạt yêu cầu, báo user tóm tắt (bao nhiêu beat, dạng
