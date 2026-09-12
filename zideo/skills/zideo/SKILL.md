@@ -176,6 +176,10 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
      `nhép_miệng`): im thì ngậm, đọc thì mỗi âm tiết một cử động — không phải đặt gì, đừng đi tìm
      tool. Tư thế chưa có khẩu hình thì miệng đứng yên: beat nói dài hoặc quan trọng ưu tiên tư thế
      đã có. Nhịp nhép (nhanh · vừa · chậm) là lựa chọn của người dùng trong editor — agent không đổi.
+   - **Beat không có motion graphic tự được vá một BONG BÓNG THOẠI** kiểu truyện tranh (chữ là
+     chính lời đang nói, cắt thành cụm theo nhịp). Nên chụp khung một beat chưa dựng sẽ thấy nó —
+     đó không phải phần tử ai đó đặt vào và **không phải chừa chỗ** cho nó: dựng graphic cho beat
+     đó là bong bóng tự mất. Đừng vẽ lại một cái bong bóng trong mã của mình.
    - Bộ dưới 12 tư thế (`bộ_ít_tư_thế`) → cuối lượt nhắc người dùng vẽ thêm tư thế.
 
 5. **Xong.** Khi mọi beat đã có motion graphic đạt yêu cầu, báo user tóm tắt (bao nhiêu beat, dạng
