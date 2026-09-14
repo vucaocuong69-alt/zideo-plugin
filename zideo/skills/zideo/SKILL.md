@@ -190,3 +190,10 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
 - Beat đóng video thường đã có component cố định của kênh — đừng ghi đè.
 - Nếu một tool trả lỗi, **đọc lỗi rồi sửa theo đúng lỗi** (contract, gate, capture đều trả thông
   điệp cụ thể) — đừng đoán.
+- **Lỗi THIẾU QUYỀN không phải lỗi để sửa.** «tài khoản của bạn không được dựng…», «gói của bạn
+  không có…» (một style, một tính năng), «Hết hạn mức…», «chưa được mở…» là quyền quản trị viên giao
+  cho tài khoản này. Dừng đúng việc đó, báo người dùng nguyên câu lỗi và gợi ý liên hệ quản trị viên
+  (hết hạn mức thì chờ sang tháng hoặc nâng gói). **Đừng lách:** không tự đổi sang theme/style hay
+  kiểu dựng khác thứ người dùng chọn, không tạo project mới để né hạn mức, không gọi lại với tham số
+  khác cho lọt. Tool bị khoá (vd sinh ảnh AI) thì beat vẫn dựng bằng cách khác mà `luật_chọn` cho
+  phép được — nhưng nói rõ với người dùng là đã bỏ qua tool đó.
