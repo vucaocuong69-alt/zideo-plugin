@@ -10,16 +10,47 @@ Dựng motion graphic tự động cho video talking-head, **đúng phong cách 
 2. **Mã API token** của bạn — lấy trong trang tài khoản Zideo.
 3. Claude Code (bản **desktop** hoặc **terminal** đều được — cùng một plugin).
 
-## Cài (desktop lẫn terminal — chạy trong terminal)
+## Cài (desktop lẫn terminal — chạy trong Terminal của máy)
 
-Desktop app có **terminal tích hợp**. Chạy 2 lệnh (thay `<token>` bằng Zideo API Token của bạn):
+> **Không dán lệnh vào khung chat của Claude.** Claude trong app desktop không chạy được lệnh `claude`. Mở **Terminal của máy** (macOS: app Terminal · Windows: PowerShell). App desktop dùng chung plugin với bản terminal: cài một lần ở Terminal là app desktop cũng có.
+
+**① Chỉ làm một lần** — khi `claude --version` báo không có lệnh, cài Claude Code CLI:
+
+```bash
+# macOS / Linux
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+```powershell
+# Windows (PowerShell)
+irm https://claude.ai/install.ps1 | iex
+```
+
+Cài xong **đóng Terminal và mở cửa sổ MỚI** — cửa sổ vừa cài vẫn giữ PATH cũ nên chưa thấy lệnh `claude`. Trên Windows mở PowerShell bình thường, **không chọn «Run as administrator»** — tiêu đề cửa sổ không có chữ «Administrator» là đúng; dấu nhắc hiện `C:\Windows\system32` hay `C:\Users\…` đều không sao, lệnh cài không phụ thuộc thư mục đang đứng.
+
+Windows: vẫn báo `claude` is not recognized → dán cả khối dưới. Hai dòng đầu thêm thư mục cài vào PATH cho các cửa sổ **sau**; dòng thứ ba cho **cửa sổ đang mở** dùng được ngay (đặt PATH kiểu hai dòng đầu không áp cho cửa sổ hiện tại):
+
+```powershell
+$p = [Environment]::GetEnvironmentVariable('PATH', 'User')
+[Environment]::SetEnvironmentVariable('PATH', "$p;$env:USERPROFILE\.local\bin", 'User')
+$env:Path += ";$env:USERPROFILE\.local\bin"
+claude --version
+```
+
+Vẫn không có: `Test-Path "$env:USERPROFILE\.local\bin\claude.exe"` ra `False` nghĩa là tài khoản Windows này chưa có Claude Code — chạy lại lệnh cài ở bước ① trong cửa sổ PowerShell bình thường này.
+
+> Gõ `claude` mà lại mở ra app Claude desktop: cập nhật app desktop lên bản mới nhất (bản cũ chiếm tên lệnh `claude`).
+
+**② Cài plugin** (thay `<token>` bằng Zideo API Token của bạn; dán nguyên từng dòng, **không thêm dấu `\` ở cuối**):
+
+> Windows: plugin được tải bằng Git. Gõ `git --version` trước; báo không có lệnh thì cài [Git for Windows](https://git-scm.com/downloads/win) (chọn «Add to PATH») rồi mở cửa sổ mới.
 
 ```bash
 claude plugin marketplace add vucaocuong69-alt/zideo-plugin
 claude plugin install zideo@zideo --config api_token=<token>
 ```
 
-Rồi **mở một phiên Claude Code MỚI** (plugin nạp lúc khởi động phiên). Kiểm tra kết nối:
+**③ Mở một phiên Claude Code MỚI** (plugin nạp lúc khởi động phiên; app desktop thì thoát hẳn rồi mở lại). Kiểm tra kết nối:
 
 ```bash
 claude mcp list        # phải thấy: plugin:zideo:zideo … ✔ Connected
