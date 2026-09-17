@@ -105,6 +105,10 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
         (start/dur từ dòng beat, zone chọn ở bước c) → lấy id `a…`.
       Rồi viết vào ĐÚNG id: `write_motion_graphic(clip_id, …)`. **Không ghi lên clip host (`h…`)** —
       renderer không đọc kind ở đó.
+      **Làm lại / sửa một beat = ghi đè ĐÚNG `clip_id` cũ** (`write_motion_graphic` cùng id). Mỗi khoảng thời
+      gian chỉ MỘT ô graphic: tạo ô mới chồng khít ô đã có bị server từ chối (`o-trung-cho`, kèm `clip_da_co`
+      là id phải dùng). Muốn bỏ hẳn bản cũ thì `edit_clip(clip_id, delete: true)` — **đừng** viết mã trong suốt
+      để «tắt» nó: bản thừa vẫn nằm trên timeline và dễ vẽ chồng lên bản thật.
 
    e. **Trung thực dữ liệu.** Số liệu, tên riêng, câu trích trong graphic phải **nguyên văn** trong
       lời thoại của beat đó. Thiếu sự kiện thật → đổi hình khác, **tuyệt đối đừng bịa/điền bừa**.
