@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Zideo — dựng motion graphic tự động cho video talking-head, chạy trên LLM của chính bạn.",
-    "version": "0.2.4"
+    "version": "0.2.5"
   },
   "plugins": [
     {

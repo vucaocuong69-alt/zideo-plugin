@@ -184,9 +184,20 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
 
 5. **Xong.** Khi mọi beat đã có motion graphic đạt yêu cầu, báo user tóm tắt (bao nhiêu beat, dạng
    hình đã dùng — mode mascot thì kèm cả chuỗi tư thế) và nhắc bước xuất video.
+   User báo **file xuất ra khác bản xem trước** (mất mũi tên, hình méo, thiếu nền, sai font) → việc
+   ĐẦU TIÊN là bảo họ **tải lại trang editor (F5) rồi xuất lại**: tab mở từ trước lần máy chủ cập
+   nhật vẫn xuất bằng bộ vẽ cũ. Vẫn khác sau khi tải lại thì mới báo lỗi, kèm tên video và giây bị
+   lệch — đừng sửa mã graphic để «né» chỗ file xuất sai khi bản xem trước đang đúng.
 
 ## Vài lằn ranh
 - Không tự chế phong cách/màu/font — mọi thứ đó nằm trong contract và catalog của MCP.
+- **Font chỉ lấy qua `themeFont()`** — không gõ tên font trong `fontFamily` (máy người xem không có
+  font đó thì chữ đổi hẳn mặt). Hướng thẩm mỹ có dòng **VAI CHỮ RIÊNG** (thường là font thương hiệu
+  người dùng tự tải lên) → chữ đúng vai đó gọi `themeFont("<tên vai>")`; không có thì dùng khoá
+  chuẩn trong contract. Đừng tự bịa tên vai hay khoá `tl-…`. Người dùng muốn video dùng font riêng
+  của họ: agent **không tải font lên được** — hướng dẫn họ vào Cài đặt → Style thư viện → Chỉnh
+  style → **FONT TẢI LÊN**, rồi «+ thêm vai chữ» trỏ vào font đó và Lưu; lượt dựng sau sẽ thấy vai
+  trong hướng thẩm mỹ.
 - Beat đóng video thường đã có component cố định của kênh — đừng ghi đè.
 - Nếu một tool trả lỗi, **đọc lỗi rồi sửa theo đúng lỗi** (contract, gate, capture đều trả thông
   điệp cụ thể) — đừng đoán.
