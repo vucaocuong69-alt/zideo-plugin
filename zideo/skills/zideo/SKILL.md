@@ -26,10 +26,10 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
 
 2. **Đọc trạng thái + luật + danh sách beat — MỘT lệnh.** Gọi `get_timeline(<project>)`. Nó trả
    TẤT CẢ trong một response:
-   - `chế_độ_dựng` (được dùng component thư viện tới đâu, tự viết tới đâu), `khung` (dọc 9:16 hay
-     ngang 16:9), `theme`, `dải_graphic`, `hướng_dẫn_asset` — **luật dựng của kênh, theo sát**;
+   - `thư_viện_component`, `chế_độ_dựng`, `khung` (dọc 9:16 hay ngang 16:9), `theme`, `dải_graphic`,
+     `hướng_dẫn_asset` — **luật dựng của kênh, theo sát**;
    - mảng `beat`: mỗi dòng có `số`, `beat` (id), `bắt_đầu`, `dài`; dòng đã có graphic thì kèm
-     `clip_để_sửa` (id `a…` truyền vào set_component/write_motion_graphic) + `kind`/`zone`/`hình`;
+     `clip_để_sửa` (id `a…` truyền vào write_motion_graphic) + `kind`/`zone`/`hình`;
    - `beat_chưa_có_component`: các beat còn TRỐNG ô vẽ — phải `add_clip` tạo ô trước (bước 3d).
 
    Beat nào chưa có graphic thì cần dựng. Chạy lại chỉ dựng beat còn thiếu. (KHÔNG có tool
@@ -38,18 +38,21 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
 3. **Với TỪNG beat, làm đủ vòng:**
 
    a. Gọi `get_prompt_contract(<project>, <beat>)` — đọc lời thoại của beat, **VÙNG AN TOÀN**
-      (toạ độ được phép vẽ), và **BẢNG HÌNH**. Gọi `get_catalog` — đọc thư viện archetype và
-      **`luật_chọn`** (thứ tự ưu tiên chọn cách dựng).
+      (toạ độ được phép vẽ), và **BẢNG HÌNH**. Gọi `get_catalog` khi cần — đọc **`luật_chọn`** (thứ tự
+      ưu tiên chọn hình) và xem thư viện component **để tham khảo**.
 
-   b. **Chọn cách dựng theo `luật_chọn`** — xét từ trên xuống, lấy cái ĐẦU TIÊN hợp; đừng mặc
-      định về một khuôn thẻ chữ:
-      - Câu có **quan hệ/cấu trúc/danh sách/số liệu** mà một **archetype thư viện** tả đúng →
-        dùng nó qua `set_component` (component đã polish sẵn + tự nhận đúng zone).
-      - Câu về **thứ có hình riêng** (giao diện app, khung chat, terminal, sơ đồ đặc thù) mà thư
-        viện không tả được → **tự viết** qua `write_motion_graphic`.
-      - Chỉ **một cụm chữ đắt / số lớn** → punch/stat/nhấn.
+   b. **MỌI BEAT LÀ MOTION GRAPHIC BẠN TỰ VIẾT** (`write_motion_graphic`). Component thư viện **chỉ để
+      tham khảo**: không đặt vào beat — `set_component` / `add_clip` kèm kind thư viện bị server từ chối
+      (`thu-vien-chi-tham-khao`), trừ `outro-follow` có sẵn ở beat đóng video. Thấy một hình thư viện
+      hợp với câu thì `see_components` xem ảnh / `get_catalog` xem data mẫu, mượn ý bố cục rồi **tự vẽ
+      lại** theo lời thoại và hộp HOP của beat. Chọn **hình** (ghi vào `archetype`) theo `luật_chọn` —
+      xét từ trên xuống, lấy cái ĐẦU TIÊN hợp; đừng mặc định về một khuôn thẻ chữ:
+      - Câu về **thứ có hình riêng** (giao diện app, khung chat, terminal, sơ đồ đặc thù) → vẽ chính thứ đó.
+      - Câu có **quan hệ/cấu trúc** (tăng giảm, phần của tổng, chuỗi bước, trước–sau, xếp hạng, phễu)
+        → hình quan hệ (chart-*/proof-*/wf-*/diagram-node/map-tree/gauge).
+      - **Danh sách phẳng / định nghĩa / hai vế** → list-scan/card-rows/compare/stepper.
+      - Chỉ **một cụm chữ đắt / số lớn** → stamp/bignum.
       - Beat chỉ là câu cảm thán/đưa đẩy, không có gì đáng vẽ → **bỏ trống**.
-      Ưu tiên thư viện khi hợp; chỉ tự vẽ khi thư viện không có hình đúng.
       **Khớp hình với SỐ MỤC thật.** Hình ngụ ý NHIỀU mục (stepper, compare, list-scan, card-rows,
       timeline, carousel) mà dữ liệu beat chỉ có **1 mục** → ĐỔI sang **hình đơn** (bignum/stat/
       punch/stamp). Vẽ khung nhiều-mục với đúng 1 mục là ra thưa hoác, chết không gian.
@@ -81,7 +84,10 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       **`split` CHỈ có ở khung dọc.** Đặt nó cho dự án ngang thì server trả lỗi `zone-sai-khung`;
       và nếu lọt qua thì renderer bỏ luôn vùng vẽ, graphic phủ TOÀN KHUNG đè lên mặt người nói.
       Ngược lại `glide` ở khung dọc thì không tách được host (chỉ đè có scrim) — dọc dùng `split`.
-      **Không nhét bậc 2/3 vào `over`** — sẽ đè mặt người.
+      **Không nhét bậc 2/3 vào `over`** — sẽ đè mặt người. Ở khung NGANG dải `over` chỉ cao 400px:
+      hình nhiều tầng (map-tree, wf-tree/gantt/swimlane/kanban…, chart-radar) → `glide`, hình giao
+      diện (mockup-app, chat, terminal) → `stage`; server chặn nếu ép `over`. Cửa ải cũng trả về
+      graphic khung ngang có **một nửa số chữ dưới 18px** — cỡ chữ đặt sàn px, đừng suy thuần từ H.
 
       **Mode mascot** (`get_timeline` có `người_nói_là_nhân_vật`): TRỘN vùng, đừng để toàn
       `split`. Chọn trước **25–40% số beat** được trọn khung — sơ đồ quan hệ, so sánh trước/sau,
@@ -97,11 +103,11 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
         ngắt). **Gắn thẳng vào id đó, TUYỆT ĐỐI đừng `add_clip`** (thêm ô là chồng hai graphic một beat).
       - Beat có `chưa_có_component` **không** kèm ô → `add_clip(project, track:'anim', start, dur, zone)`
         (start/dur từ dòng beat, zone chọn ở bước c) → lấy id `a…`.
-      Rồi gắn vào ĐÚNG id: `set_component(clip_id, kind, data)` (thư viện) hoặc
-      `write_motion_graphic(clip_id, …)` (tự viết). **Không ghi lên clip host (`h…`)** — renderer không đọc kind ở đó.
+      Rồi viết vào ĐÚNG id: `write_motion_graphic(clip_id, …)`. **Không ghi lên clip host (`h…`)** —
+      renderer không đọc kind ở đó.
 
-   e. **Trung thực dữ liệu.** Số liệu, tên riêng, câu trích trong data phải **nguyên văn** trong
-      lời thoại của beat đó. Thiếu sự kiện thật → đổi kind khác, **tuyệt đối đừng bịa/điền bừa**.
+   e. **Trung thực dữ liệu.** Số liệu, tên riêng, câu trích trong graphic phải **nguyên văn** trong
+      lời thoại của beat đó. Thiếu sự kiện thật → đổi hình khác, **tuyệt đối đừng bịa/điền bừa**.
       (Nhãn bước, tên cột thì được diễn đạt lại từ ý trong câu.)
 
    f. **Icon/logo thật, đừng vẽ tay.** Danh từ cụ thể/khái niệm có biểu tượng → `search_icon`
