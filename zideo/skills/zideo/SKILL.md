@@ -35,6 +35,26 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
    Beat nào chưa có graphic thì cần dựng. Chạy lại chỉ dựng beat còn thiếu. (KHÔNG có tool
    `get_project_status` — mọi trạng thái nằm trong `get_timeline`.)
 
+2b. **Phiếu chỉ đạo + bảng đạo diễn — TRƯỚC beat đầu tiên.** `get_timeline` trả `phiếu_chỉ_đạo` và
+   `bảng_đạo_diễn`; dự án mới thường ghi «CHƯA CÓ» / «CHƯA LẬP».
+   - `set_project_brief` — ghi những gì người dùng ĐÃ NÓI: khán giả/kênh, một câu thông điệp, CTA và
+     ưu đãi thật, tư liệu (tên · vai trò · quyền dùng), cách đặt người nói, thứ phải giữ nguyên, thứ
+     cấm. **Chưa nói thì để trống** — CTA, giá, ưu đãi, tên tư liệu mà đoán là bịa trên hình. Người
+     dùng muốn tắt tiếng động tự gắn thì `sfx_tu_dong: false`; không cho tốn tiền thì `tra_phi: "khong"`.
+     Video nhắc tên thương hiệu / sản phẩm / người → ghi `tu_rieng` (viết ĐÚNG như phải hiện) — hợp đồng
+     nhắc lại cho mọi beat, và `check_captions` soát phụ đề theo danh sách đó.
+   - `get_transcript` cả video, rồi `set_beat_direction` MỘT lượt cho mọi beat: mắt nhìn vào đâu (một
+     thứ), hành động hình (cái gì đổi), chữ trên hình (thêm điều lời không nói), tư liệu, tiêu chí duyệt
+     («đạt khi …»). Beat chỉ là ý kiến riêng, lời hứa, câu cảm thán → `trang_thai: "de-trong"` (người
+     nói trọn khung). Nhìn cả bảng trước khi dựng: hai beat liền nhau đừng cùng hình VÀ cùng cách kể.
+   - Server tự chèn phiếu + dòng của beat vào `get_prompt_contract` — dựng đúng hướng đã chốt; đổi ý
+     thì sửa bảng trước. Mã đạt thì dòng tự sang «chờ duyệt». Người dùng xin bảng → `export_direction_table` (CSV).
+   - Dự án cũ đã dựng xong mà không có phiếu: không bắt buộc lập lại, trừ khi người dùng yêu cầu.
+   - Người dùng đưa VIDEO MẪU («dựng giống video X») → `recipe_from_reference(<project>, du_an_mau: X,
+     ap_dung: true)` TRƯỚC khi lập bảng: đo nhịp đổi cảnh, người nói đứng đâu bao nhiêu % thời lượng, hình
+     đổi trước hay sau lời, nhạc / tiếng động. Dự án mẫu đã xuất thì đo bản xuất (video đã dựng). Mục nhãn
+     «không» (hình kể gì) thì NHÌN ảnh bảng cảnh tool trả kèm. Hợp đồng mọi beat nhận khối LUẬT TỪ VIDEO MẪU.
+
 3. **Với TỪNG beat, làm đủ vòng:**
 
    a. Gọi `get_prompt_contract(<project>, <beat>)` — đọc lời thoại của beat, **VÙNG AN TOÀN**
@@ -223,10 +243,11 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
 
 4c. **DUYỆT ĐỘC LẬP — sau khi MỌI beat đã dựng xong, một lượt cho cả video.** Người dựng không tự chấm
    bài của mình. Mở MỘT agent phụ (tool Agent / subagent) không tham gia lúc dựng, giao nó đúng việc:
-   gọi `contact_sheet(<project>)` (tờ khung-đã-yên của mọi graphic, kèm bảng ô: clip, archetype, cơ
-   chế, lời thoại), **chỉ nhìn và chấm, không sửa gì**, rồi trả JSON mỗi ô:
+   gọi `contact_sheet(<project>)` — mỗi graphic BA khoảnh khắc **vào · giữa · ra**, kèm bảng ô (clip,
+   archetype, cơ chế, lời thoại, mốc giây) — **chỉ nhìn và chấm, không sửa gì**, rồi trả JSON mỗi clip:
    `{so, clip, diem: {doc_duoc, nhan_qua, bo_cuc, chat_lieu, cu_the, khong_chep_loi, dung_style,
-   khong_bia}, loi, sua}` — thang 10, kèm một câu lỗi và một câu cách sửa cho ô dưới 8. Tám tiêu chí:
+   khong_bia, vao_ra, mot_tieu_diem}, ket_luan, loi, sua}` — thang 10, một câu lỗi và một câu cách sửa
+   cho clip có tiêu chí dưới 8. Mười tiêu chí:
    - `doc_duoc` — chữ đọc được trên màn điện thoại ở cỡ thật; không chữ nhỏ, chìm nền, tràn thẻ.
    - `nhan_qua` — hình cho thấy một điều xảy ra / dẫn tới điều gì, không phải một trang chiếu tĩnh.
    - `bo_cuc` — lấp đúng vùng vẽ, không đè mặt người nói, không dồn một góc, không khối chồng nhau.
@@ -235,13 +256,53 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
    - `cu_the` — nói đúng nội dung beat này, không phải một khuôn chung dán chữ khác vào.
    - `khong_chep_loi` — không viết lại câu đang nói lên hình.
    - `dung_style` — màu, font, cách tách lớp của style dự án (style tiết chế thì không phát sáng).
-   - `khong_bia` — không số liệu, giao diện, logo, lượt xem bịa.
-   Ô nào có tiêu chí **dưới 8** → dựng lại đúng clip đó (bước 3, vẫn qua vòng tự sửa g), rồi gọi agent
-   phụ chấm lại **chỉ những ô đó** bằng `contact_sheet` thêm MỘT lượt. Tối đa hai lượt chấm cho một
-   video — lượt thứ hai vẫn còn ô dưới 8 thì báo người dùng tên các ô đó cùng lời chấm, đừng lặp tiếp.
-   Không mở được agent phụ (môi trường không có tool đó) → bỏ bước này và **nói rõ với người dùng** là
+   - `khong_bia` — không số liệu, giao diện, logo, lượt xem bịa; tên, giá, bằng chứng, CTA khớp phiếu
+     chỉ đạo; so sánh cùng thang đo; minh hoạ không có số thật thì có nhãn «minh hoạ».
+   - `vao_ra` — ô VÀO không giật / không đè nhau lúc đang bay vào; ô RA đã kể xong (không còn chạy dở
+     khi cắt sang ý sau).
+   - `mot_tieu_diem` — hiểu được thông điệp mà không phải đọc nhiều thứ cùng lúc; chữ trên hình không
+     tranh chỗ với mặt người nói hay phụ đề.
+   **Kết luận mỗi clip — một trong ba:** `dat` (mọi tiêu chí ≥ 8) · `sua-cuc-bo` (hỏng ở số hình học,
+   cỡ chữ, màu, nhịp — sửa đúng clip đó, giữ nguyên hướng) · `xem-lai-huong` (hình kể sai điều lời nói,
+   sai quan hệ — đổi hình hoặc cách kể). Ghi vào bảng: `set_beat_direction` với `dat` → `da-duyet`,
+   hai mức còn lại → `can-sua` kèm `ghi_chu` là lời chấm. Clip cần sửa → dựng lại đúng clip đó (bước 3,
+   vẫn qua vòng tự sửa g), **chỉ sửa khoảng đó, giữ nguyên phần đã đạt**, rồi gọi agent phụ chấm lại
+   bằng `contact_sheet(<project>, clips: [các clip vừa sửa])` thêm MỘT lượt. Tối đa hai lượt chấm cho
+   một video — lượt thứ hai vẫn còn clip dưới 8 thì báo người dùng tên các clip đó cùng lời chấm, đừng lặp.
+   Cuối cùng ghi kết luận CẢ VIDEO vào phiếu: `set_project_brief(ket_luan_duyet, ghi_chu_duyet)`.
+   Không mở được agent phụ (môi trường không có tool đó) → bỏ phần chấm và **nói rõ với người dùng** là
    video chưa qua duyệt độc lập — không tự chấm thay.
    `contact_sheet` trả «đang dựng» ở lần gọi đầu mỗi phiên (máy chủ dựng bundle): gọi lại sau ~30 giây.
+   Video dài trả nhiều trang: mỗi lượt tối đa 8 trang, gọi tiếp với `trang_tu`.
+
+4d. **CHỮ — hai cửa ải mới ở `write_motion_graphic`, không phải việc tự nhớ.** Cửa ải quét chữ THEO THỜI
+   GIAN: đoạn chữ ≥ 2 tiếng hiện chưa tới max(0,5s, 40% nhu cầu đọc ≈ 0,3s + 0,25s/tiếng) → trả
+   `thoi-gian-doc` (sửa: cho vào sớm hơn, giữ tới hết beat, hoặc rút chữ). Sàn cỡ chữ áp CẢ HAI khung
+   (`co-chu`): khung dọc — chữ phụ ≥ 22px, nửa số chữ ≥ 26px; khung ngang — chữ phụ ≥ 20px, nửa ≥ 22px.
+   Đạt mà response có `chữ_cần_xem` (chữ hiện hơi ngắn, hoặc chữ gõ nằm trong khung canh giữa nên trôi)
+   thì sửa luôn trong vòng tự sửa. Cuối video: `check_captions` — từ máy nghe không chắc + tên riêng lệch.
+
+4e. **SOÁT KHÁCH QUAN — `review_video(<project>)`, cùng lúc với 4c.** Thứ ảnh tĩnh không thấy: tiếng
+   động đè lên lời đang nói hoặc to giật mình ở khoảng lặng, tiếng động dồn, nhạc lấn giọng, và những
+   khoảng hai lớp hình cùng đòi mắt (graphic chồng media, chữ chồng graphic). Có mốc giây + id clip —
+   agent dựng tự sửa (hạ `vol` của clip sfx bằng `edit_clip`, dời/rút ngắn một clip), không cần agent phụ.
+   Video có hiệu ứng chớp / glitch / đổi nền liên tục → gọi thêm với `nhay_sang: true` (dựng bản nháp,
+   vài phút) để dò nháy sáng > 3 lần/giây. Phiếu chỉ đạo tắt tiếng động tự gắn thì phần âm chỉ còn nhạc.
+
+4f. **NGƯỜI NÓI — bám mặt và tách nền (khi cần).** Dự án mới nạp video đã tự đo đường đi của mặt và tự
+   bật bám mặt; dự án cũ thì không đổi gì. Người dùng than «mặt bị cắt / lệch trong dải chia nửa / ô glide»
+   → `track_face(<project>)` đọc số trôi, rồi `ap_dung: true` và chụp lại vài beat. Dự án đã TÁCH NỀN →
+   `check_matting` (người trên nền trắng + nền đen ở 6 mốc): thấy vệt ma, viền sáng, ngón tay mất thì báo
+   người dùng MỐC GIÂY đó — đừng tự tách lại.
+
+4g. **BIẾN THỂ — chỉ khi người dùng xin «làm thêm vài bản để thử».** Bản gốc phải ĐÃ DUYỆT. `make_variants`
+   (tối đa 6): mỗi biến thể là một dự án riêng, đổi ĐÚNG MỘT thứ (chu-mo-dau · hinh-beat · style · khung ·
+   nhac · nhip · mo-dau-noi) kèm một câu giả thuyết. Dựng đúng thay đổi đó trên dự án biến thể, KHÔNG sửa gì
+   khác và không bao giờ sửa bản gốc. `variants_status` so từng biến thể với bản gốc («đúng một thay đổi» /
+   «đổi ngoài phạm vi» / «chưa đổi gì») và đổi trạng thái (cho-duyet → da-duyet chỉ khi người dùng đã xem).
+   Câu nói mở đầu mới mà chưa có bản ghi thật → «chờ tư liệu», báo người dùng cần ghi gì — không sinh giọng,
+   không cắt ghép câu khác. Xuất: `export_variants` dựng lần lượt các bản đã duyệt và kiểm từng tệp (thời
+   lượng, khung, tiếng). Bảng có CSV để người dùng mở bằng bảng tính.
 
 5. **Xong.** Khi mọi beat đã có motion graphic đạt yêu cầu, báo user tóm tắt (bao nhiêu beat, dạng
    hình đã dùng — mode mascot thì kèm cả chuỗi tư thế — và kết quả duyệt độc lập) và nhắc bước xuất video.
