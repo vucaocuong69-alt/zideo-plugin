@@ -56,6 +56,17 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       **Khớp hình với SỐ MỤC thật.** Hình ngụ ý NHIỀU mục (stepper, compare, list-scan, card-rows,
       timeline, carousel) mà dữ liệu beat chỉ có **1 mục** → ĐỔI sang **hình đơn** (bignum/stat/
       punch/stamp). Vẽ khung nhiều-mục với đúng 1 mục là ra thưa hoác, chết không gian.
+      `stamp` (cụm chữ đóng dấu) **tối đa MỘT lần cả video** — server trả `stamp-qua-lieu`.
+
+      **Kể bằng chuyển động, không bằng trang chiếu.** Chuyển động phải giải thích một điều — nhân quả,
+      quy mô, thay thế, đổi trạng thái; mỗi beat MỘT hành động chính, xảy ra lúc hình đứng yên. Ngoài
+      `archetype` (HÌNH), ghi thêm `co_che` (CÁCH hình kể) khi beat có một trong sáu cơ chế: `gom-mot-moi`
+      (rời rạc → một mối) · `noi-tiep` (máy quay đi trạm này sang trạm kia) · `tay-sang-may` (làm tay →
+      tự động) · `bam-ra-nhieu` (một cú bấm → quy mô lớn) · `thao-tac-app` (thao tác trong app thật, ảnh
+      chụp thật) · `hanh-dong-he-qua`. Đừng lặp một cơ chế ba beat liền — `get_timeline.phân_bổ_cơ_chế`
+      liệt kê cái chưa dùng. Dụng cụ có sẵn trong sandbox: `useCamera` (thế giới lớn + máy quay giữ → đi
+      → giữ; chỉ takeover/glide/stage/split), `goChu` + `<ConTro/>` (terminal gõ chữ), `<VetMarker/>`
+      (vệt dạ quang sau chữ). 3D chỉ bằng `perspective()` TRONG transform.
 
    b'. **BẮT BUỘC gọi `find_examples` TRƯỚC KHI viết `write_motion_graphic`.** LLM tự sáng
       tác từ scratch có xu hướng bọc mọi archetype trong một khung/thẻ trắng "cho an toàn dễ đọc
@@ -71,6 +82,9 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
         chép chữ hay số của ví dụ.
       - Thư viện trống archetype đó → tool báo, cứ tự viết theo hợp đồng nhưng NÊN kiêng bọc
         panel ngoài nếu style yêu cầu "vẽ trực tiếp trên nền" (đọc kỹ tokens.notes).
+      - Beat định dùng máy quay / terminal / marker / 3D, hoặc một cơ chế kể → thêm `ky_thuat` hoặc
+        `co_che` vào `find_examples`: tool trả kèm **mẫu viết sẵn** cho đúng dụng cụ đó. Mượn cấu trúc
+        (thế giới + khoá máy quay, nhịp gõ, chỗ đặt vệt), nội dung lấy từ lời thoại.
 
    c. **Zone phải khớp bậc — và TÊN VÙNG ĐỔI THEO KHUNG.** Xem `get_timeline` để biết dự án
       dọc hay ngang trước khi chọn.
@@ -111,8 +125,11 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       để «tắt» nó: bản thừa vẫn nằm trên timeline và dễ vẽ chồng lên bản thật.
 
    e. **Trung thực dữ liệu.** Số liệu, tên riêng, câu trích trong graphic phải **nguyên văn** trong
-      lời thoại của beat đó. Thiếu sự kiện thật → đổi hình khác, **tuyệt đối đừng bịa/điền bừa**.
-      (Nhãn bước, tên cột thì được diễn đạt lại từ ý trong câu.)
+      lời thoại của beat đó. Thiếu sự kiện thật → đổi hình khác, **tuyệt đối đừng bịa/điền bừa**
+      (không bịa số, xếp hạng, lượt xem, giá, logo, giao diện). (Nhãn bước, tên cột thì được diễn đạt
+      lại từ ý trong câu.) Nhưng **đừng chép lại cả câu đang nói lên hình**: chữ trên hình trùng ≥ 60%
+      câu thoại của beat thì cửa ải trả `chep-loi` — hình phải nói THÊM thứ lời không nói (số, cấu trúc,
+      quan hệ, trước → sau); giữ tối đa một cụm từ khoá 2–5 tiếng làm tiêu đề.
 
    f. **Icon/logo thật, đừng vẽ tay.** Danh từ cụ thể/khái niệm có biểu tượng → `search_icon`
       (Iconify) → `pull_asset` → dùng `getAssetUrl`. Tên thương hiệu → `add_logo`. Chỉ vẽ `<path>`
@@ -192,8 +209,30 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
      đó là bong bóng tự mất. Đừng vẽ lại một cái bong bóng trong mã của mình.
    - Bộ dưới 12 tư thế (`bộ_ít_tư_thế`) → cuối lượt nhắc người dùng vẽ thêm tư thế.
 
+4c. **DUYỆT ĐỘC LẬP — sau khi MỌI beat đã dựng xong, một lượt cho cả video.** Người dựng không tự chấm
+   bài của mình. Mở MỘT agent phụ (tool Agent / subagent) không tham gia lúc dựng, giao nó đúng việc:
+   gọi `contact_sheet(<project>)` (tờ khung-đã-yên của mọi graphic, kèm bảng ô: clip, archetype, cơ
+   chế, lời thoại), **chỉ nhìn và chấm, không sửa gì**, rồi trả JSON mỗi ô:
+   `{so, clip, diem: {doc_duoc, nhan_qua, bo_cuc, chat_lieu, cu_the, khong_chep_loi, dung_style,
+   khong_bia}, loi, sua}` — thang 10, kèm một câu lỗi và một câu cách sửa cho ô dưới 8. Tám tiêu chí:
+   - `doc_duoc` — chữ đọc được trên màn điện thoại ở cỡ thật; không chữ nhỏ, chìm nền, tràn thẻ.
+   - `nhan_qua` — hình cho thấy một điều xảy ra / dẫn tới điều gì, không phải một trang chiếu tĩnh.
+   - `bo_cuc` — lấp đúng vùng vẽ, không đè mặt người nói, không dồn một góc, không khối chồng nhau.
+   - `chat_lieu` — ít vật hơn nhưng to, rõ ràng; không lưới thẻ rời rạc, không mẫu rẻ tiền (biên lai,
+     mã vạch, giấy chứng nhận).
+   - `cu_the` — nói đúng nội dung beat này, không phải một khuôn chung dán chữ khác vào.
+   - `khong_chep_loi` — không viết lại câu đang nói lên hình.
+   - `dung_style` — màu, font, cách tách lớp của style dự án (style tiết chế thì không phát sáng).
+   - `khong_bia` — không số liệu, giao diện, logo, lượt xem bịa.
+   Ô nào có tiêu chí **dưới 8** → dựng lại đúng clip đó (bước 3, vẫn qua vòng tự sửa g), rồi gọi agent
+   phụ chấm lại **chỉ những ô đó** bằng `contact_sheet` thêm MỘT lượt. Tối đa hai lượt chấm cho một
+   video — lượt thứ hai vẫn còn ô dưới 8 thì báo người dùng tên các ô đó cùng lời chấm, đừng lặp tiếp.
+   Không mở được agent phụ (môi trường không có tool đó) → bỏ bước này và **nói rõ với người dùng** là
+   video chưa qua duyệt độc lập — không tự chấm thay.
+   `contact_sheet` trả «đang dựng» ở lần gọi đầu mỗi phiên (máy chủ dựng bundle): gọi lại sau ~30 giây.
+
 5. **Xong.** Khi mọi beat đã có motion graphic đạt yêu cầu, báo user tóm tắt (bao nhiêu beat, dạng
-   hình đã dùng — mode mascot thì kèm cả chuỗi tư thế) và nhắc bước xuất video.
+   hình đã dùng — mode mascot thì kèm cả chuỗi tư thế — và kết quả duyệt độc lập) và nhắc bước xuất video.
    User báo **file xuất ra khác bản xem trước** (mất mũi tên, hình méo, thiếu nền, sai font) → việc
    ĐẦU TIÊN là bảo họ **tải lại trang editor (F5) rồi xuất lại**: tab mở từ trước lần máy chủ cập
    nhật vẫn xuất bằng bộ vẽ cũ. Vẫn khác sau khi tải lại thì mới báo lỗi, kèm tên video và giây bị
