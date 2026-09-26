@@ -171,6 +171,18 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       4. Lặp tới khi **hết cảnh_báo VÀ nhìn không còn lỗi**. Quá **3 lượt** vẫn hỏng → bố cục sai từ
          gốc, **đổi sang hình khác**, đừng chỉnh số mãi.
 
+   h. **NHẤN ZOOM — chỉ khi người nói THẬT SỰ chỉ vào một thứ cụ thể** trong graphic («dòng lệnh này», «con số 42%
+      ở đây», «tin nhắn thứ hai»). Mã phải khai vùng trước bằng `vungNhan("ten", {x, y, w, h}, hienTu)` —
+      `write_motion_graphic` trả `vùng_nhấn_đã_khai`; mẫu ở `find_examples(ky_thuat: 'nhan-zoom')`. Rồi gọi
+      `nhan_zoom(project, clip_id, lan: [{vung, chu: '<từ khoá trong lời thoại>'}])`:
+      - vùng NHỎ cần đọc to (một dòng, một con số) → `zoom` (mặc định); vùng lớn hoặc cần giữ ngữ cảnh xung quanh →
+        `zoom: false, lam_toi: true`; khoảnh khắc chốt quan trọng nhất → cả hai.
+      - Trần (máy chủ chặn): 1 cú mỗi beat (2 nếu beat ≥ 8 giây) · ≤ 25% số beat cả video · không hai graphic liền
+        nhau · không ở dải `over` khung ngang · không dùng với graphic có `useCamera` (máy quay đã tự nhấn).
+        `get_timeline.nhấn_zoom` cho biết còn bao nhiêu lượt.
+      - Đặt xong thì `capture_frame` ở các mốc `chụp_kiểm` tool trả về: vùng phải nằm giữa khung, chữ đọc được,
+        không cắt mất phần đang được nói tới.
+
 4. **Đa dạng.** KHÔNG dùng cùng một kind quá **2 beat liên tiếp**. Cả video quanh quẩn một khuôn
    là hỏng dù từng beat đều "đúng".
 
