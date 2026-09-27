@@ -136,6 +136,13 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       hình nhiều tầng (map-tree, wf-tree/gantt/swimlane/kanban…, chart-radar) → `glide`, hình giao
       diện (mockup-app, chat, terminal) → `stage`; server chặn nếu ép `over`. Cửa ải cũng trả về
       graphic khung ngang có **một nửa số chữ dưới 18px** — cỡ chữ đặt sàn px, đừng suy thuần từ H.
+      Xem trên điện thoại thì nhãn nên ≥ 30px, «minh hoạ» ≥ 26px.
+      **Khung NGANG — người nói chuyển chỗ ~1 giây đầu beat** (spring 26 khung, ~70% xong ở ~0,6s): beat
+      `glide` thì khung người nói còn phủ sang nửa graphic, beat `takeover`/`stage` thì người nói còn mờ
+      dần phía sau. Phần tử chính VÀO từ ~0,6s (hợp đồng ghi đúng số khung); trước đó để trống. Đo trên
+      gtkh-peach 27/9: 31/39 graphic vào từ khung 0 → luồn dưới khung người nói hoặc nằm trên bóng người
+      xám. **Pha RA:** máy quay lia cuối ≤ 40px, đẩy cuối ≤ 1,05 lần, mọi chữ cách mép HOP ≥ 60px — 16/39
+      clip bị cú lia cuối cắt chữ ở mép.
 
       **Mode mascot** (`get_timeline` có `người_nói_là_nhân_vật`): TRỘN vùng, đừng để toàn
       `split`. Chọn trước **25–40% số beat** được trọn khung — sơ đồ quan hệ, so sánh trước/sau,
