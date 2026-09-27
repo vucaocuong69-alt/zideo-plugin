@@ -54,7 +54,10 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
    - `set_project_brief` — ghi những gì người dùng ĐÃ NÓI: khán giả/kênh, một câu thông điệp, CTA và
      ưu đãi thật, tư liệu (tên · vai trò · quyền dùng), cách đặt người nói, thứ phải giữ nguyên, thứ
      cấm. **Chưa nói thì để trống** — CTA, giá, ưu đãi, tên tư liệu mà đoán là bịa trên hình. Người
-     dùng muốn tắt tiếng động tự gắn thì `sfx_tu_dong: false`; không cho tốn tiền thì `tra_phi: "khong"`.
+     dùng muốn tắt tiếng động tự gắn thì `sfx_tu_dong: false`; không cho tốn tiền thì `tra_phi: "khong"`;
+     nói «không caption / không phụ đề» thì `caption: "khong"` — server bỏ yêu cầu `<CaptionBand />` mà vài style
+     (clay-proof) bắt buộc, và hợp đồng dặn không dùng dải phụ đề. Chỉ ghi `cam_dua_vao` thì KHÔNG đủ: cửa ải
+     của style vẫn chặn mọi graphic thiếu CaptionBand.
      Video nhắc tên thương hiệu / sản phẩm / người → ghi `tu_rieng` (viết ĐÚNG như phải hiện) — hợp đồng
      nhắc lại cho mọi beat, và `check_captions` soát phụ đề theo danh sách đó.
    - `get_transcript` cả video, rồi `set_beat_direction` MỘT lượt cho mọi beat: mắt nhìn vào đâu (một
@@ -141,8 +144,17 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       `glide` thì khung người nói còn phủ sang nửa graphic, beat `takeover`/`stage` thì người nói còn mờ
       dần phía sau. Phần tử chính VÀO từ ~0,6s (hợp đồng ghi đúng số khung); trước đó để trống. Đo trên
       gtkh-peach 27/9: 31/39 graphic vào từ khung 0 → luồn dưới khung người nói hoặc nằm trên bóng người
-      xám. **Pha RA:** máy quay lia cuối ≤ 40px, đẩy cuối ≤ 1,05 lần, mọi chữ cách mép HOP ≥ 60px — 16/39
-      clip bị cú lia cuối cắt chữ ở mép.
+      xám. Beat trước CÙNG vùng (trọn khung nối trọn khung) thì người nói đứng yên — vào ngay, đừng để
+      trống trang; hợp đồng ghi rõ từng beat. **Pha RA:** máy quay lia cuối ≤ 40px, đẩy cuối ≤ 1,05 lần,
+      mọi chữ cách mép HOP ≥ 60px — 16/39 clip bị cú lia cuối cắt chữ ở mép.
+      **Beat dài (> 9 giây — dự án đặt mật độ beat thưa):** kể 2–3 NHỊP trên CÙNG một hình, mỗi nhịp mở
+      đúng mốc lời trong khối timing (thêm tầng, đổi trạng thái, máy quay sang trạm kế); không đứng yên quá
+      ~4 giây, không đổi hẳn hình giữa beat. Lập bảng đạo diễn thì ghi sẵn các nhịp vào `hanh_dong`, và xếp
+      xen kẽ takeover / glide — beat dài mà hai takeover liền nhau là người nói vắng 25–40 giây.
+      Sang nhịp mới thì cho lớp cũ rời khung hẳn hoặc để lớp mới đè lên — đừng THU NHỎ lớp cũ để nhường
+      chỗ (duyệt gtkh-clay 27/9: chữ lớp cũ tụt còn 15–21px ở 3/24 clip). Lớp đè lên chữ phải có nền đục;
+      màu surface của vài style hơi trong, chữ bên dưới lộ mờ. Hai beat liền nhau đừng dùng lại cùng một
+      hình (cột bậc thang, cửa sổ ứng dụng) — beat dài thì người xem nhớ hình rõ hơn.
 
       **Mode mascot** (`get_timeline` có `người_nói_là_nhân_vật`): TRỘN vùng, đừng để toàn
       `split`. Chọn trước **25–40% số beat** được trọn khung — sơ đồ quan hệ, so sánh trước/sau,
