@@ -34,6 +34,9 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
 
    Beat nào chưa có graphic thì cần dựng. Chạy lại chỉ dựng beat còn thiếu. (KHÔNG có tool
    `get_project_status` — mọi trạng thái nằm trong `get_timeline`.)
+   Response có `cập_nhật_plugin` → plugin của người dùng đã cũ: nhắc họ **một lần** trong cuộc trò
+   chuyện (bản mới có gì + các bước trong `cách_cập_nhật`, chạy ở Terminal/PowerShell chứ không phải
+   khung chat), rồi làm tiếp việc đang làm — đừng dừng chờ họ cập nhật.
 
 2a. **KIỂU VIDEO — đọc `get_timeline.kiểu_video` TRƯỚC mọi thứ.** Người dùng chọn kiểu lúc tạo dự án (hoặc ở
    Inspector); đừng tự đổi — chỉ `set_video_format` khi họ yêu cầu. Ba kiểu:
@@ -187,6 +190,13 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
    f. **Icon/logo thật, đừng vẽ tay.** Danh từ cụ thể/khái niệm có biểu tượng → `search_icon`
       (Iconify) → `pull_asset` → dùng `getAssetUrl`. Tên thương hiệu → `add_logo`. Chỉ vẽ `<path>`
       cho sơ đồ/giao diện tự chế mà không kho nào có.
+
+   f1. **Người dùng dán ảnh vào chat để dùng trong video → tự tải lên, đừng nhờ họ.** Gọi
+      `upload_link`, rồi chạy `curl -sS --data-binary "@<đường dẫn>" "<url>&ten=<tên gợi nhớ>"` cho
+      từng ảnh — đường dẫn là dòng `[Image: source: …]` cạnh ảnh (Windows PowerShell: `curl.exe`).
+      Mỗi lệnh trả `id` (`broll/up-…`); gọi `view_asset(id)` để nhìn lại ảnh nào vào ô nào, không
+      bắt người dùng đổi tên tệp. Chỉ khi không có đường dẫn tệp (chat web) mới nhờ họ tải ở trang
+      **Assets → Tải lên** của Zideo, xong gọi `list_assets`. Ảnh tải lên chỉ tài khoản đó thấy.
 
    f2. **Beat nhắc ĐÍCH DANH một thứ có thật trên web → `capture_reference`.** Một repo GitHub,
       một bài báo, một bài trên X, một video YouTube: `search_image` không bao giờ có, còn

@@ -4,7 +4,8 @@
       "type": "http",
       "url": "https://mcp-zideo.cuongmeai.com/mcp",
       "headers": {
-        "Authorization": "Bearer ${user_config.api_token}"
+        "Authorization": "Bearer ${user_config.api_token}",
+        "X-Zideo-Plugin": "0.3.5"
       }
     }
   }
