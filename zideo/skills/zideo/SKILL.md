@@ -38,15 +38,16 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
 2a. **KIỂU VIDEO — đọc `get_timeline.kiểu_video` TRƯỚC mọi thứ.** Người dùng chọn kiểu lúc tạo dự án (hoặc ở
    Inspector); đừng tự đổi — chỉ `set_video_format` khi họ yêu cầu. Ba kiểu:
    - **Giải thích bằng hình** (mặc định): mỗi ý một graphic, mọi luật chọn hình bên dưới áp đủ.
-   - **Trả lời câu hỏi**: beat số 1 là THẺ CÂU HỎI (archetype `the-cau-hoi`, zone over, chữ ĐÚNG NGUYÊN VĂN
-     `câu_hỏi` — cửa ải kiểm); người nói trọn khung; thêm vài chữ nhấn (`chu-nhan`) ở câu trả lời thẳng / kết
-     luận; graphic khác chỉ khi lời nhắc tới tư liệu thật. Chưa có câu hỏi → để trống beat 1, báo người dùng
-     điền — KHÔNG tự nghĩ câu hỏi, không dựng tên / avatar / tích xanh / khung bình luận giả.
-   - **Chữ nhấn**: người nói trọn khung suốt video; 2–4 cụm chữ lớn (archetype `chu-nhan`, zone over) là LỜI
-     THẬT của beat — cửa ải chặn chữ không có trong lời hoặc dài quá 10 tiếng; vào đúng lúc nói, rút khi ý xong.
-   Hai kiểu sau có HẠN MỨC graphic cả video (server chặn `kieu-video-vuot-tran`) và KHÔNG áp trần nhóm A / sàn
-   nhóm C / «không chép lời». Nên lập bảng đạo diễn (2b) trước: beat được chọn → `ke-hoach`, còn lại
-   `de-trong`. Duyệt (4c): thêm tiêu chí thẻ câu hỏi đọc kịp và đúng nguyên văn / chữ nhấn là lời thật, không chồng.
+   - **Chữ nhấn**: KHÔNG motion graphic (`write_motion_graphic` bị từ chối). Video là ba lớp dựng sẵn: khung bám
+     mặt phóng vừa, phụ đề chạy suốt video (server tự sinh từ lời), và vài cụm CHỮ NHẤN lớn trên đầu người nói.
+     Việc của bạn chỉ là chọn chữ nhấn: `add_highlight` — 2–4 tiếng NGUYÊN VĂN một đoạn liền trong lời (server
+     từ chối chữ không có trong lời, trùng giờ, vượt trần ~1 cụm / 15 giây), `key_words` = tiếng khoá đổi màu +
+     gạch chân. Chọn câu trả lời thẳng, luận điểm, con số, câu chốt; rải đều, mỗi lúc một cụm; bỏ câu đưa đẩy.
+   - **Trả lời câu hỏi**: y hệt Chữ nhấn, thêm THẺ CÂU HỎI ở đầu video — server tự dựng từ `câu_hỏi` (chữ sáng
+     dần theo nhịp đọc rồi thu lại). Chưa có câu hỏi → báo người dùng điền (Inspector › Kiểu video) — KHÔNG tự
+     nghĩ câu hỏi, không tên / avatar / tích xanh / khung bình luận giả. Chữ nhấn không được rơi vào lúc thẻ còn.
+   Hai kiểu chữ chỉ có ở video DỌC 9:16. Bỏ qua 2b–4b (bảng hình, hợp đồng mg); duyệt bằng contact_sheet /
+   capture_frame: chữ nhấn đọc được, không đè mặt, đúng lúc nói; `check_captions` soát chính tả phụ đề.
 
 2b. **Phiếu chỉ đạo + bảng đạo diễn — TRƯỚC beat đầu tiên.** `get_timeline` trả `phiếu_chỉ_đạo` và
    `bảng_đạo_diễn`; dự án mới thường ghi «CHƯA CÓ» / «CHƯA LẬP».
