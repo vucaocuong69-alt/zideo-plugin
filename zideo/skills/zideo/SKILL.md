@@ -35,6 +35,19 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
    Beat nào chưa có graphic thì cần dựng. Chạy lại chỉ dựng beat còn thiếu. (KHÔNG có tool
    `get_project_status` — mọi trạng thái nằm trong `get_timeline`.)
 
+2a. **KIỂU VIDEO — đọc `get_timeline.kiểu_video` TRƯỚC mọi thứ.** Người dùng chọn kiểu lúc tạo dự án (hoặc ở
+   Inspector); đừng tự đổi — chỉ `set_video_format` khi họ yêu cầu. Ba kiểu:
+   - **Giải thích bằng hình** (mặc định): mỗi ý một graphic, mọi luật chọn hình bên dưới áp đủ.
+   - **Trả lời câu hỏi**: beat số 1 là THẺ CÂU HỎI (archetype `the-cau-hoi`, zone over, chữ ĐÚNG NGUYÊN VĂN
+     `câu_hỏi` — cửa ải kiểm); người nói trọn khung; thêm vài chữ nhấn (`chu-nhan`) ở câu trả lời thẳng / kết
+     luận; graphic khác chỉ khi lời nhắc tới tư liệu thật. Chưa có câu hỏi → để trống beat 1, báo người dùng
+     điền — KHÔNG tự nghĩ câu hỏi, không dựng tên / avatar / tích xanh / khung bình luận giả.
+   - **Chữ nhấn**: người nói trọn khung suốt video; 2–4 cụm chữ lớn (archetype `chu-nhan`, zone over) là LỜI
+     THẬT của beat — cửa ải chặn chữ không có trong lời hoặc dài quá 10 tiếng; vào đúng lúc nói, rút khi ý xong.
+   Hai kiểu sau có HẠN MỨC graphic cả video (server chặn `kieu-video-vuot-tran`) và KHÔNG áp trần nhóm A / sàn
+   nhóm C / «không chép lời». Nên lập bảng đạo diễn (2b) trước: beat được chọn → `ke-hoach`, còn lại
+   `de-trong`. Duyệt (4c): thêm tiêu chí thẻ câu hỏi đọc kịp và đúng nguyên văn / chữ nhấn là lời thật, không chồng.
+
 2b. **Phiếu chỉ đạo + bảng đạo diễn — TRƯỚC beat đầu tiên.** `get_timeline` trả `phiếu_chỉ_đạo` và
    `bảng_đạo_diễn`; dự án mới thường ghi «CHƯA CÓ» / «CHƯA LẬP».
    - `set_project_brief` — ghi những gì người dùng ĐÃ NÓI: khán giả/kênh, một câu thông điệp, CTA và
