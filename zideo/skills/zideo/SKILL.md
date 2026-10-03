@@ -102,8 +102,9 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       đã lưu nhưng mã giữ bản cũ — danh sách cảnh đánh `hongCuaAi`. `canhBao` không chặn nhưng nên sửa (vd máy quay bị
       kẹp ở mép thế giới → vật lệch khỏi vùng trống: nới `the_gioi`, đặt vật cách mép ≥ 1920/zoom). Sửa tới khi `ok: true`.
       Màu chỉ dùng các khoá trong `bảng_màu.khoá_themeColor` của hợp đồng đoạn. Khai `archetype` / `co_che` cho mỗi cảnh.
-   6. Contact sheet chụp vào/giữa/ra; cảnh dài có hành động chính ở giữa thì xem thêm bằng `capture_frame` (≤ 3 mốc
-      mỗi lượt) — ảnh contact sheet thu nhỏ 1/3, đừng ước cỡ chữ từ đó: cửa ải đã đo chữ trên màn.
+   6. Contact sheet chụp mỗi cảnh: khung đầu · 1–2 khoảnh khắc HÀNH ĐỘNG CHÍNH (đọc từ bảng nhịp — lúc nhiều thay đổi
+      xong nhất) · khung cuối; mỗi ô kèm `co_chu_tren_man` (cỡ chữ ĐO trên màn, đã nhân zoom, chỉ chữ trong khung).
+      Ảnh thu nhỏ 1/3 — đừng ước cỡ chữ từ ảnh. Cần nhìn kỹ một lúc khác thì `capture_frame` (tối đa 6 mốc mỗi lượt).
    Câu mở đoạn (beat id đuôi `m`) là người nói trọn khung — không đặt graphic. Bảng đạo diễn (2b) vẫn
    lập theo beat = theo cảnh. Duyệt (4c) chấm thêm tiêu chí `lien_mach` cho các ô có `doan`.
 
@@ -319,7 +320,8 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
 4c. **DUYỆT ĐỘC LẬP — sau khi MỌI beat đã dựng xong, một lượt cho cả video.** Người dựng không tự chấm
    bài của mình. Mở MỘT agent phụ (tool Agent / subagent) không tham gia lúc dựng, giao nó đúng việc:
    gọi `contact_sheet(<project>)` — mỗi graphic BA khoảnh khắc **vào · giữa · ra**, kèm bảng ô (clip,
-   archetype, cơ chế, lời thoại, mốc giây) — **chỉ nhìn và chấm, không sửa gì**, rồi trả JSON mỗi clip:
+   archetype, cơ chế, lời thoại, mốc giây; cảnh của đoạn có thêm ô HÀNH ĐỘNG CHÍNH và mọi ô graphic kèm
+   `co_chu_tren_man` — chấm `doc_duoc` theo số đo đó, không ước từ ảnh thu nhỏ) — **chỉ nhìn và chấm, không sửa gì**, rồi trả JSON mỗi clip:
    `{so, clip, diem: {doc_duoc, nhan_qua, bo_cuc, chat_lieu, cu_the, khong_chep_loi, dung_style,
    khong_bia, vao_ra, mot_tieu_diem}, ket_luan, loi, sua}` — thang 10, một câu lỗi và một câu cách sửa
    cho clip có tiêu chí dưới 8. Mười tiêu chí (cảnh của đoạn liền mạch thêm tiêu chí thứ mười một):
