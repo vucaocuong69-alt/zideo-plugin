@@ -75,6 +75,38 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
      đổi trước hay sau lời, nhạc / tiếng động. Dự án mẫu đã xuất thì đo bản xuất (video đã dựng). Mục nhãn
      «không» (hình kể gì) thì NHÌN ảnh bảng cảnh tool trả kèm. Hợp đồng mọi beat nhận khối LUẬT TỪ VIDEO MẪU.
 
+2c. **VIDEO NGANG DỰNG THEO ĐOẠN LIỀN MẠCH — khi `get_timeline` có khối `đoạn_liền_mạch`.** Video 16:9 chia
+   thành vài ĐOẠN dài (mỗi đoạn một đề mục, 25–120 giây). Trong một đoạn, mọi beat là CẢNH của cùng một
+   THẾ GIỚI: vật cũ biến hình / đổi vai, máy quay đi xuyên thế giới, không cắt cảnh. Mỗi cảnh vẫn là một
+   graphic riêng để người dùng sửa, nhưng mã do SERVER sinh — `write_motion_graphic` bị từ chối trên cảnh
+   (`canh-cua-doan`). Bước 3 bên dưới thay bằng vòng này, cho TỪNG đoạn:
+   1. Đọc lời CẢ đoạn (`get_transcript`, từ `bắt_đầu` tới hết đoạn) + tên/ý chính. AI chia đoạn sai đề mục
+      → `set_doan` (doi_ten · gop · tach). Thẻ người nói: `phai` (thẻ dọc phải, mặc định) · `trai` ·
+      `goc_tren` / `goc_duoi` (thẻ ngang NHỎ ở góc phải — khi cảnh cần gần trọn khung) · `tron` (beat
+      chỉ là ý kiến riêng, không graphic). Không bao giờ đặt người nói giữa khung.
+   2. Gọi `get_prompt_contract(<project>, clip_id: <id beat một cảnh của đoạn, vd "h3">)` → HỢP ĐỒNG CỦA ĐOẠN:
+      API thế giới, mọi cảnh với lời theo KHUNG (`từ@khung`), thẻ người nói / vùng trống, bảng màu, chỉ đạo.
+      Luật nội dung thường (chữ không chép lời, không bịa giao diện / số / logo) vẫn áp cho thế giới.
+   3. NGHĨ MỘT THẾ GIỚI cho cả đoạn trước khi viết: những vật nào sống suốt đoạn, mỗi ý của lời làm vật nào
+      đổi thế nào (sáng lên, tách đôi, thu lại thành chi tiết của vật lớn hơn…), máy quay nhìn vào đâu ở
+      từng cảnh. Thế giới lớn hơn khung (vd 6000×4000) để máy quay có đường đi.
+      `write_doan_world`: mọi thứ đổi theo thời gian đi qua `s.<tham_số>` hoặc `pop(tên)`; chuyển động nền
+      lặp dùng `frameGoc`, KHÔNG dùng `frame` (về 0 ở mỗi cảnh → giật ở chỗ nối).
+   4. `write_doan_canh` cho từng cảnh THEO THỨ TỰ: chỉ khai cái đổi (`tr`, `pop`, `cam`, `tieuDe`), khung
+      tính từ đầu cảnh, không khai khung 0 (server tự nối từ cuối cảnh trước). Đọc `nay.trangThaiCuoi` — đó
+      là đầu vào cảnh sau. Hành động chính xảy ra lúc máy quay ĐỨNG; máy lùi ra toàn cảnh thì cho nhãn nhỏ
+      mờ đi (chữ trên màn phải ≥ 16px sau zoom). `lop_canh` (lớp riêng một cảnh) phải mờ hẳn trước `dur`.
+   5. Lỗi trả về (bảng `mã_lỗi` trong hợp đồng đoạn): `nhip-sai` (sửa đúng từng dòng, chưa có gì được lưu) ·
+      `chu-nho-doan` (chữ < 16px trên màn) · `co-chu` (sàn cỡ chữ ở khung đã yên — tính TRÊN MÀN, tức cỡ trong thế
+      giới × zoom) · `thoi-gian-doc` · `noiLech` (khung cuối cảnh trước ≠ khung đầu cảnh sau). Cảnh hỏng thì bảng nhịp
+      đã lưu nhưng mã giữ bản cũ — danh sách cảnh đánh `hongCuaAi`. `canhBao` không chặn nhưng nên sửa (vd máy quay bị
+      kẹp ở mép thế giới → vật lệch khỏi vùng trống: nới `the_gioi`, đặt vật cách mép ≥ 1920/zoom). Sửa tới khi `ok: true`.
+      Màu chỉ dùng các khoá trong `bảng_màu.khoá_themeColor` của hợp đồng đoạn. Khai `archetype` / `co_che` cho mỗi cảnh.
+   6. Contact sheet chụp vào/giữa/ra; cảnh dài có hành động chính ở giữa thì xem thêm bằng `capture_frame` (≤ 3 mốc
+      mỗi lượt) — ảnh contact sheet thu nhỏ 1/3, đừng ước cỡ chữ từ đó: cửa ải đã đo chữ trên màn.
+   Câu mở đoạn (beat id đuôi `m`) là người nói trọn khung — không đặt graphic. Bảng đạo diễn (2b) vẫn
+   lập theo beat = theo cảnh. Duyệt (4c) chấm thêm tiêu chí `lien_mach` cho các ô có `doan`.
+
 3. **Với TỪNG beat, làm đủ vòng:**
 
    a. Gọi `get_prompt_contract(<project>, <beat>)` — đọc lời thoại của beat, **VÙNG AN TOÀN**
@@ -290,7 +322,7 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
    archetype, cơ chế, lời thoại, mốc giây) — **chỉ nhìn và chấm, không sửa gì**, rồi trả JSON mỗi clip:
    `{so, clip, diem: {doc_duoc, nhan_qua, bo_cuc, chat_lieu, cu_the, khong_chep_loi, dung_style,
    khong_bia, vao_ra, mot_tieu_diem}, ket_luan, loi, sua}` — thang 10, một câu lỗi và một câu cách sửa
-   cho clip có tiêu chí dưới 8. Mười tiêu chí:
+   cho clip có tiêu chí dưới 8. Mười tiêu chí (cảnh của đoạn liền mạch thêm tiêu chí thứ mười một):
    - `doc_duoc` — chữ đọc được trên màn điện thoại ở cỡ thật; không chữ nhỏ, chìm nền, tràn thẻ.
    - `nhan_qua` — hình cho thấy một điều xảy ra / dẫn tới điều gì, không phải một trang chiếu tĩnh.
    - `bo_cuc` — lấp đúng vùng vẽ, không đè mặt người nói, không dồn một góc, không khối chồng nhau.
@@ -305,6 +337,9 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
      khi cắt sang ý sau).
    - `mot_tieu_diem` — hiểu được thông điệp mà không phải đọc nhiều thứ cùng lúc; chữ trên hình không
      tranh chỗ với mặt người nói hay phụ đề.
+   - `lien_mach` (CHỈ ô có `doan` — cảnh của đoạn liền mạch; thêm vào `diem`) — ô RA của cảnh trước và ô
+     VÀO của cảnh sau giống hệt; vật cũ biến hình / đổi vai thay vì biến mất rồi hiện cái mới; máy quay đi
+     có chủ đích (tới đúng thứ lời đang nói), không lắc qua lại; thẻ người nói không đè nội dung chính.
    **Kết luận mỗi clip — một trong ba:** `dat` (mọi tiêu chí ≥ 8) · `sua-cuc-bo` (hỏng ở số hình học,
    cỡ chữ, màu, nhịp — sửa đúng clip đó, giữ nguyên hướng) · `xem-lai-huong` (hình kể sai điều lời nói,
    sai quan hệ — đổi hình hoặc cách kể). Ghi vào bảng: `set_beat_direction` với `dat` → `da-duyet`,
