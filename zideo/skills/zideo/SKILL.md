@@ -151,7 +151,12 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       chụp hoặc giao diện dựng lại bằng mã) · `hanh-dong-he-qua`. Đừng lặp một cơ chế ba beat liền — `get_timeline.phân_bổ_cơ_chế`
       liệt kê cái chưa dùng. Dụng cụ có sẵn trong sandbox: `useCamera` (thế giới lớn + máy quay giữ → đi
       → giữ; chỉ takeover/glide/stage/split), `goChu` + `<ConTro/>` (terminal gõ chữ), `<ConTroChuot di={[{f,x,y}…]} nhan={F}/>` (con trỏ chuột macOS bấm giao diện), `<VetMarker/>`
-      (vệt dạ quang sau chữ). 3D chỉ bằng `perspective()` TRONG transform.
+      (vệt dạ quang sau chữ), `trangThai([f…])` (máy trạng thái theo lời — một giao diện đi qua 3–5 trạng thái thay vì
+      cắt khung), `bayGiua(a, b, bat)` (FLIP — vật bay giữa hai bố cục), `dongHoTua` / `soDem` / `<SoLat/>` (đồng hồ tua,
+      số đếm có nhoè, số lật), `<GoiTin/>` (gói tin chạy trên dây), `<WipeTruocSau/>`, `<Iris/>`. 3D chỉ bằng
+      `perspective()` TRONG transform. Chữ chỉ làm giao diện trông thật (tên cột, đường dẫn, log) bọc `data-zd-ket-cau`:
+      ra khỏi sàn chữ chính, nhưng sàn cứng 14px dọc / 12px ngang và ≤ 40% diện tích chữ — chữ mang ý không bao giờ gắn.
+      Style tiết chế: quầng màu chỉ được trên VẬT (`<svg>`/`<img>` hoặc `data-zd-vat`), không trên chữ / thẻ.
 
    b'. **BẮT BUỘC gọi `find_examples` TRƯỚC KHI viết `write_motion_graphic`.** LLM tự sáng
       tác từ scratch có xu hướng bọc mọi archetype trong một khung/thẻ trắng "cho an toàn dễ đọc
@@ -338,14 +343,16 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
    `{so, clip, diem: {doc_duoc, nhan_qua, bo_cuc, chat_lieu, cu_the, khong_chep_loi, dung_style,
    khong_bia, vao_ra, mot_tieu_diem}, ket_luan, loi, sua}` — thang 10, một câu lỗi và một câu cách sửa
    cho clip có tiêu chí dưới 8. Mười tiêu chí (cảnh của đoạn liền mạch thêm tiêu chí thứ mười một):
-   - `doc_duoc` — chữ đọc được trên màn điện thoại ở cỡ thật; không chữ nhỏ, chìm nền, tràn thẻ.
-   - `nhan_qua` — hình cho thấy một điều xảy ra / dẫn tới điều gì, không phải một trang chiếu tĩnh.
+   - `doc_duoc` — chữ MANG Ý đọc được trên màn điện thoại ở cỡ thật; không chữ nhỏ, chìm nền, tràn thẻ (chữ kết cấu
+     `data-zd-ket-cau` được nhỏ hơn — trừ điểm nếu nó đang mang thông tin chính).
+   - `nhan_qua` — hình cho thấy một điều xảy ra / dẫn tới điều gì, không phải một trang chiếu tĩnh; cộng điểm khi
+     cùng một giao diện ĐỔI TRẠNG THÁI đúng lúc từ khoá được nói thay vì cắt sang khung mới.
    - `bo_cuc` — lấp đúng vùng vẽ, không đè mặt người nói, không dồn một góc, không khối chồng nhau.
    - `chat_lieu` — ít vật hơn nhưng to, rõ ràng; không lưới thẻ rời rạc, không mẫu rẻ tiền (biên lai,
      mã vạch, giấy chứng nhận).
    - `cu_the` — nói đúng nội dung beat này, không phải một khuôn chung dán chữ khác vào.
    - `khong_chep_loi` — không viết lại câu đang nói lên hình.
-   - `dung_style` — màu, font, cách tách lớp của style dự án (style tiết chế thì không phát sáng).
+   - `dung_style` — màu, font, cách tách lớp của style dự án (style tiết chế: không phát sáng chữ / giao diện — quầng chỉ trên vật thể).
    - `khong_bia` — không số liệu, lượt xem, xếp hạng bịa (giao diện dựng lại của sản phẩm thật thì được); tên, giá, bằng chứng, CTA khớp phiếu
      chỉ đạo; so sánh cùng thang đo; minh hoạ không có số thật thì có nhãn «minh hoạ».
    - `vao_ra` — ô VÀO không giật / không đè nhau lúc đang bay vào; ô RA đã kể xong (không còn chạy dở
@@ -354,7 +361,8 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
      tranh chỗ với mặt người nói hay phụ đề.
    - `lien_mach` (CHỈ ô có `doan` — cảnh của đoạn liền mạch; thêm vào `diem`) — ô RA của cảnh trước và ô
      VÀO của cảnh sau giống hệt; vật cũ biến hình / đổi vai thay vì biến mất rồi hiện cái mới; máy quay đi
-     có chủ đích (tới đúng thứ lời đang nói), không lắc qua lại; thẻ người nói không đè nội dung chính.
+     có chủ đích (tới đúng thứ lời đang nói), không lắc qua lại; thẻ người nói không đè nội dung chính. Đa dạng
+     trong đoạn đo theo HÀNH ĐỘNG (co_che), không theo kiểu hình — hai cảnh liền cùng một hành động mới là lặp.
    **Kết luận mỗi clip — một trong ba:** `dat` (mọi tiêu chí ≥ 8) · `sua-cuc-bo` (hỏng ở số hình học,
    cỡ chữ, màu, nhịp — sửa đúng clip đó, giữ nguyên hướng) · `xem-lai-huong` (hình kể sai điều lời nói,
    sai quan hệ — đổi hình hoặc cách kể). Ghi vào bảng: `set_beat_direction` với `dat` → `da-duyet`,
