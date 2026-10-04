@@ -150,7 +150,7 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       tự động) · `bam-ra-nhieu` (một cú bấm → quy mô lớn) · `thao-tac-app` (thao tác trong app thật — ảnh
       chụp hoặc giao diện dựng lại bằng mã) · `hanh-dong-he-qua`. Đừng lặp một cơ chế ba beat liền — `get_timeline.phân_bổ_cơ_chế`
       liệt kê cái chưa dùng. Dụng cụ có sẵn trong sandbox: `useCamera` (thế giới lớn + máy quay giữ → đi
-      → giữ; chỉ takeover/glide/stage/split), `goChu` + `<ConTro/>` (terminal gõ chữ), `<VetMarker/>`
+      → giữ; chỉ takeover/glide/stage/split), `goChu` + `<ConTro/>` (terminal gõ chữ), `<ConTroChuot di={[{f,x,y}…]} nhan={F}/>` (con trỏ chuột macOS bấm giao diện), `<VetMarker/>`
       (vệt dạ quang sau chữ). 3D chỉ bằng `perspective()` TRONG transform.
 
    b'. **BẮT BUỘC gọi `find_examples` TRƯỚC KHI viết `write_motion_graphic`.** LLM tự sáng
