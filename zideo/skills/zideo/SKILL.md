@@ -157,6 +157,12 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       `perspective()` TRONG transform. Chữ chỉ làm giao diện trông thật (tên cột, đường dẫn, log) bọc `data-zd-ket-cau`:
       ra khỏi sàn chữ chính, nhưng sàn cứng 14px dọc / 12px ngang và ≤ 40% diện tích chữ — chữ mang ý không bao giờ gắn.
       Style tiết chế: quầng màu chỉ được trên VẬT (`<svg>`/`<img>` hoặc `data-zd-vat`), không trên chữ / thẻ.
+      VÙNG «sau» (SAU LƯNG — chỉ khung dọc ĐÃ TÁCH NỀN): người nói đứng trọn khung phía TRƯỚC graphic — vật sau đầu / vai bị
+      người che (logo «ném ra sau lưng», vật chui ra từ sau vai, vòng sáng sau đầu). Vẽ VẬT, không tô nền; chữ cần đọc đặt hai
+      bên / trên đầu, không sau mặt. Dùng vài beat mỗi video. Chưa tách nền → server trả `sau-can-tach-nen`.
+      MÁY QUAY NGƯỜI NÓI — `set_host_camera(beat, zoom, lia)` (cả hai khung): `day-cham` cho beat người nói trọn khung không
+      graphic, `nhan` / `zoom-giat` cho câu chốt (zoom-giat 1–2 lần mỗi video), `vao-ra`, `cat-gan`; `lia: trai|phai` = khung
+      vụt vào kèm nhoè ở chỗ đổi ý lớn (2–3 lần mỗi video). Không đặt cú máy mạnh trên beat graphic đang chuyển động nhiều.
 
    b'. **BẮT BUỘC gọi `find_examples` TRƯỚC KHI viết `write_motion_graphic`.** LLM tự sáng
       tác từ scratch có xu hướng bọc mọi archetype trong một khung/thẻ trắng "cho an toàn dễ đọc
