@@ -61,6 +61,10 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
      nói «không caption / không phụ đề» thì `caption: "khong"` — server bỏ yêu cầu `<CaptionBand />` mà vài style
      (clay-proof) bắt buộc, và hợp đồng dặn không dùng dải phụ đề. Chỉ ghi `cam_dua_vao` thì KHÔNG đủ: cửa ải
      của style vẫn chặn mọi graphic thiếu CaptionBand.
+     **Phụ đề thiết kế** (khung 9:16 + 16:9, kiểu «Giải thích bằng hình»): `get_timeline.phụ_đề_thiết_kế` BẬT thì
+     server tự vẽ phụ đề theo lời, đổi kiểu theo bố cục người nói (dọc: nhãn trên đường chia / chữ to khi người nói
+     vắng / dải karaoke; ngang: dải dưới). Graphic KHÔNG dùng <CaptionBand />, không tự làm dải chữ, và chừa làn
+     phụ đề (toạ độ trong hợp đồng) — cửa ải trả `de-phu-de` khi chữ graphic rơi vào làn. Bật/tắt: phiếu `caption`.
      Video nhắc tên thương hiệu / sản phẩm / người → ghi `tu_rieng` (viết ĐÚNG như phải hiện) — hợp đồng
      nhắc lại cho mọi beat, và `check_captions` soát phụ đề theo danh sách đó.
    - `get_transcript` cả video, rồi `set_beat_direction` MỘT lượt cho mọi beat: mắt nhìn vào đâu (một
@@ -86,7 +90,7 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       chỉ là ý kiến riêng, không graphic). Không bao giờ đặt người nói giữa khung.
    2. Gọi `get_prompt_contract(<project>, clip_id: <id beat một cảnh của đoạn, vd "h3">)` → HỢP ĐỒNG CỦA ĐOẠN:
       API thế giới, mọi cảnh với lời theo KHUNG (`từ@khung`), thẻ người nói / vùng trống, bảng màu, chỉ đạo.
-      Luật nội dung thường (chữ không chép lời, không bịa giao diện / số / logo) vẫn áp cho thế giới.
+      Luật nội dung thường (chữ không chép lời, không bịa số liệu) vẫn áp cho thế giới; được dựng lại giao diện sản phẩm thật.
    3. NGHĨ MỘT THẾ GIỚI cho cả đoạn trước khi viết: những vật nào sống suốt đoạn, mỗi ý của lời làm vật nào
       đổi thế nào (sáng lên, tách đôi, thu lại thành chi tiết của vật lớn hơn…), máy quay nhìn vào đâu ở
       từng cảnh. Thế giới lớn hơn khung (vd 6000×4000) để máy quay có đường đi.
@@ -135,8 +139,8 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       quy mô, thay thế, đổi trạng thái; mỗi beat MỘT hành động chính, xảy ra lúc hình đứng yên. Ngoài
       `archetype` (HÌNH), ghi thêm `co_che` (CÁCH hình kể) khi beat có một trong sáu cơ chế: `gom-mot-moi`
       (rời rạc → một mối) · `noi-tiep` (máy quay đi trạm này sang trạm kia) · `tay-sang-may` (làm tay →
-      tự động) · `bam-ra-nhieu` (một cú bấm → quy mô lớn) · `thao-tac-app` (thao tác trong app thật, ảnh
-      chụp thật) · `hanh-dong-he-qua`. Đừng lặp một cơ chế ba beat liền — `get_timeline.phân_bổ_cơ_chế`
+      tự động) · `bam-ra-nhieu` (một cú bấm → quy mô lớn) · `thao-tac-app` (thao tác trong app thật — ảnh
+      chụp hoặc giao diện dựng lại bằng mã) · `hanh-dong-he-qua`. Đừng lặp một cơ chế ba beat liền — `get_timeline.phân_bổ_cơ_chế`
       liệt kê cái chưa dùng. Dụng cụ có sẵn trong sandbox: `useCamera` (thế giới lớn + máy quay giữ → đi
       → giữ; chỉ takeover/glide/stage/split), `goChu` + `<ConTro/>` (terminal gõ chữ), `<VetMarker/>`
       (vệt dạ quang sau chữ). 3D chỉ bằng `perspective()` TRONG transform.
@@ -215,7 +219,8 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
 
    e. **Trung thực dữ liệu.** Số liệu, tên riêng, câu trích trong graphic phải **nguyên văn** trong
       lời thoại của beat đó. Thiếu sự kiện thật → đổi hình khác, **tuyệt đối đừng bịa/điền bừa**
-      (không bịa số, xếp hạng, lượt xem, giá, logo, giao diện). (Nhãn bước, tên cột thì được diễn đạt
+      (không bịa số, xếp hạng, lượt xem, giá). Được DỰNG LẠI giao diện của sản phẩm / thương hiệu thật được
+      nhắc tới (logo qua add_logo) — nội dung bên trong lấy từ lời thoại hoặc để trung tính. (Nhãn bước, tên cột thì được diễn đạt
       lại từ ý trong câu.) Nhưng **đừng chép lại cả câu đang nói lên hình**: chữ trên hình trùng ≥ 60%
       câu thoại của beat thì cửa ải trả `chep-loi` — hình phải nói THÊM thứ lời không nói (số, cấu trúc,
       quan hệ, trước → sau); giữ tối đa một cụm từ khoá 2–5 tiếng làm tiêu đề.
@@ -333,7 +338,7 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
    - `cu_the` — nói đúng nội dung beat này, không phải một khuôn chung dán chữ khác vào.
    - `khong_chep_loi` — không viết lại câu đang nói lên hình.
    - `dung_style` — màu, font, cách tách lớp của style dự án (style tiết chế thì không phát sáng).
-   - `khong_bia` — không số liệu, giao diện, logo, lượt xem bịa; tên, giá, bằng chứng, CTA khớp phiếu
+   - `khong_bia` — không số liệu, lượt xem, xếp hạng bịa (giao diện dựng lại của sản phẩm thật thì được); tên, giá, bằng chứng, CTA khớp phiếu
      chỉ đạo; so sánh cùng thang đo; minh hoạ không có số thật thì có nhãn «minh hoạ».
    - `vao_ra` — ô VÀO không giật / không đè nhau lúc đang bay vào; ô RA đã kể xong (không còn chạy dở
      khi cắt sang ý sau).
