@@ -340,6 +340,10 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
      đó không phải phần tử ai đó đặt vào và **không phải chừa chỗ** cho nó: dựng graphic cho beat
      đó là bong bóng tự mất. Đừng vẽ lại một cái bong bóng trong mã của mình.
    - Bộ dưới 12 tư thế (`bộ_ít_tư_thế`) → cuối lượt nhắc người dùng vẽ thêm tư thế.
+   - **Bộ NHÂN VẬT MÃ** (`get_mascot_catalog` có `loại_nhân_vật: MÃ`): nhân vật vẽ bằng code, tự thở / chớp / nhép
+     môi — không có luật «tư thế trùng qua ranh giới beat». Thêm **cử chỉ tay** `cu_chi: {loai, chu?}` (khoá trong
+     `cử_chỉ_có_sẵn`, ~40–60% số beat, khớp câu: «nhìn cái này» → chi-vao tự chỉ vào graphic, «thứ nhất» → mot-ngon,
+     «chắc chắn» → chat) và `nhin: "graphic"` cho beat câu đang nói về graphic phía trên.
 
 4c. **DUYỆT ĐỘC LẬP — sau khi MỌI beat đã dựng xong, một lượt cho cả video.** Người dựng không tự chấm
    bài của mình. Mở MỘT agent phụ (tool Agent / subagent) không tham gia lúc dựng, giao nó đúng việc:
@@ -417,6 +421,14 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
    ĐẦU TIÊN là bảo họ **tải lại trang editor (F5) rồi xuất lại**: tab mở từ trước lần máy chủ cập
    nhật vẫn xuất bằng bộ vẽ cũ. Vẫn khác sau khi tải lại thì mới báo lỗi, kèm tên video và giây bị
    lệch — đừng sửa mã graphic để «né» chỗ file xuất sai khi bản xem trước đang đúng.
+
+## Dựng nhân vật mã từ ảnh mẫu
+
+Người dùng gửi ảnh một nhân vật (linh vật thương hiệu, chân dung hoạt hình) và muốn nó làm người nói trong mode
+Mascot: `get_mascot_code_contract` (hợp đồng + mã mẫu Zi) → viết mã theo hợp đồng → `write_mascot_code(bo, ten, code)`.
+Cửa kiểm trượt thì sửa đúng lỗi nó nêu; qua thì app trả **ảnh tổng tư thế** — NHÌN và so với ảnh mẫu (màu, tỉ lệ, nét
+nhận diện, tay không vắt ngang mặt), sửa rồi gửi lại cùng `bo` tới khi giống. Xong báo người dùng id bộ để chọn ở panel
+Người nói. Sửa một bộ có sẵn: `get_mascot_code_contract(bo)` trả kèm mã hiện tại.
 
 ## Vài lằn ranh
 - Không tự chế phong cách/màu/font — mọi thứ đó nằm trong contract và catalog của MCP.
