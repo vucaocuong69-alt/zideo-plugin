@@ -468,6 +468,18 @@ bảng sẽ học + `am_tay` (âm đặt tay không khớp sự kiện, kèm l�
 luat_tay)`. Xem / sửa / xoá: `list_sfx_logic`, `edit_sfx_logic`. Lỗi «thiếu quyền» = tài khoản chưa được admin giao
 «Lưu logic SFX» — báo người dùng.
 
+## Style của tôi (thư viện người dùng)
+
+Người dùng muốn đổi diện mạo của style đang dùng («màu nhấn sang cam», «bo góc ít thôi», «tiêu đề chữ áp phích», «đừng
+dùng màu nhấn cho khối lớn»): `tune_style(project, palette / radii / mat / fonts / notes_them / notes_bo)` — áp NGAY
+cho dự án này, graphic đã dựng đổi màu theo, không phải viết lại mã; KHÔNG đụng style dùng chung. Vai màu lấy đúng tên
+trong hợp đồng (accent, surface, ink, line…); xoá vai của gốc không được. Chụp lại một khung (`capture_frame`) cho người
+dùng xem. Họ ưng và bảo **«lưu style này (tên X)»** → `save_to_library(loai:"style", project, ten, mo_ta)` — lần tạo
+video sau nó đứng đầu ô chọn style với nhãn «của bạn», chọn bằng `set_theme(<id u-…>)`. `get_timeline` có mục
+`style_của_người_dùng` khi dự án đang dùng bản chỉnh. Xem / sửa / xoá / đề xuất dùng chung: `list_library`,
+`edit_library`. Lỗi «thiếu quyền» khi lưu = tài khoản chưa được admin giao «Lưu design style» — báo người dùng (chỉnh
+cho dự án vẫn làm được). Áp cho: 16:9 · 9:16 · đoạn liền mạch · MG lẻ · mascot. Không áp: reaction, sáu theme viết tay.
+
 ## Dựng nhân vật mã từ ảnh mẫu
 
 Người dùng gửi ảnh một nhân vật (linh vật thương hiệu, chân dung hoạt hình) và muốn nó làm người nói trong mode
