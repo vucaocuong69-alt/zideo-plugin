@@ -100,8 +100,8 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       972 — xếp thế giới THEO CHIỀU DỌC (vd 2400×5200), vật chính lấp ~70% bề ngang sân khấu ở zoom dự định.
       `write_doan_world`: mọi thứ đổi theo thời gian đi qua `s.<tham_số>` hoặc `pop(tên)`; chuyển động nền
       lặp dùng `frameGoc`, KHÔNG dùng `frame` (về 0 ở mỗi cảnh → giật ở chỗ nối).
-   4. `write_doan_canh` cho từng cảnh THEO THỨ TỰ: chỉ khai cái đổi (`tr`, `pop`, `cam`, `tieuDe`; dọc thêm
-      `dem` = nhãn bộ đếm bên phải thanh HUD, vd «PLUGIN 3/4»), khung tính từ đầu cảnh. NEO THEO TỪ KHOÁ: thay số
+   4. `write_doan_canh` cho từng cảnh THEO THỨ TỰ: chỉ khai cái đổi (`tr`, `pop`, `cam` — KHÔNG có ô
+      tiêu đề / thanh HUD / bộ đếm ở cả hai khung, đừng khai tieuDe / dem), khung tính từ đầu cảnh. NEO THEO TỪ KHOÁ: thay số
       khung bằng chuỗi — `"deploy"`, `"hai nhánh"`, `"deploy#2"`, `"deploy+6"` — để vật đổi ĐÚNG lúc người nói gọi tên;
       không khai khung 0 (server tự nối từ cuối cảnh trước). Đọc `nay.trangThaiCuoi` — đó
       là đầu vào cảnh sau. Hành động chính xảy ra lúc máy quay ĐỨNG; máy lùi ra toàn cảnh thì cho nhãn nhỏ
@@ -115,7 +115,7 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
    6. Contact sheet chụp mỗi cảnh: khung đầu · 1–2 khoảnh khắc HÀNH ĐỘNG CHÍNH (đọc từ bảng nhịp — lúc nhiều thay đổi
       xong nhất) · khung cuối; mỗi ô kèm `co_chu_tren_man` (cỡ chữ ĐO trên màn, đã nhân zoom, chỉ chữ trong khung).
       Ảnh thu nhỏ 1/3 — đừng ước cỡ chữ từ ảnh. Cần nhìn kỹ một lúc khác thì `capture_frame` (tối đa 6 mốc mỗi lượt).
-   Khung dọc: không có ô tiêu đề góc — server vẽ thanh HUD mono đầu khung («// 02 — <tieuDe>» trái, bộ đếm phải);
+   Cả hai khung: không có ô tiêu đề, thanh HUD hay bộ đếm nào trên khung — đừng tự vẽ chúng trong thế giới;
    phụ đề thiết kế (nếu bật) tự chạy ngoài sân khấu, không cần chừa chỗ trong thế giới.
    Câu mở đoạn (beat id đuôi `m`) là người nói trọn khung — không đặt graphic. Bảng đạo diễn (2b) vẫn
    lập theo beat = theo cảnh. Duyệt (4c) chấm thêm tiêu chí `lien_mach` cho các ô có `doan`.
