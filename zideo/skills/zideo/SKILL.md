@@ -99,8 +99,12 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
    (`canh-cua-doan`). Bước 3 bên dưới thay bằng vòng này, cho TỪNG đoạn:
    1. Đọc lời CẢ đoạn (`get_transcript`, từ `bắt_đầu` tới hết đoạn) + tên/ý chính. AI chia đoạn sai đề mục
       → `set_doan` (doi_ten · gop · tach). Thẻ người nói: `phai` (thẻ dọc phải, mặc định) · `trai` ·
-      `goc_tren` / `goc_duoi` (thẻ ngang NHỎ ở góc phải — khi cảnh cần gần trọn khung) · `tron` (beat
-      chỉ là ý kiến riêng, không graphic). Không bao giờ đặt người nói giữa khung.
+      `goc_tren` / `goc_duoi` (thẻ ngang NHỎ ở góc phải — khi cảnh cần gần trọn khung) · `vang` (người nói
+      ẨN, thế giới graphic TRỌN khung — cảnh cần cả khung: bản đồ, con đường dài, sơ đồ rộng; tự chọn tối đa 45%
+      đoạn) · `tron` (beat chỉ là ý kiến riêng, không graphic). Không bao giờ đặt người nói giữa khung.
+      NGƯỜI DÙNG BẢO «ẩn người nói» → `set_doan(hanh_dong: "nguoi_noi", id, kieu: "vang", beat?, ep: true)` — `ep`
+      bỏ trần 45%. Khung ngang ẨN ĐƯỢC; ĐỪNG xoá clip người nói (renderer sẽ kéo thẻ cảnh trước sang) và đừng
+      thay bằng `goc_duoi` khi người dùng đã nói ẩn.
       KHUNG DỌC thay thẻ bằng BỐ CỤC: `chia` (B — người nói nửa dưới, sân khấu graphic y 96–979, mặc định) ·
       `vang` (A — người nói vắng, sân khấu giãn tới y 1400; cho cảnh cần cả sân khấu: sơ đồ cao, danh sách dài,
       màn hình điện thoại; server chặn khi A vượt 45% thời lượng đoạn) · `tron`.
