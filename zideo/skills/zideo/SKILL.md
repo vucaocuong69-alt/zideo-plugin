@@ -71,6 +71,19 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
      thứ), hành động hình (cái gì đổi), chữ trên hình (thêm điều lời không nói), tư liệu, tiêu chí duyệt
      («đạt khi …»). Beat chỉ là ý kiến riêng, lời hứa, câu cảm thán → `trang_thai: "de-trong"` (người
      nói trọn khung). Nhìn cả bảng trước khi dựng: hai beat liền nhau đừng cùng hình VÀ cùng cách kể.
+   - **Vật thể 3D — TỰ CHỌN, không chờ người dùng chỉ.** Lúc lập bảng, dò lời thoại tìm VẬT HỮU HÌNH có hình dạng quen
+     thuộc mà xem khối của nó giúp người xem hiểu hơn: thiết bị, sản phẩm, linh kiện, máy móc, phương tiện, công trình,
+     bộ phận cơ thể / máy — nhất là khi lời kể CẤU TẠO (bên trong có gì), so sánh bộ phận, tách lớp, hay xoay xem các
+     mặt. Beat như vậy ghi «vật 3D: <vật>» vào hành động hình, và lúc dựng gọi `find_examples(ky_thuat: "vat-3d")`.
+     TRẦN: tối đa 1 beat mỗi đoạn và 3 beat cả video (server cảnh báo `vat-3d-day` khi vượt); chọn chỗ đáng nhất.
+     KHÔNG dùng cho khái niệm trừu tượng, giao diện app / web, logo, con người, chữ, biểu đồ, hay vật không dựng giống
+     được bằng hình học (con vật, khuôn mặt, đồ ăn — dựng dở còn tệ hơn ảnh thật). Người dùng chỉ định thì làm theo
+     họ, bỏ qua trần.
+     **GIỐNG THẬT NHẤT CÓ THỂ** — chuẩn là robot hút bụi trong mẫu: nhựa bóng phủ clearcoat phản chiếu ánh sáng studio
+     (`<MoiTruongStudio/>`), mép vát bằng mặt cắt xoay (latheGeometry) chứ không trụ / hộp cạnh sắc, đủ chi tiết nhỏ
+     của vật thật (khe, ốc, đèn LED, gai lốp, lông chổi, chân linh kiện…), tỉ lệ đúng vật thật, bóng đổ mềm dưới vật,
+     nhìn chéo từ trên ~20°, xoay chậm. Màu phẳng kiểu đồ chơi / khối thô = chưa đạt — `capture_frame` xem lại và
+     làm tiếp tới khi trông như ảnh chụp sản phẩm.
    - Server tự chèn phiếu + dòng của beat vào `get_prompt_contract` — dựng đúng hướng đã chốt; đổi ý
      thì sửa bảng trước. Mã đạt thì dòng tự sang «chờ duyệt». Người dùng xin bảng → `export_direction_table` (CSV).
    - Dự án cũ đã dựng xong mà không có phiếu: không bắt buộc lập lại, trừ khi người dùng yêu cầu.
@@ -100,6 +113,8 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       972 — xếp thế giới THEO CHIỀU DỌC (vd 2400×5200), vật chính lấp ~70% bề ngang sân khấu ở zoom dự định.
       `write_doan_world`: mọi thứ đổi theo thời gian đi qua `s.<tham_số>` hoặc `pop(tên)`; chuyển động nền
       lặp dùng `frameGoc`, KHÔNG dùng `frame` (về 0 ở mỗi cảnh → giật ở chỗ nối).
+      Vật 3D trong thế giới (beat đã đánh «vật 3D» ở bảng): `find_examples(ky_thuat: "vat-3d")` trả kèm mẫu
+      THẾ GIỚI — mỗi bộ phận một `<ThreeCanvas orthographic>` riêng, ghép khít lúc lắp nguyên, bay theo `s` / `pop`.
    4. `write_doan_canh` cho từng cảnh THEO THỨ TỰ: chỉ khai cái đổi (`tr`, `pop`, `cam` — KHÔNG có ô
       tiêu đề / thanh HUD / bộ đếm ở cả hai khung, đừng khai tieuDe / dem), khung tính từ đầu cảnh. NEO THEO TỪ KHOÁ: thay số
       khung bằng chuỗi — `"deploy"`, `"hai nhánh"`, `"deploy#2"`, `"deploy+6"` — để vật đổi ĐÚNG lúc người nói gọi tên;
@@ -153,8 +168,8 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       → giữ; chỉ takeover/glide/stage/split), `goChu` + `<ConTro/>` (terminal gõ chữ), `<ConTroChuot di={[{f,x,y}…]} nhan={F}/>` (con trỏ chuột macOS bấm giao diện), `<VetMarker/>`
       (vệt dạ quang sau chữ), `trangThai([f…])` (máy trạng thái theo lời — một giao diện đi qua 3–5 trạng thái thay vì
       cắt khung), `bayGiua(a, b, bat)` (FLIP — vật bay giữa hai bố cục), `dongHoTua` / `soDem` / `<SoLat/>` (đồng hồ tua,
-      số đếm có nhoè, số lật), `<GoiTin/>` (gói tin chạy trên dây), `<WipeTruocSau/>`, `<Iris/>`. 3D chỉ bằng
-      `perspective()` TRONG transform. Chữ chỉ làm giao diện trông thật (tên cột, đường dẫn, log) bọc `data-zd-ket-cau`:
+      số đếm có nhoè, số lật), `<GoiTin/>` (gói tin chạy trên dây), `<WipeTruocSau/>`, `<Iris/>`. Nghiêng một TẤM PHẲNG (terminal,
+      thẻ bay vào) chỉ bằng `perspective()` TRONG transform; VẬT CÓ KHỐI thì dựng 3D thật — xem «Vật thể 3D» bên dưới. Chữ chỉ làm giao diện trông thật (tên cột, đường dẫn, log) bọc `data-zd-ket-cau`:
       ra khỏi sàn chữ chính, nhưng sàn cứng 14px dọc / 12px ngang và ≤ 40% diện tích chữ — chữ mang ý không bao giờ gắn.
       Style tiết chế: quầng màu chỉ được trên VẬT (`<svg>`/`<img>` hoặc `data-zd-vat`), không trên chữ / thẻ.
       VÙNG «sau» (SAU LƯNG — chỉ khung dọc ĐÃ TÁCH NỀN): người nói đứng trọn khung phía TRƯỚC graphic — vật sau đầu / vai bị
