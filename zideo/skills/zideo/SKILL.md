@@ -422,6 +422,23 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
    nhật vẫn xuất bằng bộ vẽ cũ. Vẫn khác sau khi tải lại thì mới báo lỗi, kèm tên video và giây bị
    lệch — đừng sửa mã graphic để «né» chỗ file xuất sai khi bản xem trước đang đúng.
 
+## Cảm giác chuyển động
+
+`get_timeline` có mục `cảm_giác_chuyển_động` khi người dùng đã tick ở modal tạo video (ease bậc 4 · nhoè theo tốc
+độ · vào mờ → nét, hoặc mục họ tự lưu). Đã chọn thì đó là LUẬT của dự án: đọc mục CẢM GIÁC CHUYỂN ĐỘNG trong
+`get_prompt_contract`, dùng dụng cụ tương ứng (`chuyenMuot` · `nhoeTocDo` · `vaoMoNet`; video theo đoạn nhận chúng
+qua props của VeTheGioi), và ghi mã xong đọc `cảnh_báo_cảm_giác` trong phản hồi — sửa trước khi sang beat khác (máy
+chủ chỉ cảnh báo, không chặn). Chế độ «chỉ» = không thêm kiểu chuyển động nào khác (không spring nảy). Không chọn =
+bạn tự sáng tạo. Người dùng đổi ý trong chat → `set_motion_feel`.
+
+Người dùng thấy một chuyển động ưng ý và bảo **«lưu cảm giác này / lưu cách chuyển động ở beat N để lần sau dùng»**:
+đọc mã của beat đó (beat N = clip host thứ N theo thời gian; video theo đoạn thì mã thế giới nằm trong hợp đồng của
+đoạn), RÚT RA cảm giác — đường cong, nhịp so với lời, nhoè, cách vật hiện / đi — chứ không chép bố cục hay nội dung
+riêng của video đó, viết luật cho một agent khác đọc là làm lại được (không số khung tuyệt đối). Đưa người dùng xem
+bản tóm tắt (tên ô tick, một dòng mô tả, luật, dụng cụ nếu có) và CHỜ họ đồng ý, rồi mới `save_motion_feel`. Lần tạo
+video sau nó hiện thành ô tick «của bạn». Xem / sửa / xoá: `list_motion_feels`, `edit_motion_feel`. Lỗi «thiếu quyền»
+= tài khoản chưa được admin giao «Lưu cảm giác chuyển động» — báo người dùng, đừng tìm đường vòng.
+
 ## Dựng nhân vật mã từ ảnh mẫu
 
 Người dùng gửi ảnh một nhân vật (linh vật thương hiệu, chân dung hoạt hình) và muốn nó làm người nói trong mode
