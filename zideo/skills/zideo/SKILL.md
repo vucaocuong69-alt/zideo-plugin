@@ -454,6 +454,20 @@ bản tóm tắt (tên ô tick, một dòng mô tả, luật, dụng cụ nếu 
 video sau nó hiện thành ô tick «của bạn». Xem / sửa / xoá: `list_motion_feels`, `edit_motion_feel`. Lỗi «thiếu quyền»
 = tài khoản chưa được admin giao «Lưu cảm giác chuyển động» — báo người dùng, đừng tìm đường vòng.
 
+## Logic SFX
+
+`get_timeline` có mục `logic_sfx`: «MẶC ĐỊNH» (graphic lẻ tự gắn âm theo hình; video theo đoạn KHÔNG có âm tự
+động), «TẮT», hoặc một BỘ người dùng đã lưu. Có bộ thì server TỰ ĐẶT âm theo sự kiện (graphic / mốc moc() ở MG lẻ;
+cảnh · vật bật · máy lia · vật trượt ở video theo đoạn) — đừng đặt tay chồng lên; ở MG lẻ khai moc() đúng mốc nhấn.
+Âm còn lại làm theo luật tay trong mục LOGIC SFX của `get_prompt_contract`; chế độ «chỉ» = không dùng tệp ngoài bộ.
+Đổi bộ: `set_sfx_logic`.
+
+Người dùng ưng tiếng động của một video và bảo **«lưu logic sfx này (tên X)»**: `learn_sfx_logic(project)` → đọc
+bảng sẽ học + `am_tay` (âm đặt tay không khớp sự kiện, kèm lời và graphic quanh đó) → viết `luat_tay` (khi nào đặt
+âm gì, không giây tuyệt đối) → đưa người dùng xem tóm tắt và CHỜ họ đồng ý → `save_sfx_logic(project, ten, mo_ta,
+luat_tay)`. Xem / sửa / xoá: `list_sfx_logic`, `edit_sfx_logic`. Lỗi «thiếu quyền» = tài khoản chưa được admin giao
+«Lưu logic SFX» — báo người dùng.
+
 ## Dựng nhân vật mã từ ảnh mẫu
 
 Người dùng gửi ảnh một nhân vật (linh vật thương hiệu, chân dung hoạt hình) và muốn nó làm người nói trong mode
