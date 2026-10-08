@@ -458,6 +458,16 @@ bản tóm tắt (tên ô tick, một dòng mô tả, luật, dụng cụ nếu 
 video sau nó hiện thành ô tick «của bạn». Xem / sửa / xoá: `list_motion_feels`, `edit_motion_feel`. Lỗi «thiếu quyền»
 = tài khoản chưa được admin giao «Lưu cảm giác chuyển động» — báo người dùng, đừng tìm đường vòng.
 
+## SFX của tôi (bộ tiếng động riêng)
+
+Người dùng có bộ âm riêng (thư mục Whoosh / Pop / Chime… trên máy) → `upload_link(loai: "am")` rồi TỰ chạy curl cho
+từng tệp kèm `&nhom=<tên thư mục>&ten=<tên tệp>` (vòng lặp shell qua các thư mục; URL-encode tên có dấu). Server tự cắt
+câm đầu, cân độ to về −16 LUFS (trần đỉnh −1 dBFS), đổi mp3 và đặt tên riêng — ĐỪNG bắt người dùng đổi tên tệp trùng,
+cân âm hay cắt khoảng lặng bằng tay. Mỗi tệp trả `file` (`_rieng/…`) — dùng nguyên chuỗi đó với `add_sfx_clip`; xem cả
+bộ: `list_my_sfx`. Người dùng cũng tải được ở trang Assets › Thêm media › «SFX của bạn» (chọn cả thư mục). Âm riêng chỉ
+tài khoản đó thấy. Có bộ riêng thì ưu tiên nó cho đúng loại sự kiện; dựng xong vài beat ưng thì «lưu logic sfx» để máy
+tự đặt theo bộ ở video sau.
+
 ## Logic SFX
 
 `get_timeline` có mục `logic_sfx`: «MẶC ĐỊNH» (graphic lẻ tự gắn âm theo hình; video theo đoạn KHÔNG có âm tự
