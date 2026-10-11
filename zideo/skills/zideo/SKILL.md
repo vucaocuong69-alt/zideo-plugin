@@ -462,7 +462,10 @@ video sau nó hiện thành ô tick «của bạn». Xem / sửa / xoá: `list_m
 
 Khi lời nói là một THAO TÁC TRÊN MÁY có thể quay lại — mở một trang web / repo, gõ lệnh terminal, nhờ Claude Code làm gì trong
 một thư mục, hỏi Claude, tạo thư mục — cảnh quay màn hình thật thuyết phục hơn graphic minh hoạ. Máy quay tự làm thao tác đó
-và Zideo tự đặt cảnh vào timeline, kèm zoom vào chỗ thao tác, con trỏ vẽ lại, tiếng click / gõ.
+và Zideo tự đặt cảnh vào timeline, kèm zoom vào chỗ thao tác, con trỏ vẽ lại (cảnh màn hình KHÔNG có tiếng động).
+CHỈ quay khi một recipe khớp TỰ NHIÊN với đúng thao tác lời nói. Không có recipe khớp (ghi nội dung vào tệp, app không có
+recipe, việc cần tài khoản…) → ĐỪNG ép qua Terminal hay recipe gần giống: dựng giao diện bằng graphic như thường. Người dùng
+không ưng thì họ tự quay màn hình rồi thêm vào (`place_screen_file` / nút «Biến thành cảnh màn hình»).
 1. `list_screen_recipes` — máy quay còn sống không, recipe nào có, tham số (JSON Schema) và `marks` (mốc để neo). Tool trả
    «chua-mo» → tài khoản chưa được mở tính năng này: BỎ QUA, dựng bằng graphic như thường, đừng thử lại.
 2. Chọn khoảng lời (`get_transcript`) 4–20 s nói về thao tác → `request_screen_take(recipe, params, start, dur, neo)`.
@@ -472,7 +475,15 @@ và Zideo tự đặt cảnh vào timeline, kèm zoom vào chỗ thao tác, con 
 3. Dựng tiếp beat khác trong lúc chờ (một cảnh ~30–60 s), rồi `screen_take_status`: `xong` kèm `clip`, `hong` kèm `loi` —
    đọc lỗi, sửa tham số (vd đề mục không có trên trang → bỏ `sections`) rồi xin lại. Xong thì `capture_frame` kiểm; chỉnh
    zoom bằng `set_screen_zoom`.
-Tối đa ~4 cảnh màn hình mỗi video. Không dùng cho thao tác cần tài khoản / dữ liệu riêng, hay app không có recipe.
+Tối đa ~4 cảnh màn hình mỗi video.
+- Recipe có `kham.ok: false` (lần khám gần nhất hỏng) → đừng xin recipe đó, dựng graphic. Nghi recipe gãy → `check_screen_recipes`.
+- Lời chỉ nhắc «trang này / màn hình kết quả» (không thao tác) → `anh: true` (+ `tai_moc`): ảnh chụp tĩnh, rẻ hơn cảnh động.
+- Một thao tác dài được nhắc ở NHIỀU đoạn lời (vd đọc lần lượt 3 đề mục) → quay MỘT take, đặt nhiều lần bằng `place_screen_take`
+  với `tu_moc` / `den_moc` (vd section_0 → section_1) — không quay lại.
+- Người dùng có ảnh chụp / bản quay màn hình của họ (tải qua `upload_link` loại media) → `place_screen_file` (bản quay: tự zoom
+  vào chỗ màn hình đổi, tự tua quãng đứng yên; `khung` để cắt bỏ Dock / cửa sổ thừa; ảnh: xem ảnh rồi `set_screen_zoom`).
+- Thấy tên tài khoản, email, đường dẫn thư mục nhà… trong khung (`capture_frame`) → `set_screen_privacy` che vùng đó.
+- Sinh lại / sửa giọng đọc làm lời đổi giây → cảnh màn hình tự neo lại theo cụm từ; còn lệch thì `reanchor_screen_scenes`.
 
 ## SFX của tôi (bộ tiếng động riêng)
 
