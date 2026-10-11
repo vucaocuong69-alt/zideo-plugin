@@ -460,30 +460,25 @@ video sau nó hiện thành ô tick «của bạn». Xem / sửa / xoá: `list_m
 
 ## Cảnh màn hình quay tự động (đang thử)
 
-Khi lời nói là một THAO TÁC TRÊN MÁY có thể quay lại — mở một trang web / repo, gõ lệnh terminal, nhờ Claude Code làm gì trong
-một thư mục, hỏi Claude, tạo thư mục — cảnh quay màn hình thật thuyết phục hơn graphic minh hoạ. Máy quay tự làm thao tác đó
-và Zideo tự đặt cảnh vào timeline, kèm zoom vào chỗ thao tác, con trỏ vẽ lại (cảnh màn hình KHÔNG có tiếng động).
-CHỈ quay khi một recipe khớp TỰ NHIÊN với đúng thao tác lời nói. Không có recipe khớp (ghi nội dung vào tệp, app không có
-recipe, việc cần tài khoản…) → ĐỪNG ép qua Terminal hay recipe gần giống: dựng giao diện bằng graphic như thường. Người dùng
-không ưng thì họ tự quay màn hình rồi thêm vào (`place_screen_file` / nút «Biến thành cảnh màn hình»).
-1. `list_screen_recipes` — máy quay còn sống không, recipe nào có, tham số (JSON Schema) và `marks` (mốc để neo). Tool trả
-   «chua-mo» → tài khoản chưa được mở tính năng này: BỎ QUA, dựng bằng graphic như thường, đừng thử lại.
-2. Chọn khoảng lời (`get_transcript`) 4–20 s nói về thao tác → `request_screen_take(recipe, params, start, dur, neo)`.
-   `neo`: mốc phải rơi đúng lúc người nói nhắc tới (vd `section_0` lúc nói tên đề mục, `response_done` lúc nói kết quả).
-   Trình duyệt: URL công khai, không cần đăng nhập; `sections` CHỈ khi lời phân tích từng đề mục của trang (chỉ nhắc tên trang
-   thì để trống — cảnh hiện đầu trang, máy quay đẩy chậm). Lệnh terminal chỉ trong danh sách cho phép (ls, cat, git đọc…).
-3. Dựng tiếp beat khác trong lúc chờ (một cảnh ~30–60 s), rồi `screen_take_status`: `xong` kèm `clip`, `hong` kèm `loi` —
-   đọc lỗi, sửa tham số (vd đề mục không có trên trang → bỏ `sections`) rồi xin lại. Xong thì `capture_frame` kiểm; chỉnh
-   zoom bằng `set_screen_zoom`.
-Tối đa ~4 cảnh màn hình mỗi video.
-- Recipe có `kham.ok: false` (lần khám gần nhất hỏng) → đừng xin recipe đó, dựng graphic. Nghi recipe gãy → `check_screen_recipes`.
-- Lời chỉ nhắc «trang này / màn hình kết quả» (không thao tác) → `anh: true` (+ `tai_moc`): ảnh chụp tĩnh, rẻ hơn cảnh động.
-- Một thao tác dài được nhắc ở NHIỀU đoạn lời (vd đọc lần lượt 3 đề mục) → quay MỘT take, đặt nhiều lần bằng `place_screen_take`
-  với `tu_moc` / `den_moc` (vd section_0 → section_1) — không quay lại.
-- Người dùng có ảnh chụp / bản quay màn hình của họ (tải qua `upload_link` loại media) → `place_screen_file` (bản quay: tự zoom
-  vào chỗ màn hình đổi, tự tua quãng đứng yên; `khung` để cắt bỏ Dock / cửa sổ thừa; ảnh: xem ảnh rồi `set_screen_zoom`).
-- Thấy tên tài khoản, email, đường dẫn thư mục nhà… trong khung (`capture_frame`) → `set_screen_privacy` che vùng đó.
-- Sinh lại / sửa giọng đọc làm lời đổi giây → cảnh màn hình tự neo lại theo cụm từ; còn lệch thì `reanchor_screen_scenes`.
+Graphic bạn tự dựng là CHÍNH; cảnh quay màn hình thật chỉ BỔ TRỢ — chèn khi nó là BẰNG CHỨNG THẬT mà graphic không giả được
+(trang / repo có thật người xem mở được, câu trả lời AI thật đang hiện ra, kết quả thật sau một thao tác). Thao tác không có
+kết quả đáng nhìn («tạo file rồi ls») → graphic diễn rõ hơn, đừng quay. Cảnh màn hình KHÔNG có tiếng động.
+1. `list_screen_recipes(project)` — `du_an.tu_chen_bat` false (người dùng TẮT «Tự chèn cảnh quay màn hình» ở modal / editor)
+   → BỎ QUA cả mục này, dựng graphic. Tool trả «chua-mo» → tài khoản chưa mở tính năng: bỏ qua, đừng thử lại.
+2. `suggest_screen_moments(project)` — CHỈ chèn ở `ung_vien` (đã chấm 4 tiêu chí, loại hook / CTA / câu ý kiến, trong HẠN MỨC
+   ~1 cảnh / 35 s, không hai beat liền nhau). Ứng viên mà lời không thật sự cần bằng chứng → bỏ, dựng graphic. Ghi lý do vào
+   bảng đạo diễn (`tu_lieu`).
+3. `cach: "chup"` (trang đứng yên) → `request_screen_take(..., anh: true, tai_moc)` — ảnh tĩnh nét, rẻ. `"quay"` khi chuyển
+   động là ý chính (AI đang trả lời, nhảy tới đề mục). Neo mốc của recipe vào `giay_nhac`. Trình duyệt: URL công khai không
+   đăng nhập — server tải thử trang trước và từ chối ngay trang lỗi / đòi đăng nhập.
+4. Dựng tiếp beat khác trong lúc chờ (~30–60 s), rồi `screen_take_status`. `hong` vì chất lượng (chữ quá nhỏ, khung trống) hay
+   vì trang → dựng graphic cho beat đó, đừng xin lại. Xong thì `capture_frame` kiểm; chỉnh zoom bằng `set_screen_zoom`.
+- Recipe có `kham.ok: false` → đừng xin recipe đó. Nghi recipe gãy → `check_screen_recipes`.
+- Một thao tác dài nhắc ở NHIỀU đoạn lời → quay MỘT take, đặt nhiều lần bằng `place_screen_take` với `tu_moc` / `den_moc`.
+- Người dùng có ảnh chụp / bản quay màn hình của họ (tải qua `upload_link` loại media) → `place_screen_file` (không cần bật tự
+  chèn, không tính hạn mức).
+- Thấy tên tài khoản, email, đường dẫn thư mục nhà… trong khung → `set_screen_privacy` che vùng đó.
+- Sinh lại / sửa giọng đọc làm lời đổi giây → cảnh màn hình tự neo lại; còn lệch thì `reanchor_screen_scenes`.
 
 ## SFX của tôi (bộ tiếng động riêng)
 
