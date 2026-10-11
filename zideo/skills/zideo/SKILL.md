@@ -458,6 +458,22 @@ bản tóm tắt (tên ô tick, một dòng mô tả, luật, dụng cụ nếu 
 video sau nó hiện thành ô tick «của bạn». Xem / sửa / xoá: `list_motion_feels`, `edit_motion_feel`. Lỗi «thiếu quyền»
 = tài khoản chưa được admin giao «Lưu cảm giác chuyển động» — báo người dùng, đừng tìm đường vòng.
 
+## Cảnh màn hình quay tự động (đang thử)
+
+Khi lời nói là một THAO TÁC TRÊN MÁY có thể quay lại — mở một trang web / repo, gõ lệnh terminal, nhờ Claude Code làm gì trong
+một thư mục, hỏi Claude, tạo thư mục — cảnh quay màn hình thật thuyết phục hơn graphic minh hoạ. Máy quay tự làm thao tác đó
+và Zideo tự đặt cảnh vào timeline, kèm zoom vào chỗ thao tác, con trỏ vẽ lại, tiếng click / gõ.
+1. `list_screen_recipes` — máy quay còn sống không, recipe nào có, tham số (JSON Schema) và `marks` (mốc để neo). Tool trả
+   «chua-mo» → tài khoản chưa được mở tính năng này: BỎ QUA, dựng bằng graphic như thường, đừng thử lại.
+2. Chọn khoảng lời (`get_transcript`) 4–20 s nói về thao tác → `request_screen_take(recipe, params, start, dur, neo)`.
+   `neo`: mốc phải rơi đúng lúc người nói nhắc tới (vd `section_0` lúc nói tên đề mục, `response_done` lúc nói kết quả).
+   Trình duyệt: URL công khai, không cần đăng nhập; `sections` CHỈ khi lời phân tích từng đề mục của trang (chỉ nhắc tên trang
+   thì để trống — cảnh hiện đầu trang, máy quay đẩy chậm). Lệnh terminal chỉ trong danh sách cho phép (ls, cat, git đọc…).
+3. Dựng tiếp beat khác trong lúc chờ (một cảnh ~30–60 s), rồi `screen_take_status`: `xong` kèm `clip`, `hong` kèm `loi` —
+   đọc lỗi, sửa tham số (vd đề mục không có trên trang → bỏ `sections`) rồi xin lại. Xong thì `capture_frame` kiểm; chỉnh
+   zoom bằng `set_screen_zoom`.
+Tối đa ~4 cảnh màn hình mỗi video. Không dùng cho thao tác cần tài khoản / dữ liệu riêng, hay app không có recipe.
+
 ## SFX của tôi (bộ tiếng động riêng)
 
 Người dùng có bộ âm riêng (thư mục Whoosh / Pop / Chime… trên máy) → `upload_link(loai: "am")` rồi TỰ chạy curl cho
