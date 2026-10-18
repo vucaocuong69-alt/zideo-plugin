@@ -490,6 +490,17 @@ bộ: `list_my_sfx`. Người dùng cũng tải được ở trang Assets › Th
 tài khoản đó thấy. Có bộ riêng thì ưu tiên nó cho đúng loại sự kiện; dựng xong vài beat ưng thì «lưu logic sfx» để máy
 tự đặt theo bộ ở video sau.
 
+## Đặt tiếng đúng nhịp (đỉnh tiếng = lúc hình đáp)
+
+Tai nghe tiếng rơi ở ĐỈNH sóng, mắt chốt chuyển động ở lúc nó DỪNG — đặt đầu tệp vào lúc phần tử BẮT ĐẦU chạy là sớm
+(người dựng đo: «đạt 65–70%»). Muốn nhấn tiếng cho graphic: gọi `get_motion_moments(project)` MỘT lần — app đã đo sẵn
+lúc từng phần tử bắt đầu / đáp (giây tuyệt đối, kèm chữ của phần tử) — rồi `add_sfx_clip({file, dinh_luc: <dap>})`;
+server tự lùi đầu tệp đúng bằng đỉnh của tệp. KHÔNG đọc mã tính frame `interpolate` để đoán mốc (tốn lượt, hay lấy
+nhầm lúc bắt đầu). Chỉ nhấn mốc đáng nhấn (`manh` cao, đúng thứ lời đang nói), không phải mọi mốc. Tiếng tự gắn và
+tiếng theo bộ logic cũng đặt đỉnh vào lúc đáp, và tự đi theo khi mã graphic đổi. Người dùng chê «tiếng sớm/trễ hơn
+hình» ở dự án cũ → `align_sfx_peaks(project, xem_truoc: true)` cho họ xem rồi chạy thật (tiếng họ tự đặt tay: chỉ
+khi họ bảo, `pham_vi: "tat_ca"`). Người dùng muốn đúng giây họ nói → `add_sfx_clip({start, can_dinh: false})`.
+
 ## Logic SFX
 
 `get_timeline` có mục `logic_sfx`: «MẶC ĐỊNH» (graphic lẻ tự gắn âm theo hình; video theo đoạn KHÔNG có âm tự
