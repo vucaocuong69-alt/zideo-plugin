@@ -490,6 +490,15 @@ bộ: `list_my_sfx`. Người dùng cũng tải được ở trang Assets › Th
 tài khoản đó thấy. Có bộ riêng thì ưu tiên nó cho đúng loại sự kiện; dựng xong vài beat ưng thì «lưu logic sfx» để máy
 tự đặt theo bộ ở video sau.
 
+## Tiếng người nói (tắt / âm lượng từng đoạn, tách âm thanh)
+
+Người dùng bảo «tắt tiếng đoạn 12–14s», «beat 5 nhỏ tiếng lại», «bỏ tiếng ho chỗ …», «cân âm lượng / lọc ồn» →
+`set_speaker_audio`. Tiếng người nói là MỘT luồng theo đúng giờ của hình (không bao giờ lệch khẩu hình); thao tác chỉ đổi độ
+to của một quãng: `tat` / `bat` / `am_luong` với `tu`–`den` (giây, lấy mốc chữ ở get_transcript) hoặc `clip` = id đoạn người
+nói. Mặc định LIÊN KẾT (theo đoạn người nói); `tach` khi người dùng muốn sửa tiếng riêng (cắt, kéo mép, `fade`); `lien_ket`
+để về như cũ. `xu_ly` (`can_am` −14 LUFS, `lam_sach` lọc ồn) chạy nền, không sửa tệp gốc, MẶC ĐỊNH TẮT — chỉ bật khi người
+dùng xin. KHÔNG dùng cho mascot / reaction (giọng là clip trên hàng Giọng đọc).
+
 ## Đặt tiếng đúng nhịp (đỉnh tiếng = lúc hình đáp)
 
 Tai nghe tiếng rơi ở ĐỈNH sóng, mắt chốt chuyển động ở lúc nó DỪNG — đặt đầu tệp vào lúc phần tử BẮT ĐẦU chạy là sớm
