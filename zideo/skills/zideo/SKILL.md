@@ -71,14 +71,21 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
      thứ), hành động hình (cái gì đổi), chữ trên hình (thêm điều lời không nói), tư liệu, tiêu chí duyệt
      («đạt khi …»). Beat chỉ là ý kiến riêng, lời hứa, câu cảm thán → `trang_thai: "de-trong"` (người
      nói trọn khung). Nhìn cả bảng trước khi dựng: hai beat liền nhau đừng cùng hình VÀ cùng cách kể.
-   - **Vật thể 3D — TỰ CHỌN, không chờ người dùng chỉ.** Lúc lập bảng, dò lời thoại tìm VẬT HỮU HÌNH có hình dạng quen
-     thuộc mà xem khối của nó giúp người xem hiểu hơn: thiết bị, sản phẩm, linh kiện, máy móc, phương tiện, công trình,
-     bộ phận cơ thể / máy — nhất là khi lời kể CẤU TẠO (bên trong có gì), so sánh bộ phận, tách lớp, hay xoay xem các
-     mặt. Beat như vậy ghi «vật 3D: <vật>» vào hành động hình, và lúc dựng gọi `find_examples(ky_thuat: "vat-3d")`.
+   - **Vật thể 3D — TỰ CHỌN, không chờ người dùng chỉ** (khung dọc 9:16 lẫn ngang 16:9). Lúc lập bảng, dò lời thoại
+     tìm beat hợp một trong bốn trường hợp, ghi «vật 3D: <vật>» vào hành động hình, lúc dựng gọi `find_examples` với
+     `ky_thuat` tương ứng:
+     1. **Vật hữu hình** (thiết bị, sản phẩm, linh kiện, máy móc, phương tiện, công trình) — nhất là khi lời kể CẤU
+        TẠO, so sánh bộ phận, tách lớp, xoay xem các mặt → `"vat-3d"`.
+     2. **Thiết bị mang giao diện** — lời kể dùng app / web / chat trên điện thoại, laptop: thiết bị 3D thật, màn hình
+        là giao diện HTML tự dựng dán khít bằng `khopManHinh(...)` → `"thiet-bi-3d"`.
+     3. **Vật tượng trưng** cho khái niệm có đồ vật quen mắt: ổ khoá (bảo mật), đồng xu / két (tiền), tên lửa (tăng
+        tốc), nam châm (thu hút), bánh răng (tự động hoá), cúp, đồng hồ cát, hộp quà, kính lúp, loa — vật đổi trạng thái
+        theo lời → `"vat-tuong-trung-3d"`.
+     4. **Logo nổi khối** khi thương hiệu là nhân vật chính của beat: `add_logo` trả `duong_svg` → `<KhoiLogo d={…} />`
+        trong `<ThreeCanvas>` → `"logo-3d"`.
      TRẦN: tối đa 1 beat mỗi đoạn và 3 beat cả video (server cảnh báo `vat-3d-day` khi vượt); chọn chỗ đáng nhất.
-     KHÔNG dùng cho khái niệm trừu tượng, giao diện app / web, logo, con người, chữ, biểu đồ, hay vật không dựng giống
-     được bằng hình học (con vật, khuôn mặt, đồ ăn — dựng dở còn tệ hơn ảnh thật). Người dùng chỉ định thì làm theo
-     họ, bỏ qua trần.
+     KHÔNG dùng cho con người, con vật, khuôn mặt, đồ ăn, chữ 3D, biểu đồ, hay khái niệm không có đồ vật đại diện rõ.
+     Người dùng chỉ định thì làm theo họ, bỏ qua trần.
      **GIỐNG THẬT NHẤT CÓ THỂ** — chuẩn là robot hút bụi trong mẫu: nhựa bóng phủ clearcoat phản chiếu ánh sáng studio
      (`<MoiTruongStudio/>`), mép vát bằng mặt cắt xoay (latheGeometry) chứ không trụ / hộp cạnh sắc, đủ chi tiết nhỏ
      của vật thật (khe, ốc, đèn LED, gai lốp, lông chổi, chân linh kiện…), tỉ lệ đúng vật thật, bóng đổ mềm dưới vật,
@@ -110,7 +117,7 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       màn hình điện thoại; server chặn khi A vượt 45% thời lượng đoạn) · `tron`.
    2. Gọi `get_prompt_contract(<project>, clip_id: <id beat một cảnh của đoạn, vd "h3">)` → HỢP ĐỒNG CỦA ĐOẠN:
       API thế giới, mọi cảnh với lời theo KHUNG (`từ@khung`), thẻ người nói / vùng trống, bảng màu, chỉ đạo.
-      Luật nội dung thường (chữ không chép lời, không bịa số liệu) vẫn áp cho thế giới; được dựng lại giao diện sản phẩm thật.
+      Luật nội dung thường (chữ không chép lời; giao diện có nội dung cụ thể, không thanh xám giả chữ) vẫn áp cho thế giới.
    3. NGHĨ MỘT THẾ GIỚI cho cả đoạn trước khi viết: những vật nào sống suốt đoạn, mỗi ý của lời làm vật nào
       đổi thế nào (sáng lên, tách đôi, thu lại thành chi tiết của vật lớn hơn…), máy quay nhìn vào đâu ở
       từng cảnh. Thế giới lớn hơn khung (vd 6000×4000) để máy quay có đường đi. KHUNG DỌC: khung nhìn chỉ rộng
@@ -258,11 +265,11 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       là id phải dùng). Muốn bỏ hẳn bản cũ thì `edit_clip(clip_id, delete: true)` — **đừng** viết mã trong suốt
       để «tắt» nó: bản thừa vẫn nằm trên timeline và dễ vẽ chồng lên bản thật.
 
-   e. **Trung thực dữ liệu.** Số liệu, tên riêng, câu trích trong graphic phải **nguyên văn** trong
-      lời thoại của beat đó. Thiếu sự kiện thật → đổi hình khác, **tuyệt đối đừng bịa/điền bừa**
-      (không bịa số, xếp hạng, lượt xem, giá). Được DỰNG LẠI giao diện của sản phẩm / thương hiệu thật được
-      nhắc tới (logo qua add_logo) — nội dung bên trong lấy từ lời thoại hoặc để trung tính. (Nhãn bước, tên cột thì được diễn đạt
-      lại từ ý trong câu.) Nhưng **đừng chép lại cả câu đang nói lên hình**: chữ trên hình trùng ≥ 60%
+   e. **Giao diện cụ thể, trông như thật.** Tự dựng webapp / app / trang web / hộp chat AI / terminal như
+      màn hình có thật, với **nội dung cụ thể tự nghĩ ra** cho hợp ý beat (câu prompt, câu trả lời, tin nhắn,
+      tên tệp, số minh hoạ hợp lý) — **cấm thanh xám / khung rỗng giả chữ**. Con số lời thoại đã nói thì giữ
+      đúng. Dựng lại giao diện sản phẩm / thương hiệu thật được nhắc tới (logo qua add_logo) càng sát càng
+      tốt. Nhưng **đừng chép lại cả câu đang nói lên hình**: chữ trên hình trùng ≥ 60%
       câu thoại của beat thì cửa ải trả `chep-loi` — hình phải nói THÊM thứ lời không nói (số, cấu trúc,
       quan hệ, trước → sau); giữ tối đa một cụm từ khoá 2–5 tiếng làm tiêu đề.
 
@@ -373,7 +380,7 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
    archetype, cơ chế, lời thoại, mốc giây; cảnh của đoạn có thêm ô HÀNH ĐỘNG CHÍNH và mọi ô graphic kèm
    `co_chu_tren_man` — chấm `doc_duoc` theo số đo đó, không ước từ ảnh thu nhỏ) — **chỉ nhìn và chấm, không sửa gì**, rồi trả JSON mỗi clip:
    `{so, clip, diem: {doc_duoc, nhan_qua, bo_cuc, chat_lieu, cu_the, khong_chep_loi, dung_style,
-   khong_bia, vao_ra, mot_tieu_diem}, ket_luan, loi, sua}` — thang 10, một câu lỗi và một câu cách sửa
+   chan_that, vao_ra, mot_tieu_diem}, ket_luan, loi, sua}` — thang 10, một câu lỗi và một câu cách sửa
    cho clip có tiêu chí dưới 8. Mười tiêu chí (cảnh của đoạn liền mạch thêm tiêu chí thứ mười một):
    - `doc_duoc` — chữ MANG Ý đọc được trên màn điện thoại ở cỡ thật; không chữ nhỏ, chìm nền, tràn thẻ (chữ kết cấu
      `data-zd-ket-cau` được nhỏ hơn — trừ điểm nếu nó đang mang thông tin chính).
@@ -385,8 +392,8 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
    - `cu_the` — nói đúng nội dung beat này, không phải một khuôn chung dán chữ khác vào.
    - `khong_chep_loi` — không viết lại câu đang nói lên hình.
    - `dung_style` — màu, font, cách tách lớp của style dự án (style tiết chế: không phát sáng chữ / giao diện — quầng chỉ trên vật thể).
-   - `khong_bia` — không số liệu, lượt xem, xếp hạng bịa (giao diện dựng lại của sản phẩm thật thì được); tên, giá, bằng chứng, CTA khớp phiếu
-     chỉ đạo; so sánh cùng thang đo; minh hoạ không có số thật thì có nhãn «minh hoạ».
+   - `chan_that` — giao diện trông như màn hình thật, có nội dung cụ thể (không thanh xám / khung rỗng giả chữ);
+     tên, giá, bằng chứng, CTA khớp phiếu chỉ đạo; so sánh cùng thang đo.
    - `vao_ra` — ô VÀO không giật / không đè nhau lúc đang bay vào; ô RA đã kể xong (không còn chạy dở
      khi cắt sang ý sau).
    - `mot_tieu_diem` — hiểu được thông điệp mà không phải đọc nhiều thứ cùng lúc; chữ trên hình không
