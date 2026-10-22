@@ -213,6 +213,9 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       **`split` CHỈ có ở khung dọc.** Đặt nó cho dự án ngang thì server trả lỗi `zone-sai-khung`;
       và nếu lọt qua thì renderer bỏ luôn vùng vẽ, graphic phủ TOÀN KHUNG đè lên mặt người nói.
       Ngược lại `glide` ở khung dọc thì không tách được host (chỉ đè có scrim) — dọc dùng `split`.
+      **Khung dọc có thể đổi kiểu người nói** (người dùng chọn ở modal / Công cụ): chia đôi đường chia riêng, chia
+      NGƯỢC (người nói dải trên, graphic dải dưới) hoặc THẺ PiP nhỏ ở góc (graphic trọn bề ngang dưới / trên thẻ).
+      Vẫn là zone `split` — đọc «vùng_cạnh_nhau» trong get_timeline và vẽ đúng trong hộp HOP của từng clip.
       **Không nhét bậc 2/3 vào `over`** — sẽ đè mặt người. Ở khung NGANG dải `over` chỉ cao 400px:
       hình nhiều tầng (map-tree, wf-tree/gantt/swimlane/kanban…, chart-radar) → `glide`, hình giao
       diện (mockup-app, chat, terminal) → `stage`; server chặn nếu ép `over`. Cửa ải cũng trả về
