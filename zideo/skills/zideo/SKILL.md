@@ -534,6 +534,14 @@ bảng sẽ học + `am_tay` (âm đặt tay không khớp sự kiện, kèm l�
 luat_tay)`. Xem / sửa / xoá: `list_sfx_logic`, `edit_sfx_logic`. Lỗi «thiếu quyền» = tài khoản chưa được admin giao
 «Lưu logic SFX» — báo người dùng.
 
+## Người dùng chê / khen tiếng động
+
+Người dùng nói một tiếng động hợp hay không hợp («tiếng whoosh ở giây 12 điện tử quá», «tiếng lật giấy chỗ đó hay») →
+`rate_sfx(project, clip | giay, hop, ly_do?)` để app GHI NHẬN và học gu của họ — lần sau app tự chọn âm tránh / ưu tiên
+kiểu đó. `rate_sfx` chỉ ghi nhận, không sửa timeline: muốn đổi âm thì làm thêm bằng `edit_clip` / `add_sfx_clip`. Chỉ chấm
+theo lời người dùng — đừng tự chấm thay họ. Lý do khi không hợp: `sai-chat-lieu` · `qua-dien-tu` · `qua-to` · `qua-nho` ·
+`sai-luc` · `lap-nhieu` · `qua-dai` · `cut-dau` · `khac`.
+
 ## Style của tôi (thư viện người dùng)
 
 Người dùng muốn đổi diện mạo của style đang dùng («màu nhấn sang cam», «bo góc ít thôi», «tiêu đề chữ áp phích», «đừng
