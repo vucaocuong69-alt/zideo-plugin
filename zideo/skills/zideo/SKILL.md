@@ -541,7 +541,8 @@ Người dùng muốn **app tự đặt tiếng động theo nội dung video** 
 thật, tiếng nền), app sinh tiếng đúng độ dài, đặt đỉnh vào khung hình đáp, tự hạ tiếng đè giọng. Lượt chạy nền vài phút:
 trả «đang chạy» thì gọi lại với `hanh_dong: "trang_thai"` sau ~60 giây — đừng đặt tay chồng lên trong lúc chờ. Nó THAY
 tiếng máy đặt trước đó; tiếng đặt bằng `add_sfx_clip` giữ nguyên. Mỗi lượt tốn chi phí → chỉ chạy khi người dùng muốn,
-mặc định `muc: "ky"`, `nguon: "sinh-moi"`. Chê cả lượt → `hanh_dong: "lui"`; chê một tiếng → `edit_clip` / xoá + `rate_sfx`.
+mặc định `muc: "ky"`, `nguon: "sinh-moi"`; người dùng muốn ít / nhiều tiếng hơn → `do_day: "it"` / `"day"`. Lỗi
+«het-ngan-sach» = hết trần ngày của tài khoản — báo người dùng, đừng gọi lại. Chê cả lượt → `hanh_dong: "lui"`; chê một tiếng → `edit_clip` / xoá + `rate_sfx`.
 Lỗi «thiếu quyền» = tài khoản chưa được admin giao «AI xem video đặt tiếng động» — báo người dùng.
 Chỗ cùng tầng nghĩa (chuyển phần, đề mục, liệt kê, dấu tích / dấu X lặp) được gom thành **tiếng cố định** dùng chung một
 tệp (clip có `origin.coDinh`) — đừng `add_sfx_clip` đè từng cái; người dùng muốn đổi cả nhóm thì chỉ họ chọn tiếng đó
