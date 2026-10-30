@@ -534,6 +534,30 @@ bảng sẽ học + `am_tay` (âm đặt tay không khớp sự kiện, kèm l�
 luat_tay)`. Xem / sửa / xoá: `list_sfx_logic`, `edit_sfx_logic`. Lỗi «thiếu quyền» = tài khoản chưa được admin giao
 «Lưu logic SFX» — báo người dùng.
 
+## AI xem video và đặt tiếng động
+
+Người dùng muốn **app tự đặt tiếng động theo nội dung video** («cho AI đặt tiếng động», «tự đặt sfx theo video») →
+`auto_sfx_from_video(project)` SAU KHI đã dựng xong hình. AI xem cả video, chọn chỗ + tiếng hợp ngữ cảnh (kể cả tiếng vật
+thật, tiếng nền), app sinh tiếng đúng độ dài, đặt đỉnh vào khung hình đáp, tự hạ tiếng đè giọng. Lượt chạy nền vài phút:
+trả «đang chạy» thì gọi lại với `hanh_dong: "trang_thai"` sau ~60 giây — đừng đặt tay chồng lên trong lúc chờ. Nó THAY
+tiếng máy đặt trước đó; tiếng đặt bằng `add_sfx_clip` giữ nguyên. Mỗi lượt tốn chi phí → chỉ chạy khi người dùng muốn,
+mặc định `muc: "ky"`, `nguon: "sinh-moi"`. Chê cả lượt → `hanh_dong: "lui"`; chê một tiếng → `edit_clip` / xoá + `rate_sfx`.
+Lỗi «thiếu quyền» = tài khoản chưa được admin giao «AI xem video đặt tiếng động» — báo người dùng.
+Chỗ cùng tầng nghĩa (chuyển phần, đề mục, liệt kê, dấu tích / dấu X lặp) được gom thành **tiếng cố định** dùng chung một
+tệp (clip có `origin.coDinh`) — đừng `add_sfx_clip` đè từng cái; người dùng muốn đổi cả nhóm thì chỉ họ chọn tiếng đó
+trong editor («Đổi bản», «Sinh lại cả nhóm», «Tách khỏi nhóm»), hoặc `regenerate_sfx` với mô tả mới.
+
+Người dùng tả một tiếng động muốn có ở một chỗ («đổi tiếng ở giây 42 thành tiếng gõ cửa gỗ», «thêm tiếng mưa nhẹ từ giây
+10») → `regenerate_sfx(project, mo_ta, clip | giay, dai?, neo?, lap?)`: app hiểu theo hình + lời ở đó, sinh 3 bản, đặt
+bản đề xuất. Tiếng cố định: mặc định đổi cả nhóm (`ca_nhom: false` = chỉ tiếng đó, nó rời nhóm). Truyền nguyên lời người
+dùng vào `mo_ta`, đừng tự dịch.
+
+**Bộ tiếng.** Người dùng ưng tiếng của một video đã chạy AI xem («lưu bộ sfx này tên X») → `learn_sfx_logic` cho họ xem
+(phần `bo_tieng_ai_xem`: tiếng cố định theo tầng + số tiếng biến thiên), duyệt xong `save_sfx_logic`. Video sau
+(«đặt tiếng động theo bộ X») → `auto_sfx_from_video(project, bo: "X")`: tiếng cố định cùng tầng LUÔN dùng lại tệp bộ, tiếng
+biến thiên app ưu tiên sinh mới, chỉ dùng lại khi hình cùng loại vật / hành động (≤ 15%, mỗi tệp ≤ 2 lần). `bo: ""` = không
+dùng bộ; bỏ trống = theo lựa chọn lần trước của dự án. Tên bộ không có → lỗi kèm danh sách bộ, hỏi lại người dùng.
+
 ## Người dùng chê / khen tiếng động
 
 Người dùng nói một tiếng động hợp hay không hợp («tiếng whoosh ở giây 12 điện tử quá», «tiếng lật giấy chỗ đó hay») →
