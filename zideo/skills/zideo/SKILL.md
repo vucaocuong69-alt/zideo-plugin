@@ -579,6 +579,29 @@ Trả «đang chạy» thì gọi lại với `viec_id` sau ~20 giây. Nhạc to
 Lỗi «chưa mở tính năng» = tài khoản chưa được admin giao «Tạo nhạc nền AI»; «het-ngan-sach» = hết trần ngày — báo người
 dùng, đừng gọi lại.
 
+## Ảnh đời thường (ảnh chụp do AI tạo)
+
+«Ảnh đời thường» = ảnh CHỤP cho đúng một loại chỗ: người nói lấy một thứ ĐỜI THẬT chụp được (món ăn, quán, chợ, người làm
+một việc, đồ vật, cảnh sinh hoạt) ra để VÍ DỤ hoặc VÍ VON cho một ý khác — vd «model chuyên ngành giống quán chuyên phở, quán
+chuyên cơm tấm», «cùng một cô nhân viên ở cửa hàng, quán cà phê, sạp chợ». Người dùng bật ở modal tạo video hoặc editor
+(Công cụ › Dựng); app tự dò chỗ.
+
+- **Lúc dựng:** get_timeline có khối `ảnh_đời_thường` → `list_photo_spots(project)` → với mỗi chỗ ĐÃ DUYỆT gọi
+  `generate_photo(project, cho, so)` từng ảnh, rồi đặt vào graphic của đúng beat đó bằng thẻ ảnh (mã mẫu trả kèm: ảnh phủ thẻ
+  `objectFit: "cover"`, dải tối dưới + nhãn). Chỗ «một nhân vật»: sinh ảnh đầu trước, app tự dùng nó làm ảnh mẫu cho ảnh sau.
+  Beat ngoài danh sách dựng graphic như thường — KHÔNG thêm ảnh chụp cho đẹp.
+- **App dò sót** một chỗ ví dụ / ví von đời thật → `suggest_photo_spot` (trích nguyên văn lời; mỗi thứ được gọi tên một ảnh) —
+  chỗ đó CHỜ người dùng duyệt. Hỏi họ; họ đồng ý thì gọi `generate_photo` kèm `yeu_cau` = nguyên văn lời họ.
+- **Người dùng xin thẳng trong chat** («tạo ảnh tô phở», «làm ảnh cô bán hàng ở chợ cho beat 12») → `generate_photo(project,
+  yeu_cau: <nguyên văn lời họ>, nhan, prompt_en)` — được cả khi dự án tắt. Không tự bịa `yeu_cau`. Họ gửi ảnh người thật để
+  giữ nhân vật → `upload_link` rồi truyền `mau: [id]`.
+- **Chưa ưng một ảnh** → `generate_photo(project, tao_lai: "<id ảnh cũ>", prompt_en?)` — app sinh tệp mới và tự đổi mọi graphic
+  đang dùng ảnh cũ.
+- KHÔNG dùng cho: giao diện phần mềm (clone_screenshot), logo (add_logo), người / thương hiệu / sự kiện thật (ảnh nguồn thật).
+  `prompt_en` chỉ tả thứ cần chụp + bối cảnh, tiếng Anh không dấu — phong cách ảnh chụp đã khoá sẵn.
+- Lỗi «cho-chua-duyet» = hỏi người dùng; «het-han-muc» (8 ảnh / video, 20 nếu tính ảnh người dùng xin) hay «het-ngan-sach»
+  (trần ngày) = báo người dùng, đừng gọi lại.
+
 ## AI xem video và đặt tiếng động
 
 Người dùng muốn **app tự đặt tiếng động theo nội dung video** («cho AI đặt tiếng động», «tự đặt sfx theo video») →
