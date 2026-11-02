@@ -569,6 +569,16 @@ bảng sẽ học + `am_tay` (âm đặt tay không khớp sự kiện, kèm l�
 luat_tay)`. Xem / sửa / xoá: `list_sfx_logic`, `edit_sfx_logic`. Lỗi «thiếu quyền» = tài khoản chưa được admin giao
 «Lưu logic SFX» — báo người dùng.
 
+## Nhạc nền AI (không lời)
+
+Người dùng muốn **nhạc nền mới do AI tạo** («tạo nhạc nền», «làm bản nhạc lo-fi cho video này») → `generate_music(project,
+mo_ta)`. Ra nhạc KHÔNG LỜI dài đúng video, tự gắn vào hàng Nhạc nền (thay nhạc đang có, hoặc tạo clip trải cả video) và tự
+nhỏ lại khi người nói đang nói. Mỗi phút nhạc tốn chi phí → CHỈ tạo khi người dùng yêu cầu, không tự tạo lúc dựng video.
+Người dùng chưa nói kiểu nhạc → `generate_music(project, goi_y_theo_loi: true)` (miễn phí) rồi đọc đề xuất cho họ chọn.
+Trả «đang chạy» thì gọi lại với `viec_id` sau ~20 giây. Nhạc to / nhỏ quá → `edit_clip` clip nhạc (`base`, `duck`).
+Lỗi «chưa mở tính năng» = tài khoản chưa được admin giao «Tạo nhạc nền AI»; «het-ngan-sach» = hết trần ngày — báo người
+dùng, đừng gọi lại.
+
 ## AI xem video và đặt tiếng động
 
 Người dùng muốn **app tự đặt tiếng động theo nội dung video** («cho AI đặt tiếng động», «tự đặt sfx theo video») →
