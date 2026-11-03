@@ -93,6 +93,17 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
      làm tiếp tới khi trông như ảnh chụp sản phẩm.
    - Server tự chèn phiếu + dòng của beat vào `get_prompt_contract` — dựng đúng hướng đã chốt; đổi ý
      thì sửa bảng trước. Mã đạt thì dòng tự sang «chờ duyệt». Người dùng xin bảng → `export_direction_table` (CSV).
+   - **STORYBOARD — `get_timeline.storyboard` có `bat: true` thì DỪNG sau khi lập bảng.** Bảng đạo diễn chính là
+     storyboard người dùng xem trên web (mỗi ô một beat: ảnh người nói, đủ lời thoại, dự định của bạn). Mỗi dòng
+     ghi thêm `hinh` (archetype định dùng, đúng tên trong BẢNG HÌNH — ô có nút xem ảnh mẫu) + `bo_cuc` (vùng vẽ) +
+     `hanh_dong` — ô thiếu chúng là ô trống nghĩa. Người dùng xin «phác thảo» thì thêm `phac_thao`: một <svg> khung dây ≤ 6000
+     ký tự (hộp, mũi tên, nhãn ngắn; viewBox theo khung) — mặc định KHÔNG vẽ cho đỡ tốn.
+     Lập xong cả video thì DỪNG, gửi người dùng link `storyboard.link`, KHÔNG viết motion graphic. Người dùng góp ý
+     từng ô rồi dán cho bạn một khối «Góp ý storyboard…» (hoặc bảo «đọc góp ý storyboard» → `get_storyboard_feedback`).
+     Làm đúng dòng «Việc:» của khối đó: sửa bảng, kèm `da_ap` («đã đổi gì», một câu) ở MỖI dòng đã sửa theo góp ý
+     và `da_ap_chung` cho góp ý chung — rồi DỪNG gửi lại link (vòng sau), hoặc dựng luôn nếu «Việc:» bảo dựng.
+     Ô «bỏ graphic» = `trang_thai: "de-trong"`. `storyboard.trangThai` «da-duyet» thì dựng đúng theo bảng.
+     Người dùng bảo dựng ngay / bỏ qua storyboard thì cứ dựng — server chỉ nhắc, không chặn.
    - Dự án cũ đã dựng xong mà không có phiếu: không bắt buộc lập lại, trừ khi người dùng yêu cầu.
    - Người dùng đưa VIDEO MẪU («dựng giống video X») → `recipe_from_reference(<project>, du_an_mau: X,
      ap_dung: true)` TRƯỚC khi lập bảng: đo nhịp đổi cảnh, người nói đứng đâu bao nhiêu % thời lượng, hình
