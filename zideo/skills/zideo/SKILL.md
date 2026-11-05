@@ -668,6 +668,26 @@ video sau nó đứng đầu ô chọn style với nhãn «của bạn», chọn
 `edit_library`. Lỗi «thiếu quyền» khi lưu = tài khoản chưa được admin giao «Lưu design style» — báo người dùng (chỉnh
 cho dự án vẫn làm được). Áp cho: 16:9 · 9:16 · đoạn liền mạch · MG lẻ · mascot. Không áp: reaction, sáu theme viết tay.
 
+## Lưu phong cách video
+
+Người dùng đã cùng bạn sửa sâu một video (chuyển động MG, chữ chạy, cách xuất hiện / biến mất, nhịp…), ưng, và muốn
+**video sau giữ đúng cách thể hiện đó** («lưu phong cách video này», «lưu cách chuyển động này thành style mới tên X») →
+`learn_style_from_project(project, ten, luat, ban_mau, dung_cu)`. Máy chủ tự bóc phần đo được (lò xo, đường cong, nhịp vào /
+ra, so le, chữ chạy, hàm lặp lại, màu / chữ đã chỉnh, thiết lập dự án) — bạn gửi thứ máy KHÔNG thấy:
+- `luat`: những điều NGƯỜI DÙNG đã khen / chê / chốt về chuyển động trong cuộc trò chuyện — đúng ý họ, không bịa, mỗi câu
+  một ý, nhịp nói bằng GIÂY (không bằng số khung). Nhóm: vao · ra · chu · chuyen-canh · nhip · bo-cuc · khac; luật bố cục
+  (`bo-cuc`) chỉ đúng khung của video nguồn.
+- `ban_mau`: `{clip_id: vai}` cho vài MG tiêu biểu (lấy trong `ung_vien_mau`, ưu tiên `so_lan_sua` cao — chỗ hai bên mài
+  nhiều nhất). Vai: số-lớn · danh-sách · so-sánh · từng-bước · sơ-đồ · giao-diện · hội-thoại · biểu-mẫu · dòng-lệnh · nhãn-đóng.
+- Dự án đang dùng một style của họ và họ muốn nâng chính style đó → `che_do: "cap-nhat"`.
+Tool chỉ tạo BẢN NHÁP. Gửi người dùng `trang_duyet`: họ xem mẫu chạy lặp, tick phần giữ, đặt tên rồi TỰ bấm lưu — bạn
+không lưu thay được. Video sau dùng style đó: hợp đồng beat có mục **PHONG CÁCH ĐÃ LƯU** (lò xo, nhịp, kiểu vào / ra, luật,
+dụng cụ) — theo nó; beat có vai trùng mẫu thì `find_examples(role)` trả `mẫu_của_phong_cách` đứng đầu (mượn chuyển động,
+không chép chữ). Ghi MG lệch xa chữ ký thì app CẢNH BÁO (không chặn) — sửa nếu không có lý do. `get_timeline` ›
+`style_của_người_dùng.phong_cách.khop_hien_tai` báo % khớp; dưới 60% thì xem lại lò xo / nhịp trước khi bàn giao. Sửa luật
+của style đã lưu: `edit_library(loai:"style", hanh_dong:"sua", luat_chuyen_dong)`. Áp cho: 16:9 · 9:16 · 1:1/4:5 · đoạn
+liền mạch · MG lẻ · mascot · avatar. Không áp: sáu theme viết tay, reaction, «Chữ nhấn» / «Trả lời câu hỏi».
+
 ## Gợi ý lưu vào thư viện
 
 Người dùng thường KHÔNG biết họ lưu được cảm giác chuyển động, logic SFX hay style — bạn là người nói cho họ. Đọc mục
@@ -675,7 +695,8 @@ Người dùng thường KHÔNG biết họ lưu được cảm giác chuyển �
 ra ưng — chỉnh animation một beat mấy lượt rồi khen, đổi màu / chữ của style, sửa tay tiếng động — hỏi MỘT câu ngắn:
 «Bạn muốn lưu [cái này] vào thư viện để lần sau chọn sẵn ở [dung_lai_o] không? Tên gợi ý: …». Mỗi loại tối đa một lần
 mỗi phiên, họ từ chối thì thôi; có `dự_án_này_có_thứ_đáng_lưu` thì nhắc lúc bàn giao. Họ đồng ý → đi đúng luồng lưu
-của loại đó (learn/save_motion_feel, learn/save_sfx_logic, save_to_library).
+của loại đó (learn/save_motion_feel, learn/save_sfx_logic, save_to_library; ưng cả cách chuyển động của video →
+learn_style_from_project).
 
 ## Dựng nhân vật mã từ ảnh mẫu
 
