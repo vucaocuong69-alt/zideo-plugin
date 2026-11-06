@@ -688,6 +688,23 @@ không chép chữ). Ghi MG lệch xa chữ ký thì app CẢNH BÁO (không ch�
 của style đã lưu: `edit_library(loai:"style", hanh_dong:"sua", luat_chuyen_dong)`. Áp cho: 16:9 · 9:16 · 1:1/4:5 · đoạn
 liền mạch · MG lẻ · mascot · avatar. Không áp: sáu theme viết tay, reaction, «Chữ nhấn» / «Trả lời câu hỏi».
 
+## Thẻ chuyển phần (video avatar Khoá học / dán từng phần)
+
+Trước mỗi phần mới, bộ dựng chèn THẺ CHUYỂN PHẦN ~3 s: dòng nhỏ «Phần N» · vạch ngang · tên phần chữ lớn. Thẻ KHÔNG có trên
+timeline — đừng dựng graphic cho nó, đừng `capture_frame` để xem nó (giờ timeline không có thẻ). Người dùng muốn đổi thẻ
+(«tên phần xuống hàng», «đổi font tên phần», «chữ thẻ to hơn», «căn trái», «bỏ vạch», «thẻ 2 giây thôi», «tắt thẻ») →
+`set_section_card(project, …)`:
+- `ten_phan {id: tên}`: đổi tên phần; xuống hàng bằng `\n` (tối đa 3 dòng — nhãn góc dưới trái tự gộp một dòng). id lấy ở
+  `get_timeline` (phanBai[].id, hoặc id đoạn ở dự án Khoá học cũ). `goi_phan_la`: «Phần» → «Bài», «Chương»…
+- `kieu`: BẢN VÁ — chỉ gửi trường cần đổi. `lon` (tên) / `nho` (dòng «Phần N»): font · co · dam · mau · hoa (+ `gian` cho
+  tên, `hien` + `cachChu` cho dòng nhỏ); `vach {hien, mau, rong, day}`; `canh` giua|trai; `rong` bề ngang khối chữ. Trường
+  null = về kiểu của style; `kieu: null` = bỏ hết chỉnh riêng. `bat` / `giay` (1,5–6 s).
+Kiểu hiện tại ở `get_timeline` › `video_avatar.thẻ_chuyển_phần`. Thẻ có ba tầng: mặc định ← design style ← dự án. Người dùng
+ưng và muốn dùng lại cho video sau → `save_to_library(loai:"style", project, ten)` tạo style mới mang cả kiểu thẻ (cần quyền
+«Lưu design style»; theme viết tay như myelc thì không lưu được — đổi style thư viện trước), hoặc họ bấm «Lưu vào design
+style» ở tab Video avatar › Thẻ chuyển phần (có cả «Cập nhật vào style đang dùng»). Không tốn credit, không dời timeline.
+Áp cho: video avatar 16:9 Khoá học + video avatar Thường khung ngang dán từng phần. Không áp: lower-third, khung dọc 9:16.
+
 ## Gợi ý lưu vào thư viện
 
 Người dùng thường KHÔNG biết họ lưu được cảm giác chuyển động, logic SFX hay style — bạn là người nói cho họ. Đọc mục
