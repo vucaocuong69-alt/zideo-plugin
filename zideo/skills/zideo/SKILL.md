@@ -690,19 +690,33 @@ liền mạch · MG lẻ · mascot · avatar. Không áp: sáu theme viết tay,
 
 ## Thẻ chuyển phần (video avatar Khoá học / dán từng phần)
 
-Trước mỗi phần mới, bộ dựng chèn THẺ CHUYỂN PHẦN ~3 s: dòng nhỏ «Phần N» · vạch ngang · tên phần chữ lớn. Thẻ KHÔNG có trên
-timeline — đừng dựng graphic cho nó, đừng `capture_frame` để xem nó (giờ timeline không có thẻ). Người dùng muốn đổi thẻ
-(«tên phần xuống hàng», «đổi font tên phần», «chữ thẻ to hơn», «căn trái», «bỏ vạch», «thẻ 2 giây thôi», «tắt thẻ») →
-`set_section_card(project, …)`:
-- `ten_phan {id: tên}`: đổi tên phần; xuống hàng bằng `\n` (tối đa 3 dòng — nhãn góc dưới trái tự gộp một dòng). id lấy ở
-  `get_timeline` (phanBai[].id, hoặc id đoạn ở dự án Khoá học cũ). `goi_phan_la`: «Phần» → «Bài», «Chương»…
-- `kieu`: BẢN VÁ — chỉ gửi trường cần đổi. `lon` (tên) / `nho` (dòng «Phần N»): font · co · dam · mau · hoa (+ `gian` cho
-  tên, `hien` + `cachChu` cho dòng nhỏ); `vach {hien, mau, rong, day}`; `canh` giua|trai; `rong` bề ngang khối chữ. Trường
-  null = về kiểu của style; `kieu: null` = bỏ hết chỉnh riêng. `bat` / `giay` (1,5–6 s).
-Kiểu hiện tại ở `get_timeline` › `video_avatar.thẻ_chuyển_phần`. Thẻ có ba tầng: mặc định ← design style ← dự án. Người dùng
-ưng và muốn dùng lại cho video sau → `save_to_library(loai:"style", project, ten)` tạo style mới mang cả kiểu thẻ (cần quyền
-«Lưu design style»; theme viết tay như myelc thì không lưu được — đổi style thư viện trước), hoặc họ bấm «Lưu vào design
-style» ở tab Video avatar › Thẻ chuyển phần (có cả «Cập nhật vào style đang dùng»). Không tốn credit, không dời timeline.
+Trước mỗi phần mới (từ phần thứ hai), bộ dựng CHÈN THÊM một THẺ CHUYỂN PHẦN ~3 s im lặng. Thẻ KHÔNG có trên timeline,
+không phải beat, không phải MG — MG bắt đầu ngay mốc đó là MG ĐẦU PHẦN (người nói đang nói), KHÁC thẻ. Mốc + chữ từng thẻ:
+`get_timeline` › `video_avatar.thẻ_chuyển_phần.các_thẻ`.
+- Người dùng nói «đoạn chuyển phần / chuyển đoạn / thẻ chuyển phần / màn chuyển» = THẺ. Đừng sửa MG đầu phần, đừng dựng MG
+  thay thẻ, đừng tắt thẻ. Chưa rõ họ nói thẻ hay MG đầu phần → HỎI LẠI một câu trước khi sửa.
+- `bat:false` CHỈ khi họ nói rõ muốn tắt / bỏ thẻ. Muốn thẻ khác đi → đổi mẫu / kiểu.
+- Nhìn thẻ: `capture_frame(project, the: N)` (N = 1 là thẻ trước phần thứ hai; `luc` = giây trong thẻ, mặc định 1,4).
+  `at` không chụp được thẻ. Chụp sau MỖI lần đổi rồi mới báo người dùng.
+
+Ba MẪU (`set_section_card` › `kieu.mau`):
+- `"chu"` (mặc định): dòng nhỏ «Phần N» · vạch ngang · tên phần chữ lớn.
+- `"danh-sach"`: BẢNG BREAKDOWN mọi phần — số lớn 01/02, tên, mô tả ngắn; phần đã qua mờ + ✓, phần sắp tới sáng nền màu
+  nhấn + phóng to, con trỏ chuột bấm vào; tên bài ở trên. Người dùng muốn «liệt kê các phần», «mục lục», «highlight phần
+  đang tới» → thử mẫu này trước. `kieu.ds {chuot, moTa, so}`; mô tả từng phần: `mo_ta_phan {id: "…"}`.
+- `"tuy-bien"`: mã MG riêng — `write_section_card(project, code)`. Dùng khi hai mẫu trên không làm được (icon từng phần,
+  bố cục ngang, bộ đếm…). MỘT mã cho MỌI thẻ: hộp trọn khung 1920×1080, nền style vẽ sẵn bên dưới, dữ liệu qua
+  `const the = useThe()` (gọi ở đầu component) = `{so, nho, ten, moTa, i, ds:[{so, nho, ten, moTa}], tong, giay, bai}` —
+  vẽ từ đó, đừng ghi cứng tên phần. Cùng cửa ải với write_motion_graphic; lỗi → đọc `chi_tiết`, gửi lại TOÀN BỘ mã. Đạt
+  → `capture_frame(the: [1, <thẻ cuối>])`. Bỏ mã: `set_section_card(xoa_ma_tuy_bien: true)`.
+
+`set_section_card` còn: `ten_phan {id: tên}` (xuống hàng bằng `\n`, tối đa 3 dòng; id ở `thẻ_chuyển_phần`/`khoaHocChu`),
+`goi_phan_la` («Phần» → «Bài»…), `kieu` BẢN VÁ — `lon` (tên) / `nho` (dòng «Phần N», số): font · co · dam · mau · hoa
+(+ `gian` cho tên, `hien` + `cachChu` cho dòng nhỏ); `vach {hien, mau, rong, day}` (vach.mau = màu nhấn của mẫu danh
+sách); `canh` giua|trai; `rong`. Trường null = về kiểu của style; `kieu: null` = bỏ hết chỉnh riêng. `giay` 1,5–6 s.
+Thẻ có ba tầng: mặc định ← design style ← dự án. Người dùng ưng và muốn dùng lại → `save_to_library(loai:"style", project,
+ten)` (mang cả mẫu + mã tuỳ biến; cần quyền «Lưu design style»; theme viết tay như myelc thì đổi style thư viện trước),
+hoặc họ bấm «Lưu vào design style» ở tab Video avatar › Thẻ chuyển phần. Không tốn credit, không dời timeline.
 Áp cho: video avatar 16:9 Khoá học + video avatar Thường khung ngang dán từng phần. Không áp: lower-third, khung dọc 9:16.
 
 ## Gợi ý lưu vào thư viện
