@@ -96,7 +96,7 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
    - **STORYBOARD — `get_timeline.storyboard` có `bat: true` thì DỪNG sau khi lập bảng.** Bảng đạo diễn chính là
      storyboard người dùng xem trên web (mỗi ô một beat: ảnh người nói, đủ lời thoại, dự định của bạn). Mỗi dòng
      ghi thêm `hinh` (archetype định dùng, đúng tên trong BẢNG HÌNH — ô có nút xem ảnh mẫu) + `bo_cuc` (vùng vẽ) +
-     `hanh_dong` + `phac_thao` (một <svg> khung dây gọn ~1500–3000 ký tự, tối đa 6000: hộp, mũi tên, nhãn ngắn; viewBox theo
+     `hanh_dong` + `phac_thao` (một <svg xmlns="http://www.w3.org/2000/svg"> khung dây gọn ~1500–3000 ký tự, tối đa 6000: hộp, mũi tên, nhãn ngắn; viewBox theo
      khung; vẽ trong vùng `bo_cuc`) — ô thiếu chúng là ô trống nghĩa, người dùng không hình dung được graphic. Beat «de-trong» thì thôi.
      Lập xong cả video thì DỪNG, gửi người dùng link `storyboard.link`, KHÔNG viết motion graphic. Người dùng góp ý
      từng ô rồi dán cho bạn một khối «Góp ý storyboard…» (hoặc bảo «đọc góp ý storyboard» → `get_storyboard_feedback`).
@@ -718,6 +718,26 @@ Thẻ có ba tầng: mặc định ← design style ← dự án. Người dùng
 ten)` (mang cả mẫu + mã tuỳ biến; cần quyền «Lưu design style»; theme viết tay như myelc thì đổi style thư viện trước),
 hoặc họ bấm «Lưu vào design style» ở tab Video avatar › Thẻ chuyển phần. Không tốn credit, không dời timeline.
 Áp cho: video avatar 16:9 Khoá học + video avatar Thường khung ngang dán từng phần. Không áp: lower-third, khung dọc 9:16.
+
+## Chỉnh người nói & video avatar theo lời người dùng
+
+Chỉ làm khi người dùng NHỜ (đừng tự đổi lúc dựng). Đi cùng route với giao diện, không tốn credit trừ chỗ ghi rõ.
+- **Vị trí / khung người nói cả video** → `set_host_frame`. Không tham số = đọc khung hiện tại (số pixel thật).
+  - 9:16 cảnh chia: `vi_tri_mat_chia` (mốc mặt trong dải, mặc định 0,38; nhỏ = người nói LÊN). Số âm chỉ khi đã tách nền —
+    chưa tách nền mà cần đầu cao hơn thì nới dải trước: `khung_doc: {nguoi: 0.55}`.
+  - `khung_doc` / `khung_ngang` là BẢN VÁ — chỉ gửi trường muốn đổi. Đổi khung thì hộp graphic tự dời theo.
+  - Cảnh toàn khung không dời lên / xuống được → đổi cảnh đó sang chia / PiP.
+- **Bố cục một cảnh** (toàn khung / chia / PiP / vắng / trái / phải) → `set_host_layout(canh, bo_cuc)`. Cảnh đoạn liền mạch
+  dùng `set_doan(nguoi_noi)`, mascot dùng `set_mascot`.
+- **Video avatar** → `edit_avatar`, luôn `viec:"xem"` trước để lấy id đoạn. Bố cục cả đoạn (9:16), nhân vật
+  (`ds_nhan_vat` → `nhan_vat`), model, tỉ lệ có mặt, phân bổ lại, thêm / bỏ / nới đoạn, avatar phụ (Khoá học), tốc độ
+  giọng, hoàn tác / làm lại.
+  - Tool trả «da-sinh-avatar» kèm số credit → báo người dùng, chỉ gửi lại `xac_nhan:true` khi họ đồng ý.
+  - Tool không tự sinh avatar: sửa xong nhắc người dùng bấm «Sinh avatar».
+- Sau mọi thay đổi: `capture_frame` một hai cảnh bị ảnh hưởng để NHÌN, lệch thì chỉnh tiếp; graphic đè người nói thì viết lại
+  graphic của cảnh đó.
+
+Áp cho: 9:16 và 16:9 (video thường + video avatar + Khoá học). Không áp: mascot (dùng `set_mascot`), reaction.
 
 ## Gợi ý lưu vào thư viện
 
