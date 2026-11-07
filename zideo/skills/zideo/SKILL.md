@@ -555,6 +555,11 @@ Chỉ cho dự án có giọng đọc do app sinh: video avatar chia phần, và
 - Câu trong đoạn avatar ĐÃ SINH: tool trả `cảnh_báo` lệch khẩu hình — chuyển nguyên lời cho người dùng, KHÔNG tự sinh
   lại avatar (tốn credit).
 - Mỗi lần đọc lại tốn một lượt giọng đọc: chỉ làm khi người dùng chê / yêu cầu.
+- BỎ HẲN một khúc lời (câu thừa, chữ lặp, quãng nghỉ dài) mà không đọc lại → `cut_speaker_audio` (video avatar): `them`
+  (tu, den giây timeline — server hít vào ranh giới chữ, không cắt đôi chữ) → báo người dùng khúc sẽ cắt (`chờ_chốt`) →
+  CHỈ `chot` khi họ nói rõ muốn cắt. Chốt dời mọi thứ phía sau lên (~1 phút, chạy nền); avatar đã sinh cắt luôn hình,
+  không tốn credit. Sau chốt xem `graphic_cần_xem_lại` → capture_frame, viết lại graphic lệch nhịp. `hoan_tac` = về
+  trước lần chốt. Còn câu sửa giọng chưa apply thì `apply_voice_edits` trước.
 
 ## Tiếng người nói (tắt / âm lượng từng đoạn, tách âm thanh)
 
