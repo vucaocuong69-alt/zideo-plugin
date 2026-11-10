@@ -709,6 +709,8 @@ không phải beat, không phải MG — MG bắt đầu ngay mốc đó là MG 
 - Người dùng nói «đoạn chuyển phần / chuyển đoạn / thẻ chuyển phần / màn chuyển» = THẺ. Đừng sửa MG đầu phần, đừng dựng MG
   thay thẻ, đừng tắt thẻ. Chưa rõ họ nói thẻ hay MG đầu phần → HỎI LẠI một câu trước khi sửa.
 - `bat:false` CHỈ khi họ nói rõ muốn tắt / bỏ thẻ. Muốn thẻ khác đi → đổi mẫu / kiểu.
+- Bỏ RIÊNG một thẻ («bỏ thẻ phần 2, giữ các phần khác») → `set_section_card(bo_the: {<id phần>: true})`; `false` = chèn lại.
+  id ở `get_timeline` › `thẻ_chuyển_phần.từng_thẻ`. Đừng tắt cả bộ rồi bảo người dùng tự làm trên web.
 - Nhìn thẻ: `capture_frame(project, the: N)` (N = 1 là thẻ trước phần thứ hai; `luc` = giây trong thẻ, mặc định 1,4).
   `at` không chụp được thẻ. Chụp sau MỖI lần đổi rồi mới báo người dùng.
 
@@ -751,6 +753,24 @@ Chỉ làm khi người dùng NHỜ (đừng tự đổi lúc dựng). Đi cùng
   graphic của cảnh đó.
 
 Áp cho: 9:16 và 16:9 (video thường + video avatar + Khoá học). Không áp: mascot (dùng `set_mascot`), reaction.
+
+## Tải video lên & thay video người nói
+
+Người dùng có video trên máy (ổ ngoài, thư mục xuất…) → `upload_link(loai: "video")`, điền đường dẫn + tên vào `lệnh_bash`
+(gửi theo mảnh 80 MB — đường truyền chặn mỗi lần gửi > 100 MB) rồi TỰ chạy, chờ lâu được (vài phút). Dòng cuối có `"xong":true`
+và `id` (broll/up-…). ĐỪNG bảo người dùng tự tải lên khi bạn đọc được tệp; đừng tìm tệp trong list_assets theo tên gốc trước
+khi tải — tên trong thư viện có tiền tố `up-<số>-`.
+
+Người dùng có bản MỚI của CÙNG lượt quay (làm mịn da, chỉnh màu, xuất lại nét hơn) và muốn thay vào dự án đã dựng →
+`replace_host_video(project, src: id, chi_kiem: true)` để đo, rồi gọi lại không có `chi_kiem`. Mọi thứ đã dựng giữ nguyên.
+- Server đo lời có khớp không (độ dài, đường tiếng, lời lệch mấy ms). Từ chối `khong-khop` → báo người dùng con số; chỉ gửi
+  `bo_kiem: true` khi họ xác nhận. Khác hướng khung (dọc/ngang) thì không thay được — dựng dự án mới.
+- `dung-chung` (video đang dùng chung với bản sao / biến thể, kèm tên) → HỎI người dùng: `ban_sao: "giu"` (bản sao giữ video
+  cũ) hay `"thay"` (đổi theo).
+- Tách nền / bám mặt / tiếng đã xử lý tự dựng lại. Xong: `capture_frame` vài mốc để nhìn. Lỡ tay → `hoan_tac: true`.
+- KHÔNG dùng để đổi sang lượt quay khác (lời khác) — việc đó là tạo dự án mới. KHÔNG phủ video lên trọn khung để «thay» người nói.
+
+Áp cho: video người nói thật — 9:16, 16:9, 1:1/4:5, đoạn liền mạch, mọi kiểu video. Không áp: reaction, mascot, video avatar.
 
 ## Gợi ý lưu vào thư viện
 
