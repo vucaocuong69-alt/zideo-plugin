@@ -51,6 +51,9 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
      «chữ to hơn / in hoa / nền vàng / nhấn dày hơn / luôn nhấn tên sản phẩm» → `viec chinh` đúng trường đó, rồi
      capture_frame xem lại. Đổi luật chọn cụm KHÔNG tự chọn lại cụm cũ: chọn lại bằng remove_highlight /
      add_highlight. Người dùng ưng và muốn dùng lại → `viec luu` (tên họ đặt). Chọn mẫu khác: `viec xem` → `chon`.
+     Kiểu các nút không làm được (chữ rơi, bay theo đường cong, khung bong bóng, icon cạnh chữ…) → `write_text_template_code`
+     viết mã MG cho MỘT lớp (pd / cn / ch), đọc dữ liệu bằng `useChu()`; cần quyền «Mẫu chữ bằng mã» (thiếu thì báo người dùng
+     nhờ admin). Viết xong BẮT BUỘC capture_frame trên dữ liệu thật; lưu mẫu thì mẫu mang theo mã.
    - **Trả lời câu hỏi**: y hệt Chữ nhấn, thêm THẺ CÂU HỎI ở đầu video — server tự dựng từ `câu_hỏi` (chữ sáng
      dần theo nhịp đọc rồi thu lại). Chưa có câu hỏi → báo người dùng điền (Inspector › Kiểu video) — KHÔNG tự
      nghĩ câu hỏi, không tên / avatar / tích xanh / khung bình luận giả. Chữ nhấn không được rơi vào lúc thẻ còn.
