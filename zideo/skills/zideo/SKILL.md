@@ -215,6 +215,9 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       MÁY QUAY NGƯỜI NÓI — `set_host_camera(beat, zoom, lia)` (cả hai khung): `day-cham` cho beat người nói trọn khung không
       graphic, `nhan` / `zoom-giat` cho câu chốt (zoom-giat 1–2 lần mỗi video), `vao-ra`, `cat-gan`; `lia: trai|phai` = khung
       vụt vào kèm nhoè ở chỗ đổi ý lớn (2–3 lần mỗi video). Không đặt cú máy mạnh trên beat graphic đang chuyển động nhiều.
+      Người dùng nhờ «zoom vào / zoom ra người nói ở câu X» → `set_host_camera` cho (các) beat chứa câu đó: zoom vào = `nhan`
+      / `day-cham` / `cat-gan`, zoom ra = `lui-ra`; `muc` (1,05–1,6) chỉnh độ phóng đỉnh. Cú máy đặt bằng tool này chạy ở MỌI
+      dự án, kể cả dự án đã tắt đẩy máy tự động — KHÔNG bị khoá, đừng bảo người dùng nhờ admin mở khoá. Xong capture_frame kiểm.
 
    b'. **BẮT BUỘC gọi `find_examples` TRƯỚC KHI viết `write_motion_graphic`.** LLM tự sáng
       tác từ scratch có xu hướng bọc mọi archetype trong một khung/thẻ trắng "cho an toàn dễ đọc
