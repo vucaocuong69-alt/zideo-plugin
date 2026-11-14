@@ -73,6 +73,10 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
      server tự vẽ phụ đề theo lời, đổi kiểu theo bố cục người nói (dọc: nhãn trên đường chia / chữ to khi người nói
      vắng / dải karaoke; ngang: dải dưới). Graphic KHÔNG dùng <CaptionBand />, không tự làm dải chữ, và chừa làn
      phụ đề (toạ độ trong hợp đồng) — cửa ải trả `de-phu-de` khi chữ graphic rơi vào làn. Bật/tắt: phiếu `caption`.
+     Người dùng muốn đổi KIỂU phụ đề này («giống mẫu X», «một hàng», «bỏ chữ nhấn / chữ to», «có graphic thì sub
+     nằm giữa, không có thì để dưới») → `set_captions` với `mau_chu` / `so_hang` / `canh_chia` / `canh_vang` /
+     `tu_khoa`, làm THẲNG trên dự án đang dựng — KHÔNG nhân bản dự án, không đổi kiểu video, không xuất rồi dựng lại.
+     Xong capture_frame một cảnh chia nửa + một cảnh vắng người nói.
      Video nhắc tên thương hiệu / sản phẩm / người → ghi `tu_rieng` (viết ĐÚNG như phải hiện) — hợp đồng
      nhắc lại cho mọi beat, và `check_captions` soát phụ đề theo danh sách đó.
    - `get_transcript` cả video, rồi `set_beat_direction` MỘT lượt cho mọi beat: mắt nhìn vào đâu (một
