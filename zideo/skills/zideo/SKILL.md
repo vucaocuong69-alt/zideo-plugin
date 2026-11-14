@@ -76,7 +76,9 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
      Người dùng muốn đổi KIỂU phụ đề này («giống mẫu X», «một hàng», «bỏ chữ nhấn / chữ to», «có graphic thì sub
      nằm giữa, không có thì để dưới») → `set_captions` với `mau_chu` / `so_hang` / `canh_chia` / `canh_vang` /
      `tu_khoa`, làm THẲNG trên dự án đang dựng — KHÔNG nhân bản dự án, không đổi kiểu video, không xuất rồi dựng lại.
-     Xong capture_frame một cảnh chia nửa + một cảnh vắng người nói.
+     Mẫu vẽ phụ đề BẰNG MÃ (`kiểu_phụ_đề.ma_phu_de`) thì mã tự quyết số hàng / chữ nhấn / font: muốn khác bản của mẫu
+     → `write_text_template_code {phu_de_thiet_ke: true, lop: "pd", xem: true}` lấy mã, sửa (canh quanh `chu.tamY`, đúng
+     `chu.soHang` hàng, bỏ nhánh tô nhấn), gửi lại kèm `code`. Xong capture_frame một cảnh chia nửa + một cảnh vắng người nói.
      Video nhắc tên thương hiệu / sản phẩm / người → ghi `tu_rieng` (viết ĐÚNG như phải hiện) — hợp đồng
      nhắc lại cho mọi beat, và `check_captions` soát phụ đề theo danh sách đó.
    - `get_transcript` cả video, rồi `set_beat_direction` MỘT lượt cho mọi beat: mắt nhìn vào đâu (một
