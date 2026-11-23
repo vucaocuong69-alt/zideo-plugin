@@ -512,7 +512,10 @@ Hợp đồng beat có khối KHE CHUYỂN ĐỘNG khi tài khoản được gia
   `const icon = chuyenDong("Icon bay vào", {kieu: "snappy", giay: 0.4, tre: 0.2})` rồi `icon.gia(frame, -300, 0)` /
   `icon.p(frame)` / `icon.scale(frame)` / `icon.bop(frame)` / `icon.transform(frame, {...})`. Tên tiếng Việt người dùng
   đọc được, mặc định là object literal, giây và trễ bằng GIÂY, tối đa 6 khe. Mẫu: `find_examples(ky_thuat: "chuyen-dong")`.
-- GẮN KHE VÀO VẬT: đặt `{...icon.gan}` lên đúng phần tử khe điều khiển — người dùng bấm vật trên khung xem trước là mở
+- GẮN KHE VÀO VẬT: máy TỰ GẮN khi biên dịch — phần tử có thuộc tính dùng khe (kể cả qua biến) hoặc `pop(…)` tự mang tên
+  khe, nên bấm vật trên khung là mở đúng khe. Khe chỉ dùng gián tiếp (qua hàm con, mảng…) có thể sót: khi đó đặt
+  `{...icon.gan}` lên đúng phần tử khe điều khiển. Ghi mã xong đọc `cảnh_báo_khe` (chưa khai khe / chưa gắn) và sửa ngay.
+- (Cách gắn tay) đặt `{...icon.gan}` lên đúng phần tử khe điều khiển — người dùng bấm vật trên khung xem trước là mở
   đúng khe trong Inspector. Thế giới đoạn liền mạch nhận prop `gan` (có thể vắng): `{...gan?.("logo")}` trên phần tử
   `pop("logo")` điều khiển.
 - Người dùng nói «nảy mạnh hơn», «vào nhanh hơn», «trượt từ trái vào» → `set_motion(project, clip_id, khe | lop, cau_hinh)`
@@ -526,6 +529,8 @@ Hợp đồng beat có khối KHE CHUYỂN ĐỘNG khi tài khoản được gia
   Người dùng muốn chỉnh chuyển động đoạn mà chưa có khe → `set_project_motion(giu: true)` (kiểu «Như hiện tại»: hình không đổi
   tới khi đổi kiểu); dự án đã bật mà thiếu khe từng vật → `sinh_lai: true`. Kiểu «Lò xo» = đúng lò xo bật vào cũ, chỉnh được.
 - Lưu bộ ưng ý → `save_to_library(loai: "chuyen-dong", project, ten, clip_id?)`, chỉ khi người dùng bảo.
+- Dự án MỚI dựng theo đoạn: khe đoạn tự bật (kiểu «Như hiện tại») ngay lần ghi thế giới đầu tiên — không cần gọi
+  `set_project_motion(giu: true)`; phản hồi write_doan_world ghi «khe_chuyển_động» khi đã tự bật.
 - Lỗi «thieu-quyen» = tài khoản chưa được giao «Chuyển động tuỳ chỉnh» — báo người dùng.
 
 ## Cảnh màn hình quay tự động (đang thử)
