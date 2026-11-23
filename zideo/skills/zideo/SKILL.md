@@ -503,6 +503,25 @@ bản tóm tắt (tên ô tick, một dòng mô tả, luật, dụng cụ nếu 
 video sau nó hiện thành ô tick «của bạn». Xem / sửa / xoá: `list_motion_feels`, `edit_motion_feel`. Lỗi «thiếu quyền»
 = tài khoản chưa được admin giao «Lưu cảm giác chuyển động» — báo người dùng, đừng tìm đường vòng.
 
+## Chuyển động tuỳ chỉnh (velocity + nhún nảy)
+
+Người dùng chỉnh được KIỂU + THÔNG SỐ chuyển động của từng graphic trong Inspector › Chuyển động (15 kiểu: linear · easy ·
+decel · accel · strong · snappy · back · elastic · bounce · custom Bézier · pop-in · overshoot · gravity · squash · idle).
+Hợp đồng beat có khối KHE CHUYỂN ĐỘNG khi tài khoản được giao quyền — làm theo nó:
+- Mỗi chuyển động CHÍNH (vật vào khung, bật lên, rơi, nhún, rời khung) đi qua một khe:
+  `const icon = chuyenDong("Icon bay vào", {kieu: "snappy", giay: 0.4, tre: 0.2})` rồi `icon.gia(frame, -300, 0)` /
+  `icon.p(frame)` / `icon.scale(frame)` / `icon.bop(frame)` / `icon.transform(frame, {...})`. Tên tiếng Việt người dùng
+  đọc được, mặc định là object literal, giây và trễ bằng GIÂY, tối đa 6 khe. Mẫu: `find_examples(ky_thuat: "chuyen-dong")`.
+- Người dùng nói «nảy mạnh hơn», «vào nhanh hơn», «trượt từ trái vào» → `set_motion(project, clip_id, khe | lop, cau_hinh)`
+  — KHÔNG viết lại mã. `khe` = tên trong `get_timeline › khe_chuyển_động` (dấu * = người dùng đã chỉnh — đừng ghi đè trừ
+  khi họ bảo). `lop` = "vao" | "ra" | "cho": hiệu ứng của CẢ graphic, áp được cả graphic cũ không có khe.
+- Graphic cũ chưa có khe mà người dùng muốn chỉnh từng vật → viết lại mã beat đó với khe (nói trước là tốn một lượt dựng).
+- Cả video một cảm giác → `set_project_motion(id: "app-hien-dai" | "app-mem" | "app-co-luc" | "app-vui" | "app-hoat-hinh"
+  hoặc bộ của người dùng, ap_tat_ca: true)`. Có `chuyển_động_dự_án` trong `get_timeline` thì khe mới theo `kiểu_khe_mới`.
+  Đoạn liền mạch: bộ có phần `doan` (bật vào của vật · cú dời trong cảnh) — server sinh lại mã đoạn, khe nằm trong mã cảnh.
+- Lưu bộ ưng ý → `save_to_library(loai: "chuyen-dong", project, ten, clip_id?)`, chỉ khi người dùng bảo.
+- Lỗi «thieu-quyen» = tài khoản chưa được giao «Chuyển động tuỳ chỉnh» — báo người dùng.
+
 ## Cảnh màn hình quay tự động (đang thử)
 
 Graphic bạn tự dựng là CHÍNH; cảnh quay màn hình thật chỉ BỔ TRỢ — chèn khi nó là BẰNG CHỨNG THẬT mà graphic không giả được
