@@ -512,13 +512,19 @@ Hợp đồng beat có khối KHE CHUYỂN ĐỘNG khi tài khoản được gia
   `const icon = chuyenDong("Icon bay vào", {kieu: "snappy", giay: 0.4, tre: 0.2})` rồi `icon.gia(frame, -300, 0)` /
   `icon.p(frame)` / `icon.scale(frame)` / `icon.bop(frame)` / `icon.transform(frame, {...})`. Tên tiếng Việt người dùng
   đọc được, mặc định là object literal, giây và trễ bằng GIÂY, tối đa 6 khe. Mẫu: `find_examples(ky_thuat: "chuyen-dong")`.
+- GẮN KHE VÀO VẬT: đặt `{...icon.gan}` lên đúng phần tử khe điều khiển — người dùng bấm vật trên khung xem trước là mở
+  đúng khe trong Inspector. Thế giới đoạn liền mạch nhận prop `gan` (có thể vắng): `{...gan?.("logo")}` trên phần tử
+  `pop("logo")` điều khiển.
 - Người dùng nói «nảy mạnh hơn», «vào nhanh hơn», «trượt từ trái vào» → `set_motion(project, clip_id, khe | lop, cau_hinh)`
   — KHÔNG viết lại mã. `khe` = tên trong `get_timeline › khe_chuyển_động` (dấu * = người dùng đã chỉnh — đừng ghi đè trừ
   khi họ bảo). `lop` = "vao" | "ra" | "cho": hiệu ứng của CẢ graphic, áp được cả graphic cũ không có khe.
 - Graphic cũ chưa có khe mà người dùng muốn chỉnh từng vật → viết lại mã beat đó với khe (nói trước là tốn một lượt dựng).
 - Cả video một cảm giác → `set_project_motion(id: "app-hien-dai" | "app-mem" | "app-co-luc" | "app-vui" | "app-hoat-hinh"
   hoặc bộ của người dùng, ap_tat_ca: true)`. Có `chuyển_động_dự_án` trong `get_timeline` thì khe mới theo `kiểu_khe_mới`.
-  Đoạn liền mạch: bộ có phần `doan` (bật vào của vật · cú dời trong cảnh) — server sinh lại mã đoạn, khe nằm trong mã cảnh.
+  Đoạn liền mạch: bộ có phần `doan` (bật vào của vật · cú dời trong cảnh) — server sinh lại mã đoạn CHẠY NỀN (tool tự chờ),
+  khe nằm trong mã cảnh: hai khe chung của đoạn + khe «Bật vào · <tên>» cho TỪNG vật pop(tên) (khe vật thắng khe chung).
+  Người dùng muốn chỉnh chuyển động đoạn mà chưa có khe → `set_project_motion(giu: true)` (kiểu «Như hiện tại»: hình không đổi
+  tới khi đổi kiểu); dự án đã bật mà thiếu khe từng vật → `sinh_lai: true`. Kiểu «Lò xo» = đúng lò xo bật vào cũ, chỉnh được.
 - Lưu bộ ưng ý → `save_to_library(loai: "chuyen-dong", project, ten, clip_id?)`, chỉ khi người dùng bảo.
 - Lỗi «thieu-quyen» = tài khoản chưa được giao «Chuyển động tuỳ chỉnh» — báo người dùng.
 
