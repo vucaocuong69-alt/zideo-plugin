@@ -633,10 +633,23 @@ luat_tay)`. Xem / sửa / xoá: `list_sfx_logic`, `edit_sfx_logic`. Lỗi «thi�
 
 ## Nhạc nền AI (không lời)
 
-Người dùng muốn **nhạc nền mới do AI tạo** («tạo nhạc nền», «làm bản nhạc lo-fi cho video này») → `generate_music(project,
-mo_ta)`. Ra nhạc KHÔNG LỜI dài đúng video, tự gắn vào hàng Nhạc nền (thay nhạc đang có, hoặc tạo clip trải cả video) và tự
-nhỏ lại khi người nói đang nói. Mỗi phút nhạc tốn chi phí → CHỈ tạo khi người dùng yêu cầu, không tự tạo lúc dựng video.
-Người dùng chưa nói kiểu nhạc → `generate_music(project, goi_y_theo_loi: true)` (miễn phí) rồi đọc đề xuất cho họ chọn.
+Người dùng muốn **nhạc nền mới do AI tạo** («tạo nhạc nền», «làm bản nhạc lo-fi cho video này») → `generate_music`. Ra nhạc
+KHÔNG LỜI dài đúng video, tự gắn vào hàng Nhạc nền (thay nhạc đang có, hoặc tạo clip trải cả video) và tự nhỏ lại khi người
+nói đang nói. Mỗi phút nhạc tốn chi phí → CHỈ tạo khi người dùng yêu cầu, không tự tạo lúc dựng video.
+
+**Ba cách nói nhạc muốn có — gửi ĐÚNG MỘT cách** (gửi lẫn thì tool báo lỗi ngay):
+
+- `the_loai: "<id>"` — **ưu tiên cách này** khi ý người dùng khớp một trong 20 thể loại của app: chữ gọi nhạc đã viết sẵn và
+  chỉnh kỹ, không qua bước đoán nào. Chưa biết có những gì → `generate_music(project, liet_ke_the_loai: true)` (miễn phí,
+  không tạo gì) rồi đọc 5 nhóm · 20 mục cho người dùng chọn. Họ nghe thử 30 giây từng thể loại ngay trong app
+  (Công cụ › Âm thanh › Nhạc nền), nghe bao nhiêu lần cũng miễn phí.
+- `mo_ta: "<tiếng Việt>"` — khi ý họ không khớp thể loại nào. Mơ hồ cũng được («nhạc nhẹ cho đoạn kể chuyện»); máy chủ tự
+  dịch thành câu lệnh.
+- `prompt_en: "<tiếng Anh>"` — chỉ khi người dùng đưa THẲNG chữ tiếng Anh của họ. **Đừng tự dịch `mo_ta` sang đây** — để máy
+  chủ làm, nó dịch đúng kiểu mà bộ sinh nhạc hiểu. Thêm `de_nguyen: true` nếu họ muốn dùng y nguyên chữ của họ (mặc định máy
+  chủ nối thêm câu giữ nhạc nằm dưới giọng nói). Nhạc luôn không lời ở cả ba cách.
+
+Người dùng chưa nói rõ gì → đọc lời thoại rồi gợi ý một thể loại, hoặc `goi_y_theo_loi: true` (miễn phí) để máy chủ đề xuất.
 Trả «đang chạy» thì gọi lại với `viec_id` sau ~20 giây. Nhạc to / nhỏ quá → `edit_clip` clip nhạc (`base`, `duck`).
 Lỗi «chưa mở tính năng» = tài khoản chưa được admin giao «Tạo nhạc nền AI»; «het-ngan-sach» = hết trần ngày — báo người
 dùng, đừng gọi lại.
