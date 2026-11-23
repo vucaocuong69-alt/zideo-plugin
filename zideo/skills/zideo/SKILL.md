@@ -762,6 +762,23 @@ ten)` (mang cả mẫu + mã tuỳ biến; cần quyền «Lưu design style»; 
 hoặc họ bấm «Lưu vào design style» ở tab Video avatar › Thẻ chuyển phần. Không tốn credit, không dời timeline.
 Áp cho: video avatar 16:9 Khoá học + video avatar Thường khung ngang dán từng phần. Không áp: lower-third, khung dọc 9:16.
 
+## Khoảng nghỉ (video avatar Khoá học)
+
+KHOẢNG NGHỈ = dừng lời ngay sau một câu cho người học nhìn kỹ kết quả. Bộ dựng CHÈN THÊM thời gian (như thẻ chuyển phần —
+không có trên timeline, không phải beat): hình đứng ở khung cuối + phóng chậm, avatar mờ đi, nhạc chạy tiếp, có thể kèm
+CÂU CẢM THÁN đọc bằng giọng dự án. Danh sách: `get_timeline` › `video_avatar.khoảng_nghỉ`.
+- Dựng MG: beat có trường `giữ_hình` → khung ở mốc đó sẽ ĐỨNG YÊN vài giây. Mọi phần tử phải vào XONG trước mốc (mốc = hết
+  câu, thường sớm hơn cuối beat), không chữ đang chạy, không pha ra trước mốc. Khung đó phải là thứ đáng nhìn kỹ nhất của beat.
+- Máy chủ TỰ gợi ý khoảng nghỉ một lần khi mọi beat đã có MG (dự án Khoá học mới) — không cần tự gọi. Dựng xong, báo người
+  dùng số khoảng nghỉ + video dài thêm bao nhiêu, nhắc họ xem / chỉnh ở storyboard hoặc tab Video avatar.
+- Người dùng nói «chỗ này dồn quá», «cho người xem kịp nhìn…», «dừng lại sau câu…», «bỏ khoảng nghỉ…», «thêm câu cảm thán»
+  → `set_pauses` (`xem` · `goi_y` · `them(tai)` · `sua(id, giay|tai)` · `xoa(id)` · `xoa_ai` · `bat` · `cau_chen(id, chu)`).
+  Đừng kéo dài MG hay sửa giọng để giả khoảng nghỉ.
+- `cau_chen` TỐN TIỀN GIỌNG ĐỌC: chỉ gọi khi người dùng nhờ hoặc đồng ý một câu cụ thể. Câu AI đề xuất (`câu_đề_xuất_chưa_đọc`)
+  chưa đọc — hỏi người dùng trước. Câu ≤ 15 chữ, giọng Nam Bộ tự nhiên, không khen lố.
+- Nhìn: `capture_frame(project, nghi: N)` (`luc` = giây trong khoảng nghỉ, mặc định 1). `at` không chụp được khoảng nghỉ.
+Áp cho: video avatar 16:9 Khoá học. Không áp: avatar Thường, khung dọc 9:16, mascot, reaction, video quay thật.
+
 ## Chỉnh người nói & video avatar theo lời người dùng
 
 Chỉ làm khi người dùng NHỜ (đừng tự đổi lúc dựng). Đi cùng route với giao diện, không tốn credit trừ chỗ ghi rõ.
