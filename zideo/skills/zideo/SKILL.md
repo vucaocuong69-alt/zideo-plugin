@@ -345,8 +345,14 @@ của một video talking-head. Mục tiêu: đồ hoạ đúng phong cách kên
       sang beat khác khi beat này còn `cảnh_báo` chưa xử hoặc nhìn còn lỗi.** (Đây là bước hay bị
       bỏ nhất khi dựng vội — và đó đúng là lúc beat ra thưa/rỗng. Đừng bỏ.)
       1. `capture_frame(<project>, <beat>)` ở HAI mốc (một lúc mọi thứ đã vào, một lúc giữa chuyển động).
+         Ảnh trả về đã thu nhỏ cho nhẹ — vẫn đủ soi mọi lỗi bố cục. Cần ĐỌC chữ rất nhỏ hoặc soi mép 1px thì
+         thêm `net: true` (ảnh nguyên cỡ, đắt gấp 2,25 lần) — đừng bật sẵn.
       2. Đọc `soi_bố_cục` trả kèm ảnh. Còn `cảnh_báo` → sửa **số hình học** (chiều cao, khoảng cách,
          cỡ chữ) rồi gửi lại chính clip đó, chụp lại. **Còn cảnh_báo là CHƯA xong beat.**
+         Sửa kiểu này thì gửi **`va: [{tim, thay}]`** chứ ĐỪNG gửi lại cả `code`: `write_motion_graphic(<project>,
+         <clip>, va: [{tim: "gap: 16", thay: "gap: 24"}])`. Mỗi `tim` phải khớp **đúng một lần** (khớp 0 hoặc nhiều
+         lần thì bị từ chối kèm số lần — nới `tim` dài ra cho đủ riêng); các vá áp lần lượt; mã sau khi vá qua ĐÚNG
+         cửa ải như mã gửi đầy đủ. Chỉ gửi `code` đầy đủ ở lượt ĐẦU của clip, hoặc khi đổi hẳn cách kể.
       3. **Nhìn ảnh** ở cỡ đọc được: (a) không đè mặt người; (b) không tràn/rớt chữ, không thẻ rỗng
          ruột, ảnh không teo; (c) **graphic LẤP phần lớn dải/khung** — chừa >1/3 dải trống ở phải
          hoặc đáy, hay teo về một góc = HỎNG, phải giãn khối / thêm tầng nội dung thật / canh giữa;
